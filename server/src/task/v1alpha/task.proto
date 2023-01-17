@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package task.v1alpha;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message Task {
+    string name = 1;
+    string fields = 2;
+    google.protobuf.Timestamp due_date = 3;
+}
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service TaskService {
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/Tasks"
+    };
+  }
+
+  rpc GetTask(GetTaskRequest) returns (Task) {
+    option (google.api.http) = {
+      get: "/v1alpha1/{name=Tasks/*}"
+    };
+  }
+
+  rpc CreateTask(CreateTaskRequest) returns (Task) {
+    option (google.api.http) = {
+      post: "/v1alpha1/Tasks"
+      body: "Task"
+    };
+  }
+
+  rpc UpdateTask(UpdateTaskRequest) returns (Task) {
+    option (google.api.http) = {
+      patch: "/v1alpha1/{Task.name=Tasks/*}"
+      body: "Task"
+    };
+  }
+
+  rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/{name=Tasks/*}"
+    };
+  }
+}
+
+message ListTasksRequest {
+  // The parent resource name, for example, "shelves/shelf1"
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message ListTasksResponse {
+  // The field name should match the noun "Task" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Task Tasks = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetTaskRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message CreateTaskRequest {
+  // The parent resource name where the Task is to be created.
+  string parent = 1;
+
+  // The Task id to use for this Task.
+  string Task_id = 2;
+
+  // The Task resource to create.
+  // The field name should match the Noun in the method name.
+  Task Task = 3;
+}
+
+message UpdateTaskRequest {
+  // The Task resource which replaces the resource on the server.
+  Task Task = 1;
+}
+
+message DeleteTaskRequest {
+  // The resource name of the Task to be deleted.
+  string name = 1;
+}
+
+
