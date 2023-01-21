@@ -1,4 +1,3 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
@@ -10,13 +9,12 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
+        url: `0.0.0.0:${process.env.PORT || 4000}`,
         package: 'task.v1alpha',
         protoPath: join(__dirname, process.env.PROTO_FILE),
       },
     },
   );
-
-  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen();
 }

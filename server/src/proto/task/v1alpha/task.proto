@@ -4,7 +4,6 @@ package task.v1alpha;
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 message Task {
     string name = 1;
@@ -40,7 +39,7 @@ service TaskService {
     };
   }
 
-  rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty) {
+  rpc DeleteTask(DeleteTaskRequest) returns (Task) {
     option (google.api.http) = {
       delete: "/v1alpha1/{name=Tasks/*}"
     };
@@ -61,7 +60,7 @@ message ListTasksRequest {
 message ListTasksResponse {
   // The field name should match the noun "Task" in the method name.
   // There will be a maximum number of items returned based on the page_size field in the request.
-  repeated Task Tasks = 1;
+  repeated Task tasks = 1;
 
   // Token to retrieve the next page of results, or empty if there are no more results in the list.
   string next_page_token = 2;
@@ -77,16 +76,16 @@ message CreateTaskRequest {
   string parent = 1;
 
   // The Task id to use for this Task.
-  string Task_id = 2;
+  string task_id = 2;
 
   // The Task resource to create.
   // The field name should match the Noun in the method name.
-  Task Task = 3;
+  Task task = 3;
 }
 
 message UpdateTaskRequest {
   // The Task resource which replaces the resource on the server.
-  Task Task = 1;
+  Task task = 1;
 }
 
 message DeleteTaskRequest {

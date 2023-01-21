@@ -5,7 +5,7 @@ export type TaskDocument = HydratedDocument<Task>;
 
 @Schema()
 export class Task {
-  @Prop()
+  @Prop({ unique: true, index: true })
   name: string;
 
   @Prop()

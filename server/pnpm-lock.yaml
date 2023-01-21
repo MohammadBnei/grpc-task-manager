@@ -1,6 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@buf/bneiconseil_taskmanagerapi.grpc_node': 1.12.3-20230119221224-cee1e41ecc2e.1
+  '@bufbuild/connect-web': ^0.6.0
+  '@bufbuild/protobuf': ^1.0.0
   '@grpc/grpc-js': ^1.8.4
   '@grpc/proto-loader': ^0.7.4
   '@nestjs/cli': ^9.0.0
@@ -12,6 +15,9 @@ specifiers:
   '@nestjs/platform-express': ^9.0.0
   '@nestjs/schematics': ^9.0.0
   '@nestjs/testing': ^9.0.0
+  '@protobuf-ts/plugin': ^2.8.2
+  '@protobuf-ts/runtime': ^2.8.2
+  '@protobuf-ts/runtime-rpc': ^2.8.2
   '@release-it/conventional-changelog': ^5.1.1
   '@types/express': ^4.17.13
   '@types/jest': 29.2.4
@@ -24,6 +30,8 @@ specifiers:
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
+  google-protobuf: ^3.21.2
+  install: ^0.13.0
   jest: 29.3.1
   mongoose: ^6.8.3
   prettier: ^2.3.2
@@ -39,6 +47,9 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
+  '@buf/bneiconseil_taskmanagerapi.grpc_node': 1.12.3-20230119221224-cee1e41ecc2e.1_hxcrm6ash63gal3znqxxxfvdo4
+  '@bufbuild/connect-web': 0.6.0_@bufbuild+protobuf@1.0.0
+  '@bufbuild/protobuf': 1.0.0
   '@grpc/grpc-js': 1.8.4
   '@grpc/proto-loader': 0.7.4
   '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
@@ -47,8 +58,13 @@ dependencies:
   '@nestjs/microservices': 9.2.1_lvioo6h3tx4r6messvce37wy7i
   '@nestjs/mongoose': 9.2.1_fzjdhjcxkaihoe3t744rcytfcm
   '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
+  '@protobuf-ts/plugin': 2.8.2
+  '@protobuf-ts/runtime': 2.8.2
+  '@protobuf-ts/runtime-rpc': 2.8.2
   class-transformer: 0.5.1
   class-validator: 0.14.0
+  google-protobuf: 3.21.2
+  install: 0.13.0
   mongoose: 6.8.3
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -217,15 +233,15 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/client-cognito-identity/3.245.0:
-    resolution: {integrity: sha512-c5briTS05rAioO5b84bVng9M1KyAXcxJtDHeuoeAAZBuU+Dd0Scg3vyXyAFlGI+TsNyxqHAqqRdAoG4WNxJo/Q==}
+  /@aws-sdk/client-cognito-identity/3.252.0:
+    resolution: {integrity: sha512-IHdrzMUGEQcUP7vN/wbVbRCHBXhC0nyaRxnnoHbrJfh5fzPSnkwo7qNf0e8ox+GXq8xgM58dEXefA6/TMYQPFQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
-      '@aws-sdk/client-sts': 3.245.0
+      '@aws-sdk/client-sts': 3.252.0
       '@aws-sdk/config-resolver': 3.234.0
-      '@aws-sdk/credential-provider-node': 3.245.0
+      '@aws-sdk/credential-provider-node': 3.252.0
       '@aws-sdk/fetch-http-handler': 3.226.0
       '@aws-sdk/hash-node': 3.226.0
       '@aws-sdk/invalid-dependency': 3.226.0
@@ -262,8 +278,8 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/client-sso-oidc/3.245.0:
-    resolution: {integrity: sha512-0pGPA00kEsu2Yq1Ul+OwftHxws5YVllm4iZrPtGnqmXr7wmf6B9lOtrMQF44y7Tfw53po6+bKz08OKTEWkkjUA==}
+  /@aws-sdk/client-sso-oidc/3.252.0:
+    resolution: {integrity: sha512-OOwfEXFS+UliGZorEleARsXXUp3ObZSXo9/YY+8XF7/8froAqYjKCEi0tflghgYlh7d6qe7wzD7/6gDL1a/qgA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
@@ -304,8 +320,8 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/client-sso/3.245.0:
-    resolution: {integrity: sha512-dxzRwRo55ZNQ4hQigC+cishxLSWlBrbr3iszG0FLviavLDOlnVG5UUxWpOIGvwr8pYiSfM4jnfMxiwYwiCLg1g==}
+  /@aws-sdk/client-sso/3.252.0:
+    resolution: {integrity: sha512-VgBqJvvCU4y9zAHJwYj5nOeNGcCxKdCO4edUxWQVHcpLsVWu49maOVtWuteq9MOrHYeWfQi8bVWGt8MPvv9+bA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
@@ -346,14 +362,14 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/client-sts/3.245.0:
-    resolution: {integrity: sha512-E+7v2sy34TLni/Dmz6bTU20NWvbHYH9sVUHKQ9kHhmFopUWrs4Nt77f85PbuiKJz/irjUh9ppT5q1odJNRKRVQ==}
+  /@aws-sdk/client-sts/3.252.0:
+    resolution: {integrity: sha512-wzfsWOlDFLdmeML8R7DUJWGl9wcRKf2uiunfB1aWzpdlgms0Z7FkHWgkDYHjCPyYHL6EBm84ajGl1UkE7AcmqQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
       '@aws-sdk/config-resolver': 3.234.0
-      '@aws-sdk/credential-provider-node': 3.245.0
+      '@aws-sdk/credential-provider-node': 3.252.0
       '@aws-sdk/fetch-http-handler': 3.226.0
       '@aws-sdk/hash-node': 3.226.0
       '@aws-sdk/invalid-dependency': 3.226.0
@@ -404,11 +420,11 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/credential-provider-cognito-identity/3.245.0:
-    resolution: {integrity: sha512-DkiPv7Yb9iw3yAzvWUAkXrI23F1+kV8grdXzlSzob5suqv/dVON5pFXK9Siz62WwWsa2FeCEpgEF7RA0mrWLtA==}
+  /@aws-sdk/credential-provider-cognito-identity/3.252.0:
+    resolution: {integrity: sha512-QW3pBYetF06FOQ85FbsFjK6xpon8feF/UOHsL0lMGi4CxUZE6zshV/ectU7tACcc4QV8uMvN7OgcK947CMEEWA==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@aws-sdk/client-cognito-identity': 3.245.0
+      '@aws-sdk/client-cognito-identity': 3.252.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/types': 3.226.0
       tslib: 2.4.1
@@ -439,14 +455,14 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/credential-provider-ini/3.245.0:
-    resolution: {integrity: sha512-1SjfVc5Wg0lLRUvwMrfjGgFkl+zfxn74gnkPr6by1QyMAoTzmeUkalPLAIqd+uHtFom9e3K633BQtX7zVPZ5XQ==}
+  /@aws-sdk/credential-provider-ini/3.252.0:
+    resolution: {integrity: sha512-OfpU8xMYK7+6XQ2dUO4rN0gUhhb/ZLV7iwSL6Ji2pI9gglGhKdOSfmbn6fBfCB50kzWZRNoiQJVaBu/d0Kr0EQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.226.0
       '@aws-sdk/credential-provider-imds': 3.226.0
       '@aws-sdk/credential-provider-process': 3.226.0
-      '@aws-sdk/credential-provider-sso': 3.245.0
+      '@aws-sdk/credential-provider-sso': 3.252.0
       '@aws-sdk/credential-provider-web-identity': 3.226.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/shared-ini-file-loader': 3.226.0
@@ -457,15 +473,15 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/credential-provider-node/3.245.0:
-    resolution: {integrity: sha512-Dwv8zmRLTDLeEkGrK/sLNFZSC+ahXZxr07CuID054QKACIdUEvkqYlnalRiTeXngiHGQ54u8wU7f0D32R2oL0g==}
+  /@aws-sdk/credential-provider-node/3.252.0:
+    resolution: {integrity: sha512-Jt854JnB7izkJ/gb3S0hBFqAQPUNUP3eL8gXX2uqk9A9bQFQdS57/Ci0FXaEPwOXzJwAAPazD8dTf6HXMhnm3w==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.226.0
       '@aws-sdk/credential-provider-imds': 3.226.0
-      '@aws-sdk/credential-provider-ini': 3.245.0
+      '@aws-sdk/credential-provider-ini': 3.252.0
       '@aws-sdk/credential-provider-process': 3.226.0
-      '@aws-sdk/credential-provider-sso': 3.245.0
+      '@aws-sdk/credential-provider-sso': 3.252.0
       '@aws-sdk/credential-provider-web-identity': 3.226.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/shared-ini-file-loader': 3.226.0
@@ -487,14 +503,14 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/credential-provider-sso/3.245.0:
-    resolution: {integrity: sha512-txWrJc0WNBhXMi7q+twjx7cs/qzgTfbQ+vbag5idRmdoUeiR8rfLvihCab2NaGg50xhh+TaoUCXrgJp3E/XjYQ==}
+  /@aws-sdk/credential-provider-sso/3.252.0:
+    resolution: {integrity: sha512-2JGoojMOBjG9/DenctEszjdPechq0uDTpH5nx+z1xxIAugA5+HYG/ncNfpwhmUBCrnOxpRaQViTNqXddEPHlAg==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@aws-sdk/client-sso': 3.245.0
+      '@aws-sdk/client-sso': 3.252.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/shared-ini-file-loader': 3.226.0
-      '@aws-sdk/token-providers': 3.245.0
+      '@aws-sdk/token-providers': 3.252.0
       '@aws-sdk/types': 3.226.0
       tslib: 2.4.1
     transitivePeerDependencies:
@@ -512,21 +528,21 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/credential-providers/3.245.0:
-    resolution: {integrity: sha512-6Uhsxk6MOuWplejhPJf7XDhegHmcZfj8hwnF4mXFJ6u4b2RxWPQCnqPcA0+VoAzIMUqbjqvkSzmVjQelGFtjNg==}
+  /@aws-sdk/credential-providers/3.252.0:
+    resolution: {integrity: sha512-aA4kwbvSlEcS9QSSlUWoVyoMYEljhkubNxpRhRnObsl4iT9xS06c38lKyhz3m0XIbCVk0lgYTcpue0dlybKS7Q==}
     engines: {node: '>=14.0.0'}
     requiresBuild: true
     dependencies:
-      '@aws-sdk/client-cognito-identity': 3.245.0
-      '@aws-sdk/client-sso': 3.245.0
-      '@aws-sdk/client-sts': 3.245.0
-      '@aws-sdk/credential-provider-cognito-identity': 3.245.0
+      '@aws-sdk/client-cognito-identity': 3.252.0
+      '@aws-sdk/client-sso': 3.252.0
+      '@aws-sdk/client-sts': 3.252.0
+      '@aws-sdk/credential-provider-cognito-identity': 3.252.0
       '@aws-sdk/credential-provider-env': 3.226.0
       '@aws-sdk/credential-provider-imds': 3.226.0
-      '@aws-sdk/credential-provider-ini': 3.245.0
-      '@aws-sdk/credential-provider-node': 3.245.0
+      '@aws-sdk/credential-provider-ini': 3.252.0
+      '@aws-sdk/credential-provider-node': 3.252.0
       '@aws-sdk/credential-provider-process': 3.226.0
-      '@aws-sdk/credential-provider-sso': 3.245.0
+      '@aws-sdk/credential-provider-sso': 3.252.0
       '@aws-sdk/credential-provider-web-identity': 3.226.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/shared-ini-file-loader': 3.226.0
@@ -793,11 +809,11 @@ packages:
     dev: false
     optional: true
 
-  /@aws-sdk/token-providers/3.245.0:
-    resolution: {integrity: sha512-m/spXR/vEXGb+zMqRUMQYVMwFZSTdK5RkddYqamYkNhIoLm60EYeRu57JsMMs5djKi8dBRSKiXwVHx0l2rXMjg==}
+  /@aws-sdk/token-providers/3.252.0:
+    resolution: {integrity: sha512-xi3pUP31tyKF4lJFCOgtkwSWESE9W1vE23Vybsq53wzXEYfnRql8RP+C9FFkUouAR6ixPHEcEYplB+l92CY49g==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@aws-sdk/client-sso-oidc': 3.245.0
+      '@aws-sdk/client-sso-oidc': 3.252.0
       '@aws-sdk/property-provider': 3.226.0
       '@aws-sdk/shared-ini-file-loader': 3.226.0
       '@aws-sdk/types': 3.226.0
@@ -1310,6 +1326,39 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@buf/bneiconseil_taskmanagerapi.grpc_node/1.12.3-20230119221224-cee1e41ecc2e.1_hxcrm6ash63gal3znqxxxfvdo4:
+    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/bneiconseil_taskmanagerapi.grpc_node/1.12.3-20230119221224-cee1e41ecc2e.1/tarball}
+    peerDependencies:
+      '@grpc/grpc-js': ^1.8.0
+      google-protobuf: ^3.21.2
+    dependencies:
+      '@buf/googleapis_googleapis.grpc_node': 1.12.3-20221214150216-75b4300737fb.1_hxcrm6ash63gal3znqxxxfvdo4
+      '@grpc/grpc-js': 1.8.4
+      google-protobuf: 3.21.2
+    dev: false
+
+  /@buf/googleapis_googleapis.grpc_node/1.12.3-20221214150216-75b4300737fb.1_hxcrm6ash63gal3znqxxxfvdo4:
+    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.grpc_node/1.12.3-20221214150216-75b4300737fb.1/tarball}
+    peerDependencies:
+      '@grpc/grpc-js': ^1.8.0
+      google-protobuf: ^3.21.2
+    dependencies:
+      '@grpc/grpc-js': 1.8.4
+      google-protobuf: 3.21.2
+    dev: false
+
+  /@bufbuild/connect-web/0.6.0_@bufbuild+protobuf@1.0.0:
+    resolution: {integrity: sha512-dfiXt7ye/sC1MwBtCyR1XYZHjKvVpCxLP/HcnHYoa6POi+Ey1t058bCc14HdT2EpYEZYN7SW1M2tuZ5SnabmhA==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.0.0
+    dependencies:
+      '@bufbuild/protobuf': 1.0.0
+    dev: false
+
+  /@bufbuild/protobuf/1.0.0:
+    resolution: {integrity: sha512-oH3jHBrZ6to8Qf4zLg7O8KqSY42kQZNBRXJRMp5uSi0mqE4L8NbyMnZHeOsbXmTb0xpptRyH11LfS+KeVhXzAA==}
+    dev: false
 
   /@colors/colors/1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -2066,6 +2115,39 @@ packages:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
     dev: true
+
+  /@protobuf-ts/plugin-framework/2.8.2:
+    resolution: {integrity: sha512-ivcJdNVB3Iee8044f8erZGBgmB6ZfQbbKyxRgDBXRVKYxsruLr432WcT5upw9autK9OnlSVLaebi8kDneFXd2g==}
+    dependencies:
+      '@protobuf-ts/runtime': 2.8.2
+      typescript: 3.9.10
+    dev: false
+
+  /@protobuf-ts/plugin/2.8.2:
+    resolution: {integrity: sha512-rTPxaeKBfUar8ubKxbVdv4XL6AcGA0OOgHNHFyrfODP7Epy80omwuvgFJex1YpeNFJxm/FZXXj5Z+nHuhYEqJg==}
+    hasBin: true
+    dependencies:
+      '@protobuf-ts/plugin-framework': 2.8.2
+      '@protobuf-ts/protoc': 2.8.2
+      '@protobuf-ts/runtime': 2.8.2
+      '@protobuf-ts/runtime-rpc': 2.8.2
+      typescript: 3.9.10
+    dev: false
+
+  /@protobuf-ts/protoc/2.8.2:
+    resolution: {integrity: sha512-1e+rOgp22ElyqRWunSc8bhatJcvRe90AGPceVn67IFYzybvfKl17vP1igHddeYkN0dzOucnOrwqn2v1jnDfE2w==}
+    hasBin: true
+    dev: false
+
+  /@protobuf-ts/runtime-rpc/2.8.2:
+    resolution: {integrity: sha512-vum/Y7AXdUTWGFu7dke/jCSB9dV3Oo3iVPcce3j7KudpzzWarDkEGvXjKv3Y8zJPj5waToyxwBNSb7eo5Vw5WA==}
+    dependencies:
+      '@protobuf-ts/runtime': 2.8.2
+    dev: false
+
+  /@protobuf-ts/runtime/2.8.2:
+    resolution: {integrity: sha512-PVxsH81y9kEbHldxxG/8Y3z2mTXWQytRl8zNS0mTPUjkEC+8GUX6gj6LsA8EFp25fAs9V0ruh+aNWmPccEI9MA==}
+    dev: false
 
   /@protobufjs/aspromise/1.1.2:
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -4689,6 +4771,10 @@ packages:
       slash: 4.0.0
     dev: true
 
+  /google-protobuf/3.21.2:
+    resolution: {integrity: sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==}
+    dev: false
+
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -4987,6 +5073,11 @@ packages:
       through: 2.3.8
       wrap-ansi: 8.0.1
     dev: true
+
+  /install/0.13.0:
+    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /internal-slot/1.0.4:
     resolution: {integrity: sha512-tA8URYccNzMo94s5MQZgH8NB/XTa6HsOo0MLfXTKKEnHVVdegzaQoFZ7Jp44bdvLvY2waT5dc+j5ICEswhi7UQ==}
@@ -6191,7 +6282,7 @@ packages:
       mongodb-connection-string-url: 2.6.0
       socks: 2.7.1
     optionalDependencies:
-      '@aws-sdk/credential-providers': 3.245.0
+      '@aws-sdk/credential-providers': 3.252.0
       saslprep: 1.0.3
     transitivePeerDependencies:
       - aws-crt
@@ -7918,6 +8009,12 @@ packages:
 
   /typedarray/0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+
+  /typescript/3.9.10:
+    resolution: {integrity: sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: false
 
   /typescript/4.9.4:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
