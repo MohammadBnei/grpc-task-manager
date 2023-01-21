@@ -1,23 +1,15 @@
 import type { PageServerLoad } from './$types';
-import { GrpcTransport } from '@protobuf-ts/grpc-transport';
-import { ChannelCredentials } from '@grpc/grpc-js';
-import { TaskServiceClient } from '../lib/taskService/task/v1alpha/task.client';
-import { ListTasksRequest, Task } from '../lib/taskService/task/v1alpha/task';
-import { Timestamp } from '$lib/taskService/google/protobuf/timestamp';
+import { ListTasksRequest } from '$lib/taskService/task/v1alpha/task';
+import { TasksDto } from '$lib/helper/taskDto';
 
-export const load = (async () => {
-	const transport = new GrpcTransport({
-		host: 'localhost:4000',
-		channelCredentials: ChannelCredentials.createInsecure()
-	});
-	const client = new TaskServiceClient(transport);
-	const tasks = await (await client.listTasks(ListTasksRequest.create()).response).tasks;
+export const load: PageServerLoad = async ({ locals }) => {
+	const listTaskRequest = ListTasksRequest.create();
+	const request = await locals.client.listTasks(listTaskRequest);
+	const listTasksResponse = request.response;
+
+	const tasks = new TasksDto(listTasksResponse.tasks).toJson();
 
 	return {
-		tasks: tasks.map((t) => ({
-			name: t.name,
-			fields: t.fields,
-			dueDate: t.dueDate && Timestamp.toDate(t.dueDate)
-		}))
+		tasks
 	};
-}) satisfies PageServerLoad;
+};

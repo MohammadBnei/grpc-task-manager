@@ -14,11 +14,9 @@ export class CreateFieldsDto {
 }
 
 export class UpdateTaskDto {
-  id: string | number;
-
   @IsObject()
   fields!: any;
 
-  @Length(3, 50)
-  name!: string;
+  @MinDate(() => new Date())
+  dueDate: Date;
 }
