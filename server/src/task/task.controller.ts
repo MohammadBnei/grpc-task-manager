@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { TaskService } from './task.service';
 import {
+  DeleteTaskRequest,
   UpdateTaskRequest,
   CreateTaskRequest,
   GetTaskRequest,
@@ -57,7 +58,7 @@ export class TaskController {
     try {
       const nTask = {
         ...request.task,
-        fields: JSON.parse(request.task.fields),
+        fields: request.task.fields && JSON.parse(request.task.fields),
         dueDate: new Timestamp(request.task.dueDate).toDate(),
       };
       const task = await this.taskService.create(nTask);
@@ -78,17 +79,36 @@ export class TaskController {
   async UpdateTask(request: UpdateTaskRequest): Promise<Task> {
     try {
       const nTask = {
-        fields: JSON.parse(request.task.fields),
+        fields: request.task.fields && JSON.parse(request.task.fields),
         dueDate: new Timestamp(request.task.dueDate).toDate(),
       };
 
-      const task = await this.taskService.updateTask(request.task.name, nTask);
+      const task = await this.taskService.updateTask(
+        { name: request.task.name },
+        nTask,
+      );
       const pbTask = {
         name: task.name,
         fields: JSON.stringify(task.fields),
         dueDate: Timestamp.fromDate(task.dueDate),
       };
 
+      return pbTask;
+    } catch (error) {
+      console.error(error);
+      throw new RpcException(error);
+    }
+  }
+  @GrpcMethod('TaskService')
+  async DeleteTask(request: DeleteTaskRequest): Promise<Task> {
+    try {
+      console.log({ request });
+      const task = await this.taskService.deleteTask(request.name);
+      const pbTask = {
+        name: task.name,
+        fields: JSON.stringify(task.fields),
+        dueDate: Timestamp.fromDate(task.dueDate),
+      };
       return pbTask;
     } catch (error) {
       console.error(error);

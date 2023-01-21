@@ -27,8 +27,16 @@ export class TaskService {
     return task;
   }
 
-  async updateTask(id: number | string, uTask: UpdateTaskDto): Promise<Task> {
-    const task = await this.taskModel.findById(id);
+  async updateTask(
+    { id, name }: { name?: string; id?: string },
+    uTask: UpdateTaskDto,
+  ): Promise<Task> {
+    let task;
+    if (id) {
+      task = await this.taskModel.findById(id);
+    } else {
+      task = await this.taskModel.findOne({ name });
+    }
 
     if (!task) {
       throw new Error(`task with id ${id} not found`);
@@ -39,11 +47,13 @@ export class TaskService {
     return task.save();
   }
 
-  async deleteTask(id: number | string): Promise<void> {
+  async deleteTask(id: number | string): Promise<Task> {
     const task = await this.taskModel.findOneAndDelete({ id });
 
     if (!task) {
       throw new Error(`task with id ${id} not found`);
     }
+
+    return task;
   }
 }
