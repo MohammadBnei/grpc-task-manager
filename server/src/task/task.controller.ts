@@ -1,5 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 import { TaskService } from './task.service';
 import {
   DeleteTaskRequest,
@@ -38,7 +39,11 @@ export class TaskController {
   async ListTasks(request: ListTasksRequest): Promise<ListTasksResponse> {
     try {
       const tasks = await this.taskService.findAll();
-      console.log({ tasks });
+
+      console.log({
+        date: Timestamp.fromDate(tasks[2].dueDate),
+        dueDate: tasks[2].dueDate,
+      });
 
       return {
         tasks: tasks.map((t) => ({
@@ -57,10 +62,17 @@ export class TaskController {
   async CreateTask(request: CreateTaskRequest): Promise<Task> {
     try {
       const nTask = {
-        ...request.task,
+        name: request.task.name,
         fields: request.task.fields && JSON.parse(request.task.fields),
         dueDate: new Timestamp(request.task.dueDate).toDate(),
       };
+      console.log('Creating task', { nTask });
+      if (!nTask.name)
+        throw new RpcException({
+          message: 'No name provided',
+          code: HttpStatus.BAD_REQUEST,
+          status: status.INVALID_ARGUMENT,
+        });
       const task = await this.taskService.create(nTask);
       const pbTask = {
         name: task.name,
@@ -99,10 +111,10 @@ export class TaskController {
       throw new RpcException(error);
     }
   }
+
   @GrpcMethod('TaskService')
   async DeleteTask(request: DeleteTaskRequest): Promise<Task> {
     try {
-      console.log({ request });
       const task = await this.taskService.deleteTask(request.name);
       const pbTask = {
         name: task.name,

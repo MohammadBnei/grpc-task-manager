@@ -1,5 +1,7 @@
+import { ServerCredentials } from '@grpc/grpc-js';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { readFileSync } from 'fs';
 import { join } from 'path';
 import { AppModule } from './app.module';
 
@@ -10,6 +12,14 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         url: `0.0.0.0:${process.env.PORT || 4000}`,
+        credentials: !process.env.insecure
+          ? ServerCredentials.createSsl(null, [
+              {
+                private_key: readFileSync(process.env.KEY),
+                cert_chain: readFileSync(process.env.CERT),
+              },
+            ])
+          : ServerCredentials.createInsecure(),
         package: 'task.v1alpha',
         protoPath: join(__dirname, process.env.PROTO_FILE),
       },

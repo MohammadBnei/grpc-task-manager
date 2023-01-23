@@ -2,29 +2,53 @@ import { Timestamp } from '$lib/taskService/google/protobuf/timestamp';
 import { Task } from '$lib/taskService/task/v1alpha/task';
 
 export class TaskDto {
-	name: string;
+	name?: string;
 	fields: any;
 	dueDate?: Date;
 	/**
-	 *
+	 * Creating a DTO Task object,
 	 */
-	constructor({ name, fields, dueDate }: { name: string; fields: any; dueDate: Date | Timestamp }) {
+	constructor({
+		name,
+		fields,
+		dueDate
+	}: {
+		name?: string;
+		fields: any;
+		dueDate: Date | Timestamp;
+	}) {
+		console.log({ dueDate });
 		this.name = name;
-		this.fields = fields;
+		this.fields = fields && typeof fields === 'string' ? JSON.parse(fields) : fields;
 		this.dueDate = Timestamp.is(dueDate) ? Timestamp.toDate(dueDate) : dueDate;
 	}
 
-	toJson() {
-		return {
+	toJson(): {
+		name?: string;
+		fields: any;
+		dueDate?: Date;
+	} {
+		const task = {
 			name: this.name,
-			fields: JSON.stringify(this.fields),
+			fields: this.fields,
 			dueDate: this.dueDate
 		};
+
+		Object.keys(task).forEach((key) => (task[key] === undefined ? delete task[key] : {}));
+
+		return task;
 	}
 
 	toPbTask(): Task {
-		const t = this.toJson();
-		return Task.create({ ...t, dueDate: Timestamp.fromDate(t.dueDate as Date) });
+		const t: any = this.toJson();
+		if (t.fields) {
+			t.fields = JSON.stringify(t.fields);
+		}
+		if (t.dueDate) {
+			t.dueDate = Timestamp.fromDate(t.dueDate as Date);
+		}
+
+		return Task.create(t);
 	}
 }
 

@@ -48,10 +48,12 @@ export class TaskService {
   }
 
   async deleteTask(id: number | string): Promise<Task> {
-    const task = await this.taskModel.findOneAndDelete({ id });
+    const task = await this.taskModel.findOneAndDelete({
+      name: { $regex: `^${id}$`, $options: 'i' },
+    });
 
     if (!task) {
-      throw new Error(`task with id ${id} not found`);
+      throw new Error(`task with name ${id} not found`);
     }
 
     return task;
