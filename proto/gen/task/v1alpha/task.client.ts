@@ -44,9 +44,9 @@ export interface ITaskServiceClient {
      */
     deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, Task>;
     /**
-     * @generated from protobuf rpc: SteamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
+     * @generated from protobuf rpc: StreamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
      */
-    steamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse>;
+    streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse>;
 }
 /**
  * Generated according to https://cloud.google.com/apis/design/standard_methods
@@ -95,9 +95,9 @@ export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {
         return stackIntercept<DeleteTaskRequest, Task>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: SteamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
+     * @generated from protobuf rpc: StreamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
      */
-    steamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
+    streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
         const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<StreamTasksRequest, StreamTasksResponse>("serverStreaming", this._transport, method, opt, input);
     }

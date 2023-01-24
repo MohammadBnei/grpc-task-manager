@@ -601,5 +601,5 @@ export const TaskService = new ServiceType("task.v1alpha.TaskService", [
     { name: "CreateTask", options: { "google.api.http": { post: "/v1alpha1/Tasks", body: "Task" } }, I: CreateTaskRequest, O: Task },
     { name: "UpdateTask", options: { "google.api.http": { patch: "/v1alpha1/{Task.name=Tasks/*}", body: "Task" } }, I: UpdateTaskRequest, O: Task },
     { name: "DeleteTask", options: { "google.api.http": { delete: "/v1alpha1/{name=Tasks/*}" } }, I: DeleteTaskRequest, O: Task },
-    { name: "SteamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
+    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);
