@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - "proto/*"
+  workflow_dispatch:
+    
 
 jobs:
   generate:
