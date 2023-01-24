@@ -12,7 +12,6 @@ import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MESSAGE_TYPE } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
-import { Timestamp } from "../../google/protobuf/timestamp";
 /**
  * @generated from protobuf message task.v1alpha.Task
  */
@@ -26,9 +25,23 @@ export interface Task {
      */
     fields: string;
     /**
-     * @generated from protobuf field: google.protobuf.Timestamp due_date = 3;
+     * @generated from protobuf field: string due_date = 3;
      */
-    dueDate?: Timestamp;
+    dueDate: string;
+}
+/**
+ * @generated from protobuf message task.v1alpha.StreamTasksRequest
+ */
+export interface StreamTasksRequest {
+}
+/**
+ * @generated from protobuf message task.v1alpha.StreamTasksResponse
+ */
+export interface StreamTasksResponse {
+    /**
+     * @generated from protobuf field: task.v1alpha.Task task = 1;
+     */
+    task?: Task;
 }
 /**
  * @generated from protobuf message task.v1alpha.ListTasksRequest
@@ -134,11 +147,11 @@ class Task$Type extends MessageType<Task> {
         super("task.v1alpha.Task", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "fields", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "due_date", kind: "message", T: () => Timestamp }
+            { no: 3, name: "due_date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Task>): Task {
-        const message = { name: "", fields: "" };
+        const message = { name: "", fields: "", dueDate: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Task>(this, message, value);
@@ -155,8 +168,8 @@ class Task$Type extends MessageType<Task> {
                 case /* string fields */ 2:
                     message.fields = reader.string();
                     break;
-                case /* google.protobuf.Timestamp due_date */ 3:
-                    message.dueDate = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.dueDate);
+                case /* string due_date */ 3:
+                    message.dueDate = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -176,9 +189,9 @@ class Task$Type extends MessageType<Task> {
         /* string fields = 2; */
         if (message.fields !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.fields);
-        /* google.protobuf.Timestamp due_date = 3; */
-        if (message.dueDate)
-            Timestamp.internalBinaryWrite(message.dueDate, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* string due_date = 3; */
+        if (message.dueDate !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.dueDate);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -189,6 +202,79 @@ class Task$Type extends MessageType<Task> {
  * @generated MessageType for protobuf message task.v1alpha.Task
  */
 export const Task = new Task$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class StreamTasksRequest$Type extends MessageType<StreamTasksRequest> {
+    constructor() {
+        super("task.v1alpha.StreamTasksRequest", []);
+    }
+    create(value?: PartialMessage<StreamTasksRequest>): StreamTasksRequest {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<StreamTasksRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: StreamTasksRequest): StreamTasksRequest {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: StreamTasksRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1alpha.StreamTasksRequest
+ */
+export const StreamTasksRequest = new StreamTasksRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class StreamTasksResponse$Type extends MessageType<StreamTasksResponse> {
+    constructor() {
+        super("task.v1alpha.StreamTasksResponse", [
+            { no: 1, name: "task", kind: "message", T: () => Task }
+        ]);
+    }
+    create(value?: PartialMessage<StreamTasksResponse>): StreamTasksResponse {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<StreamTasksResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: StreamTasksResponse): StreamTasksResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* task.v1alpha.Task task */ 1:
+                    message.task = Task.internalBinaryRead(reader, reader.uint32(), options, message.task);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: StreamTasksResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* task.v1alpha.Task task = 1; */
+        if (message.task)
+            Task.internalBinaryWrite(message.task, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1alpha.StreamTasksResponse
+ */
+export const StreamTasksResponse = new StreamTasksResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListTasksRequest$Type extends MessageType<ListTasksRequest> {
     constructor() {
@@ -514,5 +600,6 @@ export const TaskService = new ServiceType("task.v1alpha.TaskService", [
     { name: "GetTask", options: { "google.api.http": { get: "/v1alpha1/{name=Tasks/*}" } }, I: GetTaskRequest, O: Task },
     { name: "CreateTask", options: { "google.api.http": { post: "/v1alpha1/Tasks", body: "Task" } }, I: CreateTaskRequest, O: Task },
     { name: "UpdateTask", options: { "google.api.http": { patch: "/v1alpha1/{Task.name=Tasks/*}", body: "Task" } }, I: UpdateTaskRequest, O: Task },
-    { name: "DeleteTask", options: { "google.api.http": { delete: "/v1alpha1/{name=Tasks/*}" } }, I: DeleteTaskRequest, O: Task }
+    { name: "DeleteTask", options: { "google.api.http": { delete: "/v1alpha1/{name=Tasks/*}" } }, I: DeleteTaskRequest, O: Task },
+    { name: "SteamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);

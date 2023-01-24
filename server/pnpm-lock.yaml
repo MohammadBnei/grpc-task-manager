@@ -1,15 +1,13 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@buf/bneiconseil_taskmanagerapi.grpc_node': 1.12.3-20230119221224-cee1e41ecc2e.1
-  '@bufbuild/connect-web': ^0.6.0
-  '@bufbuild/protobuf': ^1.0.0
-  '@grpc/grpc-js': ^1.8.4
+  '@grpc/grpc-js': ^1.8.5
   '@grpc/proto-loader': ^0.7.4
   '@nestjs/cli': ^9.0.0
   '@nestjs/common': ^9.0.0
   '@nestjs/config': ^2.2.0
   '@nestjs/core': ^9.0.0
+  '@nestjs/event-emitter': ^1.3.1
   '@nestjs/microservices': ^9.2.1
   '@nestjs/mongoose': ^9.2.1
   '@nestjs/platform-express': ^9.0.0
@@ -37,7 +35,7 @@ specifiers:
   prettier: ^2.3.2
   reflect-metadata: ^0.1.13
   release-it: ^15.6.0
-  rxjs: ^7.2.0
+  rxjs: ^7.8.0
   source-map-support: ^0.5.20
   supertest: ^6.1.3
   ts-jest: 29.0.3
@@ -47,15 +45,13 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
-  '@buf/bneiconseil_taskmanagerapi.grpc_node': 1.12.3-20230119221224-cee1e41ecc2e.1_hxcrm6ash63gal3znqxxxfvdo4
-  '@bufbuild/connect-web': 0.6.0_@bufbuild+protobuf@1.0.0
-  '@bufbuild/protobuf': 1.0.0
-  '@grpc/grpc-js': 1.8.4
+  '@grpc/grpc-js': 1.8.5
   '@grpc/proto-loader': 0.7.4
   '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
   '@nestjs/config': 2.2.0_b4pxbpa7chblgbyake5iz5rdmu
   '@nestjs/core': 9.2.1_qpblwiuxxxv5ilgjwzmmgbtkcq
-  '@nestjs/microservices': 9.2.1_lvioo6h3tx4r6messvce37wy7i
+  '@nestjs/event-emitter': 1.3.1_dntc3uqqknzoduyjojusds5kla
+  '@nestjs/microservices': 9.2.1_ttssqswtrtldvtooczffco2f3i
   '@nestjs/mongoose': 9.2.1_fzjdhjcxkaihoe3t744rcytfcm
   '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
   '@protobuf-ts/plugin': 2.8.2
@@ -1327,39 +1323,6 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@buf/bneiconseil_taskmanagerapi.grpc_node/1.12.3-20230119221224-cee1e41ecc2e.1_hxcrm6ash63gal3znqxxxfvdo4:
-    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/bneiconseil_taskmanagerapi.grpc_node/1.12.3-20230119221224-cee1e41ecc2e.1/tarball}
-    peerDependencies:
-      '@grpc/grpc-js': ^1.8.0
-      google-protobuf: ^3.21.2
-    dependencies:
-      '@buf/googleapis_googleapis.grpc_node': 1.12.3-20221214150216-75b4300737fb.1_hxcrm6ash63gal3znqxxxfvdo4
-      '@grpc/grpc-js': 1.8.4
-      google-protobuf: 3.21.2
-    dev: false
-
-  /@buf/googleapis_googleapis.grpc_node/1.12.3-20221214150216-75b4300737fb.1_hxcrm6ash63gal3znqxxxfvdo4:
-    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.grpc_node/1.12.3-20221214150216-75b4300737fb.1/tarball}
-    peerDependencies:
-      '@grpc/grpc-js': ^1.8.0
-      google-protobuf: ^3.21.2
-    dependencies:
-      '@grpc/grpc-js': 1.8.4
-      google-protobuf: 3.21.2
-    dev: false
-
-  /@bufbuild/connect-web/0.6.0_@bufbuild+protobuf@1.0.0:
-    resolution: {integrity: sha512-dfiXt7ye/sC1MwBtCyR1XYZHjKvVpCxLP/HcnHYoa6POi+Ey1t058bCc14HdT2EpYEZYN7SW1M2tuZ5SnabmhA==}
-    peerDependencies:
-      '@bufbuild/protobuf': ^1.0.0
-    dependencies:
-      '@bufbuild/protobuf': 1.0.0
-    dev: false
-
-  /@bufbuild/protobuf/1.0.0:
-    resolution: {integrity: sha512-oH3jHBrZ6to8Qf4zLg7O8KqSY42kQZNBRXJRMp5uSi0mqE4L8NbyMnZHeOsbXmTb0xpptRyH11LfS+KeVhXzAA==}
-    dev: false
-
   /@colors/colors/1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
@@ -1391,8 +1354,8 @@ packages:
       - supports-color
     dev: true
 
-  /@grpc/grpc-js/1.8.4:
-    resolution: {integrity: sha512-oaETBotls7FTBpySg5dhyUCyXSxSeCMmkBBXHXG1iw57MiNoB6D7VRhkrXYbwyHM3Q3Afjp4KlsBX0Zb+ELZXw==}
+  /@grpc/grpc-js/1.8.5:
+    resolution: {integrity: sha512-+hpNMAz+RdeckGdGRSHj8gjBEv8crcrTZjsagOZtYqCoWu4JXuNqRlxniwxhKFWxNrxZpSMQLmAjIkoDIgFjyQ==}
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': 0.7.4
@@ -1813,7 +1776,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
-      '@nestjs/microservices': 9.2.1_lvioo6h3tx4r6messvce37wy7i
+      '@nestjs/microservices': 9.2.1_ttssqswtrtldvtooczffco2f3i
       '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
@@ -1827,7 +1790,20 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nestjs/microservices/9.2.1_lvioo6h3tx4r6messvce37wy7i:
+  /@nestjs/event-emitter/1.3.1_dntc3uqqknzoduyjojusds5kla:
+    resolution: {integrity: sha512-AmHkPTe/cP1lbQEm15TIe9IDEAszl5VAR8HjMS2TDtNRuSzwyoJgZUVcRnH7Yk9/2DX5qMtmw6a1MHeR8DD+rw==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
+      '@nestjs/core': 9.2.1_qpblwiuxxxv5ilgjwzmmgbtkcq
+      eventemitter2: 6.4.6
+      reflect-metadata: 0.1.13
+    dev: false
+
+  /@nestjs/microservices/9.2.1_ttssqswtrtldvtooczffco2f3i:
     resolution: {integrity: sha512-ve4dqgoIaUG9VtinHHGCvf6SvtPjd3I44Mj8z8mSkcB8BEPfJnf4FNOShFBgsedtxLaiZyjpv8NCLcNVv5KKGg==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -1863,7 +1839,7 @@ packages:
       nats:
         optional: true
     dependencies:
-      '@grpc/grpc-js': 1.8.4
+      '@grpc/grpc-js': 1.8.5
       '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
       '@nestjs/core': 9.2.1_qpblwiuxxxv5ilgjwzmmgbtkcq
       iterare: 1.2.1
@@ -1948,7 +1924,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
       '@nestjs/core': 9.2.1_qpblwiuxxxv5ilgjwzmmgbtkcq
-      '@nestjs/microservices': 9.2.1_lvioo6h3tx4r6messvce37wy7i
+      '@nestjs/microservices': 9.2.1_ttssqswtrtldvtooczffco2f3i
       '@nestjs/platform-express': 9.2.1_hjcqpoaebdr7gdo5hgc22hthbe
       tslib: 2.4.1
     dev: true
@@ -4185,6 +4161,10 @@ packages:
   /etag/1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+
+  /eventemitter2/6.4.6:
+    resolution: {integrity: sha512-OHqo4wbHX5VbvlbB6o6eDwhYmiTjrpWACjF8Pmof/GTD6rdBNdZFNck3xlhqOiQFGCOoq3uzHvA0cQpFHIGVAQ==}
+    dev: false
 
   /events/3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}

@@ -7,8 +7,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const request = await locals.client.listTasks(listTaskRequest);
 	const listTasksResponse = request.response;
 
-	console.log({date: listTasksResponse.tasks[2]})
-
 	const tasks = new TasksDto(listTasksResponse.tasks.reverse()).toJson();
 
 	return {

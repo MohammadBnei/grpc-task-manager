@@ -2,13 +2,12 @@ syntax = "proto3";
 
 package task.v1alpha;
 
-import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
 message Task {
     string name = 1;
     string fields = 2;
-    google.protobuf.Timestamp due_date = 3;
+    string due_date = 3;
 }
 
 // Generated according to https://cloud.google.com/apis/design/standard_methods
@@ -44,6 +43,13 @@ service TaskService {
       delete: "/v1alpha1/{name=Tasks/*}"
     };
   }
+
+  rpc SteamTasks (StreamTasksRequest) returns (stream StreamTasksResponse);
+}
+
+message StreamTasksRequest {}
+message StreamTasksResponse {
+  Task task = 1;
 }
 
 message ListTasksRequest {

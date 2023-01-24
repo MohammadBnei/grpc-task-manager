@@ -4,6 +4,9 @@
 	import { clickOutside } from '$lib/ioevents/click';
 	import { keydownEscape } from '$lib/ioevents/keydown';
 	import { applyAction, enhance } from '$app/forms';
+	import Time from 'svelte-time';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
 
@@ -16,6 +19,13 @@
 	const closeModal = () => {
 		isModalOpen = false;
 	};
+
+	onMount(() => {
+		if (browser) {
+			const sse = new EventSource('/task');
+			sse.onmessage = (msg) => console.log({ msg });
+		}
+	});
 </script>
 
 <svelte:head>
@@ -66,7 +76,9 @@
 					<div>
 						<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Name :</p>
 						<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{task.name}</p>
-						<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{task.dueDate}</p>
+						<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+							<Time timestamp={task.dueDate || new Date()} relative />
+						</p>
 						<form action="/task?/deleteTask" method="POST" use:enhance>
 							<input value={task.name} name="name" hidden />
 							<button

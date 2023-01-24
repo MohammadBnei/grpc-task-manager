@@ -1,4 +1,3 @@
-import { Timestamp } from '$lib/taskService/google/protobuf/timestamp';
 import { Task } from '$lib/taskService/task/v1alpha/task';
 
 export class TaskDto {
@@ -8,19 +7,10 @@ export class TaskDto {
 	/**
 	 * Creating a DTO Task object,
 	 */
-	constructor({
-		name,
-		fields,
-		dueDate
-	}: {
-		name?: string;
-		fields: any;
-		dueDate: Date | Timestamp;
-	}) {
-		console.log({ dueDate });
+	constructor({ name, fields, dueDate }: { name?: string; fields: any; dueDate: Date | string }) {
 		this.name = name;
 		this.fields = fields && typeof fields === 'string' ? JSON.parse(fields) : fields;
-		this.dueDate = Timestamp.is(dueDate) ? Timestamp.toDate(dueDate) : dueDate;
+		this.dueDate = typeof dueDate === 'string' ? new Date(dueDate) : dueDate;
 	}
 
 	toJson(): {
@@ -45,7 +35,7 @@ export class TaskDto {
 			t.fields = JSON.stringify(t.fields);
 		}
 		if (t.dueDate) {
-			t.dueDate = Timestamp.fromDate(t.dueDate as Date);
+			t.dueDate = (t.dueDate as Date).toISOString();
 		}
 
 		return Task.create(t);

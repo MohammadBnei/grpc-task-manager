@@ -4,6 +4,9 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TaskService } from "./task";
+import type { StreamTasksResponse } from "./task";
+import type { StreamTasksRequest } from "./task";
+import type { ServerStreamingCall } from "@protobuf-ts/runtime-rpc";
 import type { DeleteTaskRequest } from "./task";
 import type { UpdateTaskRequest } from "./task";
 import type { CreateTaskRequest } from "./task";
@@ -40,6 +43,10 @@ export interface ITaskServiceClient {
      * @generated from protobuf rpc: DeleteTask(task.v1alpha.DeleteTaskRequest) returns (task.v1alpha.Task);
      */
     deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, Task>;
+    /**
+     * @generated from protobuf rpc: SteamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
+     */
+    steamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse>;
 }
 /**
  * Generated according to https://cloud.google.com/apis/design/standard_methods
@@ -86,5 +93,12 @@ export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {
     deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, Task> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteTaskRequest, Task>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: SteamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
+     */
+    steamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<StreamTasksRequest, StreamTasksResponse>("serverStreaming", this._transport, method, opt, input);
     }
 }

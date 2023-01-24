@@ -1,9 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@buf/bneiconseil_taskmanagerapi.community_timostamm-protobuf-ts': 2.8.2-20230119221224-cee1e41ecc2e.1
-  '@bufbuild/connect-web': ^0.6.0
-  '@bufbuild/protobuf': ^1.0.0
   '@grpc/grpc-js': ^1.8.4
   '@protobuf-ts/grpc-transport': ^2.8.2
   '@protobuf-ts/runtime': ^2.8.2
@@ -14,6 +11,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
   autoprefixer: ^10.4.13
+  dayjs: ^1.11.7
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -23,16 +21,18 @@ specifiers:
   prettier-plugin-svelte: ^2.8.1
   svelte: ^3.54.0
   svelte-check: ^3.0.1
+  svelte-time: ^0.7.1
   svelty-picker: ^3
   tailwindcss: ^3.2.4
+  to-readable-stream: ^4.0.0
   tslib: ^2.4.1
   typescript: ^4.9.3
   vite: ^4.0.0
 
+dependencies:
+  dayjs: 1.11.7
+
 devDependencies:
-  '@buf/bneiconseil_taskmanagerapi.community_timostamm-protobuf-ts': 2.8.2-20230119221224-cee1e41ecc2e.1_ocnmzroqoofwxhagctquogrvgm
-  '@bufbuild/connect-web': 0.6.0_@bufbuild+protobuf@1.0.0
-  '@bufbuild/protobuf': 1.0.0
   '@grpc/grpc-js': 1.8.4
   '@protobuf-ts/grpc-transport': 2.8.2_@grpc+grpc-js@1.8.4
   '@protobuf-ts/runtime': 2.8.2
@@ -52,46 +52,15 @@ devDependencies:
   prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
   svelte: 3.55.1
   svelte-check: 3.0.2_pehl75e5jsy22vp33udjja4soi
+  svelte-time: 0.7.1
   svelty-picker: 3.3.0
   tailwindcss: 3.2.4_postcss@8.4.21
+  to-readable-stream: 4.0.0
   tslib: 2.4.1
   typescript: 4.9.4
   vite: 4.0.4
 
 packages:
-
-  /@buf/bneiconseil_taskmanagerapi.community_timostamm-protobuf-ts/2.8.2-20230119221224-cee1e41ecc2e.1_ocnmzroqoofwxhagctquogrvgm:
-    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/bneiconseil_taskmanagerapi.community_timostamm-protobuf-ts/2.8.2-20230119221224-cee1e41ecc2e.1/tarball}
-    peerDependencies:
-      '@protobuf-ts/runtime': ^2.8.2
-      '@protobuf-ts/runtime-rpc': ^2.8.2
-    dependencies:
-      '@buf/googleapis_googleapis.community_timostamm-protobuf-ts': 2.8.2-20221214150216-75b4300737fb.1_ocnmzroqoofwxhagctquogrvgm
-      '@protobuf-ts/runtime': 2.8.2
-      '@protobuf-ts/runtime-rpc': 2.8.2
-    dev: true
-
-  /@buf/googleapis_googleapis.community_timostamm-protobuf-ts/2.8.2-20221214150216-75b4300737fb.1_ocnmzroqoofwxhagctquogrvgm:
-    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.community_timostamm-protobuf-ts/2.8.2-20221214150216-75b4300737fb.1/tarball}
-    peerDependencies:
-      '@protobuf-ts/runtime': ^2.8.2
-      '@protobuf-ts/runtime-rpc': ^2.8.2
-    dependencies:
-      '@protobuf-ts/runtime': 2.8.2
-      '@protobuf-ts/runtime-rpc': 2.8.2
-    dev: true
-
-  /@bufbuild/connect-web/0.6.0_@bufbuild+protobuf@1.0.0:
-    resolution: {integrity: sha512-dfiXt7ye/sC1MwBtCyR1XYZHjKvVpCxLP/HcnHYoa6POi+Ey1t058bCc14HdT2EpYEZYN7SW1M2tuZ5SnabmhA==}
-    peerDependencies:
-      '@bufbuild/protobuf': ^1.0.0
-    dependencies:
-      '@bufbuild/protobuf': 1.0.0
-    dev: true
-
-  /@bufbuild/protobuf/1.0.0:
-    resolution: {integrity: sha512-oH3jHBrZ6to8Qf4zLg7O8KqSY42kQZNBRXJRMp5uSi0mqE4L8NbyMnZHeOsbXmTb0xpptRyH11LfS+KeVhXzAA==}
-    dev: true
 
   /@esbuild/android-arm/0.16.17:
     resolution: {integrity: sha512-N9x1CMXVhtWEAMS7pNNONyA14f71VPQN9Cnavj1XQh6T7bskqiLLrSca4O0Vr8Wdcga943eThxnVp3JLnBMYtw==}
@@ -890,6 +859,9 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dev: true
+
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -2032,6 +2004,12 @@ packages:
       typescript: 4.9.4
     dev: true
 
+  /svelte-time/0.7.1:
+    resolution: {integrity: sha512-E7IL/85j7oj5fhxvmlau616TUbFfa6Vyy1PFTL3Y8SJGY6NXJaUj7DOYJrXVdoS3Rm9RVST0M6qWd6vqrYgM+w==}
+    dependencies:
+      dayjs: 1.11.7
+    dev: true
+
   /svelte/3.55.1:
     resolution: {integrity: sha512-S+87/P0Ve67HxKkEV23iCdAh/SX1xiSfjF1HOglno/YTbSTW7RniICMCofWGdJJbdjw3S+0PfFb1JtGfTXE0oQ==}
     engines: {node: '>= 8'}
@@ -2084,6 +2062,11 @@ packages:
     dependencies:
       globalyzer: 0.1.0
       globrex: 0.1.2
+    dev: true
+
+  /to-readable-stream/4.0.0:
+    resolution: {integrity: sha512-b39z6yUzkmzZXTNlKZoLo1kIPXJDioGSMMX4ydudA3XX8M/AjcsPdJRVz2zbrGZoekhkMlz6qYok2iVdlMH/yQ==}
+    engines: {node: '>=18'}
     dev: true
 
   /to-regex-range/5.0.1:

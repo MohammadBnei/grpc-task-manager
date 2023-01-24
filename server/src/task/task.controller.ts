@@ -10,11 +10,19 @@ import {
   ListTasksRequest,
   ListTasksResponse,
   Task,
-} from '@buf/bneiconseil_taskmanagerapi.grpc_node/task/v1alpha/task_pb';
-import { Timestamp } from '@bufbuild/protobuf';
+  StreamTasksRequest,
+  StreamTasksResponse,
+} from './gen/task/v1alpha/task';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+
 @Controller('task')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   @GrpcMethod('TaskService')
   async GetTask(request: GetTaskRequest): Promise<Task> {
@@ -22,11 +30,12 @@ export class TaskController {
 
     try {
       const task = await this.taskService.find('', name);
-      const pbTask = {
+
+      const pbTask = Task.create({
         name: task.name,
         fields: JSON.stringify(task.fields),
-        dueDate: Timestamp.fromDate(task.dueDate),
-      };
+        dueDate: task.dueDate.toISOString(),
+      });
 
       return pbTask;
     } catch (error) {
@@ -40,18 +49,17 @@ export class TaskController {
     try {
       const tasks = await this.taskService.findAll();
 
-      console.log({
-        date: Timestamp.fromDate(tasks[2].dueDate),
-        dueDate: tasks[2].dueDate,
+      const listTasksResponse = ListTasksResponse.create({
+        tasks: tasks.map((t) =>
+          Task.create({
+            name: t.name,
+            fields: JSON.stringify(t.fields),
+            dueDate: t.dueDate.toISOString(),
+          }),
+        ),
       });
 
-      return {
-        tasks: tasks.map((t) => ({
-          name: t.name,
-          fields: JSON.stringify(t.fields),
-          dueDate: Timestamp.fromDate(t.dueDate),
-        })),
-      };
+      return listTasksResponse;
     } catch (error) {
       console.error(error);
       throw new Error(error);
@@ -64,7 +72,7 @@ export class TaskController {
       const nTask = {
         name: request.task.name,
         fields: request.task.fields && JSON.parse(request.task.fields),
-        dueDate: new Timestamp(request.task.dueDate).toDate(),
+        dueDate: new Date(request.task.dueDate),
       };
       console.log('Creating task', { nTask });
       if (!nTask.name)
@@ -74,11 +82,13 @@ export class TaskController {
           status: status.INVALID_ARGUMENT,
         });
       const task = await this.taskService.create(nTask);
-      const pbTask = {
+      const pbTask = Task.create({
         name: task.name,
         fields: JSON.stringify(task.fields),
-        dueDate: Timestamp.fromDate(task.dueDate),
-      };
+        dueDate: task.dueDate.toISOString(),
+      });
+
+      this.eventEmitter.emit('task.created', { pbTask });
 
       return pbTask;
     } catch (error) {
@@ -92,18 +102,20 @@ export class TaskController {
     try {
       const nTask = {
         fields: request.task.fields && JSON.parse(request.task.fields),
-        dueDate: new Timestamp(request.task.dueDate).toDate(),
+        dueDate: new Date(request.task.dueDate),
       };
 
       const task = await this.taskService.updateTask(
         { name: request.task.name },
         nTask,
       );
-      const pbTask = {
+      const pbTask = Task.create({
         name: task.name,
         fields: JSON.stringify(task.fields),
-        dueDate: Timestamp.fromDate(task.dueDate),
-      };
+        dueDate: task.dueDate.toISOString(),
+      });
+
+      this.eventEmitter.emit('task.updated', { pbTask });
 
       return pbTask;
     } catch (error) {
@@ -116,12 +128,30 @@ export class TaskController {
   async DeleteTask(request: DeleteTaskRequest): Promise<Task> {
     try {
       const task = await this.taskService.deleteTask(request.name);
-      const pbTask = {
+      const pbTask = Task.create({
         name: task.name,
         fields: JSON.stringify(task.fields),
-        dueDate: Timestamp.fromDate(task.dueDate),
-      };
+        dueDate: task.dueDate.toISOString(),
+      });
+
+      this.eventEmitter.emit('task.deleted', { pbTask });
+
       return pbTask;
+    } catch (error) {
+      console.error(error);
+      throw new RpcException(error);
+    }
+  }
+
+  @GrpcMethod('TaskService')
+  SteamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
+    try {
+      const stream$ = new Subject<StreamTasksResponse>();
+      this.eventEmitter.on('task.*', (payload) =>
+        stream$.next(StreamTasksResponse.create({ task: payload.pbTask })),
+      );
+
+      return stream$.asObservable();
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
