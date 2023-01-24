@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "proto/*"
+      - ".github/worflows/proto.yml"
   workflow_dispatch:
     
 
@@ -27,6 +28,8 @@ jobs:
 
       - name: Commit stubs
         run: |
+          git config --local user.email "mohammadamine.banaei@gmail.com"
+          git config --local user.name "github-actions[bot]"
           git commit -a -m "feat(stubs): updated stubs"
 
       - name: Push changes
