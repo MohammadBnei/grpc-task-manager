@@ -30,6 +30,7 @@ jobs:
         run: |
           git config --local user.email "mohammadamine.banaei@gmail.com"
           git config --local user.name "github-actions[bot]"
+          git add proto/*
           git commit -a -m "feat(stubs): updated stubs"
 
       - name: Push changes
