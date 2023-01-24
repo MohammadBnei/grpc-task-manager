@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "proto/*"
+      - "proto/**.proto"
       - ".github/workflows/proto.yml"
   workflow_dispatch:
     
