@@ -44,7 +44,7 @@ service TaskService {
     };
   }
 
-  rpc SteamTasks (StreamTasksRequest) returns (stream StreamTasksResponse);
+  rpc StreamTasks (StreamTasksRequest) returns (stream StreamTasksResponse);
 }
 
 message StreamTasksRequest {}
