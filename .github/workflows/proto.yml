@@ -1,0 +1,34 @@
+name: Update generated stubs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "proto/*"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+          fetch-depth: 0 
+      # Installs latest
+
+      - uses: bufbuild/buf-setup-action@v1.12.0
+      - run: |
+          cd proto
+          buf generate
+
+      - name: Commit stubs
+        run: |
+          git commit -a -m "feat(stubs): updated stubs"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+      
