@@ -3,7 +3,7 @@ import {
 	CreateTaskRequest,
 	UpdateTaskRequest,
 	DeleteTaskRequest
-} from '$lib/taskService/task/v1alpha/task';
+} from '$lib/stubs/task/v1alpha/task';
 import type { Actions } from './$types';
 
 export const actions: Actions = {

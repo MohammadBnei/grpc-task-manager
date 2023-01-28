@@ -12,7 +12,7 @@ import {
   Task,
   StreamTasksRequest,
   StreamTasksResponse,
-} from './gen/task/v1alpha/task';
+} from './stubs/task/v1alpha/task';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
@@ -88,7 +88,10 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.created', { pbTask });
+      this.eventEmitter.emit('task.created', {
+        eventType: 'create',
+        pbTask,
+      });
 
       return pbTask;
     } catch (error) {
@@ -115,7 +118,10 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.updated', { pbTask });
+      this.eventEmitter.emit('task.updated', {
+        eventType: 'update',
+        pbTask,
+      });
 
       return pbTask;
     } catch (error) {
@@ -134,7 +140,10 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.deleted', { pbTask });
+      this.eventEmitter.emit('task.deleted', {
+        eventType: 'delete',
+        pbTask,
+      });
 
       return pbTask;
     } catch (error) {
@@ -144,12 +153,18 @@ export class TaskController {
   }
 
   @GrpcMethod('TaskService')
-  SteamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
+  StreamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
     try {
       const stream$ = new Subject<StreamTasksResponse>();
-      this.eventEmitter.on('task.*', (payload) =>
-        stream$.next(StreamTasksResponse.create({ task: payload.pbTask })),
-      );
+      this.eventEmitter.on('task.*', (payload) => {
+        console.log({ payload });
+        stream$.next(
+          StreamTasksResponse.create({
+            eventType: payload.eventType,
+            task: payload.pbTask,
+          }),
+        );
+      });
 
       return stream$.asObservable();
     } catch (error) {

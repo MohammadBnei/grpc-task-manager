@@ -42,6 +42,10 @@ export interface StreamTasksResponse {
      * @generated from protobuf field: task.v1alpha.Task task = 1;
      */
     task?: Task;
+    /**
+     * @generated from protobuf field: string event_type = 2;
+     */
+    eventType: string;
 }
 /**
  * @generated from protobuf message task.v1alpha.ListTasksRequest
@@ -232,11 +236,12 @@ export const StreamTasksRequest = new StreamTasksRequest$Type();
 class StreamTasksResponse$Type extends MessageType<StreamTasksResponse> {
     constructor() {
         super("task.v1alpha.StreamTasksResponse", [
-            { no: 1, name: "task", kind: "message", T: () => Task }
+            { no: 1, name: "task", kind: "message", T: () => Task },
+            { no: 2, name: "event_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<StreamTasksResponse>): StreamTasksResponse {
-        const message = {};
+        const message = { eventType: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<StreamTasksResponse>(this, message, value);
@@ -249,6 +254,9 @@ class StreamTasksResponse$Type extends MessageType<StreamTasksResponse> {
             switch (fieldNo) {
                 case /* task.v1alpha.Task task */ 1:
                     message.task = Task.internalBinaryRead(reader, reader.uint32(), options, message.task);
+                    break;
+                case /* string event_type */ 2:
+                    message.eventType = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -265,6 +273,9 @@ class StreamTasksResponse$Type extends MessageType<StreamTasksResponse> {
         /* task.v1alpha.Task task = 1; */
         if (message.task)
             Task.internalBinaryWrite(message.task, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string event_type = 2; */
+        if (message.eventType !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.eventType);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -601,5 +612,5 @@ export const TaskService = new ServiceType("task.v1alpha.TaskService", [
     { name: "CreateTask", options: { "google.api.http": { post: "/v1alpha1/Tasks", body: "Task" } }, I: CreateTaskRequest, O: Task },
     { name: "UpdateTask", options: { "google.api.http": { patch: "/v1alpha1/{Task.name=Tasks/*}", body: "Task" } }, I: UpdateTaskRequest, O: Task },
     { name: "DeleteTask", options: { "google.api.http": { delete: "/v1alpha1/{name=Tasks/*}" } }, I: DeleteTaskRequest, O: Task },
-    { name: "SteamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
+    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);

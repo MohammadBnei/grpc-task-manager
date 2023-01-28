@@ -1,4 +1,4 @@
-import { Task } from '$lib/taskService/task/v1alpha/task';
+import { Task } from '$lib/stubs/task/v1alpha/task';
 
 export class TaskDto {
 	name?: string;

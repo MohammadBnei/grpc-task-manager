@@ -44,11 +44,11 @@ service TaskService {
     };
   }
 
-  rpc SteamTasks (SteamTasksRequest) returns (stream SteamTasksResponse);
+  rpc SteamTasks (StreamTasksRequest) returns (stream StreamTasksResponse);
 }
 
-message SteamTasksRequest {}
-message SteamTasksResponse {
+message StreamTasksRequest {}
+message StreamTasksResponse {
   Task task = 1;
 }
 
