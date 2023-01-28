@@ -1,9 +1,9 @@
-import { TaskDto } from '$lib/helper/taskDto';
 import {
 	CreateTaskRequest,
 	UpdateTaskRequest,
 	DeleteTaskRequest
 } from '$lib/stubs/task/v1alpha/task';
+import { toJson, toPb } from '$src/lib/helper/taskDto';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -15,13 +15,13 @@ export const actions: Actions = {
 
 		try {
 			const createTaskRequest = CreateTaskRequest.create({
-				task: new TaskDto({ fields, name, dueDate: new Date(dueDate) }).toPbTask()
+				task: toPb({ fields, name, dueDate: new Date(dueDate) })
 			});
 			const req = await locals.client.createTask(createTaskRequest);
 			const nTask = req.response;
 
-			return { success: 200, data: { task: new TaskDto(nTask).toJson() } };
-		} catch (error) {
+			return { success: 200, data: { task: toJson(nTask) } };
+		} catch (error: any) {
 			console.error(error);
 			return { success: error.status || 500, data: { error: error.message } };
 		}
@@ -35,13 +35,13 @@ export const actions: Actions = {
 
 		try {
 			const updateTaskRequest = UpdateTaskRequest.create({
-				task: new TaskDto({ name, fields, dueDate: new Date(dueDate) }).toPbTask()
+				task: toPb({ fields, name, dueDate: new Date(dueDate) })
 			});
 			const req = await locals.client.updateTask(updateTaskRequest);
 			const nTask = req.response;
 
-			return { success: true, data: { task: new TaskDto(nTask).toJson() } };
-		} catch (error) {
+			return { success: true, data: { task:  toJson(nTask) } };
+		} catch (error: any) {
 			console.error(error);
 			return { success: error.status || 500, data: { error: error.message } };
 		}
@@ -58,8 +58,8 @@ export const actions: Actions = {
 			const req = await locals.client.deleteTask(deleteTaskRequest);
 			const nTask = req.response;
 
-			return { success: true, data: { task: new TaskDto(nTask).toJson() } };
-		} catch (error) {
+			return { success: true, data: { task:  toJson(nTask) } };
+		} catch (error: any) {
 			console.error(error);
 			return { success: error.status || 500, data: { error: error.message } };
 		}

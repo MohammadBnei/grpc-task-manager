@@ -1,15 +1,14 @@
 import type { PageServerLoad } from './$types';
 import { ListTasksRequest } from '$lib/stubs/task/v1alpha/task';
-import { TasksDto } from '$lib/helper/taskDto';
+import { toJson } from '$src/lib/helper/taskDto';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const listTaskRequest = ListTasksRequest.create();
 	const request = await locals.client.listTasks(listTaskRequest);
 	const listTasksResponse = request.response;
 
-	const tasks = new TasksDto(listTasksResponse.tasks.reverse()).toJson();
-	depends('task');
-	
+	const tasks = listTasksResponse.tasks.reverse().map(toJson);
+
 	return {
 		tasks
 	};

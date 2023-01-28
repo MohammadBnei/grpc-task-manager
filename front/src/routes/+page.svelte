@@ -7,6 +7,8 @@
 	import Time from 'svelte-time';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { invalidate } from '$app/navigation';
+	import { taskStore } from '$src/lib/store/task';
 
 	export let data: PageData;
 
@@ -22,8 +24,25 @@
 
 	onMount(() => {
 		if (browser) {
+			taskStore.set(data.tasks);
+
 			const sse = new EventSource('/task');
-			sse.onmessage = (msg) => console.log({ msg });
+			sse.onmessage = (msg) => {
+				try {
+					const data = JSON.parse(msg.data);
+					switch (data.eventType) {
+						case 'create':
+							taskStore.add(data.task);
+							break;
+						case 'update':
+							taskStore.updateOne(data.task);
+							break;
+						case 'delete':
+							taskStore.remove(data.task.name);
+							break;
+					}
+				} catch (error) {}
+			};
 		}
 	});
 </script>
@@ -61,7 +80,7 @@
 					+
 				</button>
 			</div>
-			{#each data.tasks as task (task.name)}
+			{#each $taskStore as task (task.name)}
 				<!-- Card -->
 				<div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
 					<div

@@ -1,55 +1,30 @@
 import { Task } from '$lib/stubs/task/v1alpha/task';
 
-export class TaskDto {
-	name?: string;
-	fields: any;
-	dueDate?: Date;
-	/**
-	 * Creating a DTO Task object,
-	 */
-	constructor({ name, fields, dueDate }: { name?: string; fields: any; dueDate: Date | string }) {
-		this.name = name;
-		this.fields = fields && typeof fields === 'string' ? JSON.parse(fields) : fields;
-		this.dueDate = typeof dueDate === 'string' ? new Date(dueDate) : dueDate;
-	}
+export interface ITask {
+	name: string;
+	fields?: Record<string, string>;
+	dueDate: Date;
+}
 
-	toJson(): {
-		name?: string;
-		fields: any;
-		dueDate?: Date;
-	} {
-		const task = {
-			name: this.name,
-			fields: this.fields,
-			dueDate: this.dueDate
+export const toJson = (task: Task): ITask => {
+	try {
+		return {
+			name: task.name,
+			fields: JSON.parse(task.fields),
+			dueDate: new Date(task.dueDate)
 		};
-
-		Object.keys(task).forEach((key) => (task[key] === undefined ? delete task[key] : {}));
-
-		return task;
+	} catch (error) {
+		return {
+			name: task.name,
+			fields: {},
+			dueDate: new Date(task.dueDate)
+		};
 	}
+};
 
-	toPbTask(): Task {
-		const t: any = this.toJson();
-		if (t.fields) {
-			t.fields = JSON.stringify(t.fields);
-		}
-		if (t.dueDate) {
-			t.dueDate = (t.dueDate as Date).toISOString();
-		}
-
-		return Task.create(t);
-	}
-}
-
-export class TasksDto {
-	tasks: TaskDto[];
-
-	constructor(tasks: Task[]) {
-		this.tasks = tasks.map((t) => new TaskDto(t));
-	}
-
-	toJson() {
-		return this.tasks.map((t) => t.toJson());
-	}
-}
+export const toPb = (task: ITask) =>
+	Task.create({
+		name: task.name,
+		dueDate: task.dueDate?.toDateString(),
+		fields: JSON.stringify(task.fields)
+	});
