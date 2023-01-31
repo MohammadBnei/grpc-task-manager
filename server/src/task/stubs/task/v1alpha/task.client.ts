@@ -18,8 +18,6 @@ import type { ListTasksRequest } from "./task";
 import type { UnaryCall } from "@protobuf-ts/runtime-rpc";
 import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
 /**
- * Generated according to https://cloud.google.com/apis/design/standard_methods
- *
  * @generated from protobuf service task.v1alpha.TaskService
  */
 export interface ITaskServiceClient {
@@ -49,8 +47,6 @@ export interface ITaskServiceClient {
     streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse>;
 }
 /**
- * Generated according to https://cloud.google.com/apis/design/standard_methods
- *
  * @generated from protobuf service task.v1alpha.TaskService
  */
 export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {

@@ -607,10 +607,10 @@ export const DeleteTaskRequest = new DeleteTaskRequest$Type();
  * @generated ServiceType for protobuf service task.v1alpha.TaskService
  */
 export const TaskService = new ServiceType("task.v1alpha.TaskService", [
-    { name: "ListTasks", options: { "google.api.http": { get: "/v1alpha1/Tasks" } }, I: ListTasksRequest, O: ListTasksResponse },
-    { name: "GetTask", options: { "google.api.http": { get: "/v1alpha1/{name=Tasks/*}" } }, I: GetTaskRequest, O: Task },
-    { name: "CreateTask", options: { "google.api.http": { post: "/v1alpha1/Tasks", body: "Task" } }, I: CreateTaskRequest, O: Task },
-    { name: "UpdateTask", options: { "google.api.http": { patch: "/v1alpha1/{Task.name=Tasks/*}", body: "Task" } }, I: UpdateTaskRequest, O: Task },
-    { name: "DeleteTask", options: { "google.api.http": { delete: "/v1alpha1/{name=Tasks/*}" } }, I: DeleteTaskRequest, O: Task },
+    { name: "ListTasks", options: {}, I: ListTasksRequest, O: ListTasksResponse },
+    { name: "GetTask", options: {}, I: GetTaskRequest, O: Task },
+    { name: "CreateTask", options: {}, I: CreateTaskRequest, O: Task },
+    { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Task },
+    { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: Task },
     { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);

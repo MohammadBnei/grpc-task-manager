@@ -2,48 +2,18 @@ syntax = "proto3";
 
 package task.v1alpha;
 
-import "google/api/annotations.proto";
-
 message Task {
     string name = 1;
     string fields = 2;
     string due_date = 3;
 }
 
-// Generated according to https://cloud.google.com/apis/design/standard_methods
 service TaskService {
-  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
-    option (google.api.http) = {
-      get: "/v1alpha1/Tasks"
-    };
-  }
-
-  rpc GetTask(GetTaskRequest) returns (Task) {
-    option (google.api.http) = {
-      get: "/v1alpha1/{name=Tasks/*}"
-    };
-  }
-
-  rpc CreateTask(CreateTaskRequest) returns (Task) {
-    option (google.api.http) = {
-      post: "/v1alpha1/Tasks"
-      body: "Task"
-    };
-  }
-
-  rpc UpdateTask(UpdateTaskRequest) returns (Task) {
-    option (google.api.http) = {
-      patch: "/v1alpha1/{Task.name=Tasks/*}"
-      body: "Task"
-    };
-  }
-
-  rpc DeleteTask(DeleteTaskRequest) returns (Task) {
-    option (google.api.http) = {
-      delete: "/v1alpha1/{name=Tasks/*}"
-    };
-  }
-
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {};
+  rpc GetTask(GetTaskRequest) returns (Task) {};
+  rpc CreateTask(CreateTaskRequest) returns (Task) {};
+  rpc UpdateTask(UpdateTaskRequest) returns (Task) {};
+  rpc DeleteTask(DeleteTaskRequest) returns (Task) {};
   rpc StreamTasks (StreamTasksRequest) returns (stream StreamTasksResponse) {};
 }
 
