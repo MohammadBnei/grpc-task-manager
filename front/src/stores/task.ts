@@ -1,24 +1,25 @@
+import type { Task } from '$src/lib/stubs/task/v1alpha/task';
 import { writable } from 'svelte/store';
-import type { TaskDto } from '../helper/taskDto';
+import { toJson, type ITask } from '../lib/helper/taskDto';
 
 const createTaskStore = () => {
-	const taskStore = writable<TaskDto[]>([]);
+	const taskStore = writable<ITask[]>([]);
 
 	return {
 		...taskStore,
 		remove: (taskName: string) => {
 			taskStore.update((ts) => ts.filter(({ name }) => name !== taskName));
 		},
-		add: (task: TaskDto) => {
-			taskStore.update((ts) => [task, ...ts]);
+		add: (task: Task) => {
+			taskStore.update((ts) => [toJson(task), ...ts]);
 		},
-		updateOne: (task: TaskDto) => {
+		updateOne: (task: Task) => {
 			taskStore.update((ts) => {
 				const taskIndex = ts.findIndex(({ name }) => name === task.name);
 
 				if (taskIndex === -1) return ts;
 
-				ts.splice(taskIndex, 1, task);
+				ts.splice(taskIndex, 1, toJson(task));
 
 				return ts;
 			});
