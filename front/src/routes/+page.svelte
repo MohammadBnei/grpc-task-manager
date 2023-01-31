@@ -8,6 +8,7 @@
 	import { browser } from '$app/environment';
 	import { taskStore } from '$src/stores/task';
 	import TaskItem from '$src/lib/component/task/taskItem.svelte';
+	import { connectToTaskStream } from '$src/lib/helper/taskDto';
 
 	export let data: PageData;
 
@@ -25,25 +26,7 @@
 		if (browser) {
 			taskStore.set(data.tasks);
 
-			const sse = new EventSource('/task');
-			sse.onmessage = (msg) => {
-				try {
-					const data = JSON.parse(msg.data);
-					switch (data.eventType) {
-						case 'create':
-							taskStore.add(data.task);
-							break;
-						case 'update':
-							taskStore.updateOne(data.task);
-							break;
-						case 'delete':
-							taskStore.remove(data.task.name);
-							break;
-					}
-				} catch (error) {
-					console.error(error);
-				}
-			};
+			connectToTaskStream()
 		}
 	});
 </script>

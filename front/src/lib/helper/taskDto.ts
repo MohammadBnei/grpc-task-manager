@@ -1,4 +1,5 @@
 import { Task } from '$lib/stubs/task/v1alpha/task';
+import { taskStore } from '$src/stores/task';
 
 export interface ITask {
 	name: string;
@@ -28,3 +29,25 @@ export const toPb = (task: ITask) =>
 		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toDateString(),
 		fields: JSON.stringify(task.fields || {})
 	});
+
+export const connectToTaskStream = () => {
+	const sse = new EventSource('/task');
+	sse.onmessage = (msg) => {
+		try {
+			const data = JSON.parse(msg.data);
+			switch (data.eventType) {
+				case 'create':
+					taskStore.add(data.task);
+					break;
+				case 'update':
+					taskStore.updateOne(data.task);
+					break;
+				case 'delete':
+					taskStore.remove(data.task.name);
+					break;
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	};
+};

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 
 export const isDark = writable(false)
-export const isSideMenuOpen = writable(false)
+export const isSideMenuOpen = writable(true)
 export const isNotificationsMenuOpen = writable(false)
 export const isProfileMenuOpen = writable(false)
 export const pageMenus = writable([])
