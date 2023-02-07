@@ -17,7 +17,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="card w-96 bg-base-100 shadow-xl m-1"
-	on:click={() => sendUsage(UsageEvent.hover, task.name)}
+	on:click|capture={() => sendUsage(UsageEvent.hover, task.name)}
 >
 	<div class="card-body">
 		<h2 class="card-title">
