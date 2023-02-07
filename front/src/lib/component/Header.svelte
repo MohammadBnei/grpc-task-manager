@@ -5,9 +5,11 @@
 	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
 	import { username } from '$src/stores/user';
+
+	export let headerHeight;
 </script>
 
-<div class="pt-2 px-2 bg-base-200">
+<div class="pt-2 px-2 bg-base-200" bind:clientHeight={headerHeight}>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<!-- svelte-ignore a11y-missing-attribute -->
