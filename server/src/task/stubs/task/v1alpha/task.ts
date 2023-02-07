@@ -37,6 +37,10 @@ export interface UsageRequest {
      * @generated from protobuf field: string username = 1;
      */
     username: string;
+    /**
+     * @generated from protobuf field: string task_name = 2;
+     */
+    taskName: string;
 }
 /**
  * @generated from protobuf message task.v1alpha.UsageResponse
@@ -232,11 +236,12 @@ export const Task = new Task$Type();
 class UsageRequest$Type extends MessageType<UsageRequest> {
     constructor() {
         super("task.v1alpha.UsageRequest", [
-            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UsageRequest>): UsageRequest {
-        const message = { username: "" };
+        const message = { username: "", taskName: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UsageRequest>(this, message, value);
@@ -249,6 +254,9 @@ class UsageRequest$Type extends MessageType<UsageRequest> {
             switch (fieldNo) {
                 case /* string username */ 1:
                     message.username = reader.string();
+                    break;
+                case /* string task_name */ 2:
+                    message.taskName = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -265,6 +273,9 @@ class UsageRequest$Type extends MessageType<UsageRequest> {
         /* string username = 1; */
         if (message.username !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.username);
+        /* string task_name = 2; */
+        if (message.taskName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.taskName);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
