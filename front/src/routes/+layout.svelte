@@ -7,8 +7,6 @@
 	import { muteToast } from '$src/stores/user';
 
 	let headerHeight = 0;
-
-	$: console.log({ headerHeight });
 </script>
 
 <Header bind:headerHeight />

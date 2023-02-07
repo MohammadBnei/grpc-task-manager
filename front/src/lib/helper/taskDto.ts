@@ -73,7 +73,6 @@ export const connectToUsageStream = () => {
 			// 		break;
 			// }
 			if (browser && data.username !== get(username)) {
-				console.log({ data });
 				toast.push(`<strong>${data.username}</strong> is modifying the ${data.taskName} task.`);
 			}
 		} catch (error) {

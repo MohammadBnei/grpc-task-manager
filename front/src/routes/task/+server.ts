@@ -44,8 +44,7 @@ export const PUT: RequestHandler = async ({ locals, request }) => {
 			username: data.username,
 			taskName: data.taskName
 		});
-		console.log({ usageRequest });
-
+		
 		await locals.client.using(usageRequest);
 
 		return new Response();

@@ -18,7 +18,6 @@ export const actions: Actions = {
 			const [time, date] = dueDate.split(' ', 2);
 			const [hour, minute] = time.split(':', 2);
 			const [year, month, day] = date.split('-', 3);
-			console.log({ hour, minute, year, month, day });
 			const createTaskRequest = CreateTaskRequest.create({
 				task: toPb({ fields, name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
