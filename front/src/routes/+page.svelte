@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { searchTerm, taskStore } from '$src/stores/task';
-	import { connectToTaskStream, type ITask } from '$src/lib/helper/taskDto';
+	import { connectToTaskStream, connectToUsageStream, type ITask } from '$src/lib/helper/taskDto';
 	import Task from '$src/lib/component/task/task.svelte';
 	import FuzzySearch from 'fuzzy-search';
 	import modal from '$src/stores/modal';
@@ -16,6 +16,7 @@
 			taskStore.set(data.tasks);
 
 			connectToTaskStream();
+			connectToUsageStream();
 		}
 	});
 

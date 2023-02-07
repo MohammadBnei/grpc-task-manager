@@ -14,8 +14,7 @@ import {
   StreamTasksResponse,
 } from './stubs/task/v1alpha/task';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Controller('task')
 export class TaskController {
@@ -157,7 +156,6 @@ export class TaskController {
     try {
       const stream$ = new Subject<StreamTasksResponse>();
       this.eventEmitter.on('task.*', (payload) => {
-        console.log({ payload });
         stream$.next(
           StreamTasksResponse.create({
             eventType: payload.eventType,

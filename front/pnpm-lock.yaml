@@ -10,6 +10,7 @@ specifiers:
   '@tailwindcss/typography': ^0.5.9
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
+  '@zerodevx/svelte-toast': 1.0.0-rc.1
   autoprefixer: ^10.4.13
   daisyui: ^2.50.0
   dayjs: ^1.11.7
@@ -23,6 +24,7 @@ specifiers:
   prettier-plugin-svelte: ^2.8.1
   svelte: ^3.55.1
   svelte-check: ^3.0.1
+  svelte-icons: ^2.1.0
   svelte-portal: ^2.2.0
   svelte-time: ^0.7.1
   svelty-picker: ^3
@@ -45,6 +47,7 @@ devDependencies:
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.4
   '@typescript-eslint/eslint-plugin': 5.48.2_caon6io6stgpr7lz2rtbhekxqy
   '@typescript-eslint/parser': 5.48.2_7uibuqfxkfaozanbtbziikiqje
+  '@zerodevx/svelte-toast': 1.0.0-rc.1
   autoprefixer: 10.4.13_postcss@8.4.21
   daisyui: 2.50.0_gbtt6ss3tbiz4yjtvdr6fbrj44
   eslint: 8.32.0
@@ -57,6 +60,7 @@ devDependencies:
   prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
   svelte: 3.55.1
   svelte-check: 3.0.2_pehl75e5jsy22vp33udjja4soi
+  svelte-icons: 2.1.0
   svelte-portal: 2.2.0
   svelte-time: 0.7.1
   svelty-picker: 3.3.0
@@ -652,6 +656,10 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.48.2
       eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /@zerodevx/svelte-toast/1.0.0-rc.1:
+    resolution: {integrity: sha512-KEZUWeFg1MLlHVssx94ZWWKDBOlQUznTH7xsfZ3uPSYbD5NMO8jDEUGiDNiJ3aKpwiabGvZgG7NKJLFK0q/KYg==}
     dev: true
 
   /acorn-jsx/5.3.2_acorn@8.8.1:
@@ -2035,6 +2043,10 @@ packages:
       svelte: '>=3.19.0'
     dependencies:
       svelte: 3.55.1
+    dev: true
+
+  /svelte-icons/2.1.0:
+    resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
     dev: true
 
   /svelte-portal/2.2.0:

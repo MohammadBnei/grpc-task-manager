@@ -2,6 +2,9 @@
 	import modal from '$src/stores/modal';
 	import { relativeDate, searchTerm, taskStore } from '$src/stores/task';
 	import NewTask from './task/newTask.svelte';
+	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
+	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
+	import { username } from '$src/stores/user';
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -35,7 +38,7 @@
 						<input
 							type="text"
 							placeholder="Search"
-							class="input input-bordered"
+							class="input input-bordered w-32 mr-4"
 							on:input={(e) => searchTerm.set(e?.target?.value)}
 						/>
 					</div>
@@ -99,6 +102,32 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
+		<div class="dropdown dropdown-end  mr-4">
+			<label tabindex="0" class="btn btn-ghost btn-circle avatar">
+				<div class="w-10 rounded-full">
+					{#if $username}
+						<FaUserTie />
+					{:else}
+						<FaUserSecret />
+					{/if}
+				</div>
+			</label>
+			<ul
+				tabindex="0"
+				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+			>
+				<li>
+					<div class="form-control">
+						<input
+							type="text"
+							placeholder="Username"
+							class="input input-bordered w-full"
+							bind:value={$username}
+						/>
+					</div>
+				</li>
+			</ul>
+		</div>
 		<button class="btn btn-primary btn-square" on:click={() => modal.open(NewTask)}>+</button>
 	</div>
 </div>

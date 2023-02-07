@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { sendUsage, UsageEvent } from '$src/lib/service/usage';
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';
 	import type { ITask } from '../../helper/taskDto';
@@ -13,7 +14,11 @@
 	let showNewField = false;
 </script>
 
-<div class="card w-96 bg-base-100 shadow-xl m-1">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div
+	class="card w-96 bg-base-100 shadow-xl m-1"
+	on:click={() => sendUsage(UsageEvent.hover, task.name)}
+>
 	<div class="card-body">
 		<h2 class="card-title">
 			{task.name}
