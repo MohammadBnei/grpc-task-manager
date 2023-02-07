@@ -20,3 +20,4 @@ const createUsernameStore = () => {
 };
 
 export const username = createUsernameStore();
+export const muteToast = writable(false)

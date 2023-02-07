@@ -23,7 +23,7 @@
 		<h2 class="card-title">
 			{task.name}
 			<div class="badge badge-secondary">
-				<Time format="H:mm · MMMM D, YYYY" timestamp={task.dueDate} relative={$relativeDate} />
+				<Time format="H:mm · D MMM YY" timestamp={task.dueDate} relative={$relativeDate} />
 			</div>
 		</h2>
 

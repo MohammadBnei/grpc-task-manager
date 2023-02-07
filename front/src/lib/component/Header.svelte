@@ -4,7 +4,7 @@
 	import NewTask from './task/newTask.svelte';
 	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
-	import { username } from '$src/stores/user';
+	import { muteToast, username } from '$src/stores/user';
 
 	export let headerHeight;
 </script>
@@ -65,7 +65,10 @@
 							<li on:click={() => taskStore.sortByName(false)}><a>Name (⬇)</a></li>
 						</ul>
 					</li>
-					<li on:click={() => relativeDate.update((r) => !r)}><a>Toggle Relative Date</a></li>
+					<li on:click={() => relativeDate.update((r) => !r)}><a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a></li>
+					<li on:click={() => muteToast.update((r) => !r)}>
+						<a>{$muteToast ? 'Unmute Toast' : 'Mute Toast'}</a>
+					</li>
 				</ul>
 			</div>
 			<a class="btn btn-ghost normal-case text-xl" href="/">gRPC Task Manager</a>
@@ -101,7 +104,10 @@
 						<li on:click={() => taskStore.sortByName(false)}><a>Name (⬇)</a></li>
 					</ul>
 				</li>
-				<li on:click={() => relativeDate.update((r) => !r)}><a>Toggle Relative Date</a></li>
+				<li on:click={() => relativeDate.update((r) => !r)}><a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a></li>
+				<li on:click={() => muteToast.update((r) => !r)}>
+					<a>{$muteToast ? 'Unmute Toast' : 'Mute Toast'}</a>
+				</li>
 			</ul>
 		</div>
 		<div class="navbar-end">
