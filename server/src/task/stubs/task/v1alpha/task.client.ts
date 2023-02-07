@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TaskService } from "./task";
+import type { UsageResponse } from "./task";
+import type { UsageRequest } from "./task";
 import type { StreamTasksResponse } from "./task";
 import type { StreamTasksRequest } from "./task";
 import type { ServerStreamingCall } from "@protobuf-ts/runtime-rpc";
@@ -45,6 +47,14 @@ export interface ITaskServiceClient {
      * @generated from protobuf rpc: StreamTasks(task.v1alpha.StreamTasksRequest) returns (stream task.v1alpha.StreamTasksResponse);
      */
     streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse>;
+    /**
+     * @generated from protobuf rpc: Using(task.v1alpha.UsageRequest) returns (task.v1alpha.UsageResponse);
+     */
+    using(input: UsageRequest, options?: RpcOptions): UnaryCall<UsageRequest, UsageResponse>;
+    /**
+     * @generated from protobuf rpc: UsingStream(task.v1alpha.UsageRequest) returns (stream task.v1alpha.UsageResponse);
+     */
+    usingStream(input: UsageRequest, options?: RpcOptions): ServerStreamingCall<UsageRequest, UsageResponse>;
 }
 /**
  * @generated from protobuf service task.v1alpha.TaskService
@@ -96,5 +106,19 @@ export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {
     streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
         const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<StreamTasksRequest, StreamTasksResponse>("serverStreaming", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: Using(task.v1alpha.UsageRequest) returns (task.v1alpha.UsageResponse);
+     */
+    using(input: UsageRequest, options?: RpcOptions): UnaryCall<UsageRequest, UsageResponse> {
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UsageRequest, UsageResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: UsingStream(task.v1alpha.UsageRequest) returns (stream task.v1alpha.UsageResponse);
+     */
+    usingStream(input: UsageRequest, options?: RpcOptions): ServerStreamingCall<UsageRequest, UsageResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UsageRequest, UsageResponse>("serverStreaming", this._transport, method, opt, input);
     }
 }

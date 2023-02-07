@@ -30,6 +30,28 @@ export interface Task {
     dueDate: string;
 }
 /**
+ * @generated from protobuf message task.v1alpha.UsageRequest
+ */
+export interface UsageRequest {
+    /**
+     * @generated from protobuf field: string username = 1;
+     */
+    username: string;
+}
+/**
+ * @generated from protobuf message task.v1alpha.UsageResponse
+ */
+export interface UsageResponse {
+    /**
+     * @generated from protobuf field: string username = 1;
+     */
+    username: string;
+    /**
+     * @generated from protobuf field: string task_name = 2;
+     */
+    taskName: string;
+}
+/**
  * @generated from protobuf message task.v1alpha.StreamTasksRequest
  */
 export interface StreamTasksRequest {
@@ -206,6 +228,107 @@ class Task$Type extends MessageType<Task> {
  * @generated MessageType for protobuf message task.v1alpha.Task
  */
 export const Task = new Task$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UsageRequest$Type extends MessageType<UsageRequest> {
+    constructor() {
+        super("task.v1alpha.UsageRequest", [
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UsageRequest>): UsageRequest {
+        const message = { username: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<UsageRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UsageRequest): UsageRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string username */ 1:
+                    message.username = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UsageRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string username = 1; */
+        if (message.username !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.username);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1alpha.UsageRequest
+ */
+export const UsageRequest = new UsageRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UsageResponse$Type extends MessageType<UsageResponse> {
+    constructor() {
+        super("task.v1alpha.UsageResponse", [
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UsageResponse>): UsageResponse {
+        const message = { username: "", taskName: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<UsageResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UsageResponse): UsageResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string username */ 1:
+                    message.username = reader.string();
+                    break;
+                case /* string task_name */ 2:
+                    message.taskName = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UsageResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string username = 1; */
+        if (message.username !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.username);
+        /* string task_name = 2; */
+        if (message.taskName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.taskName);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1alpha.UsageResponse
+ */
+export const UsageResponse = new UsageResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class StreamTasksRequest$Type extends MessageType<StreamTasksRequest> {
     constructor() {
@@ -612,5 +735,7 @@ export const TaskService = new ServiceType("task.v1alpha.TaskService", [
     { name: "CreateTask", options: {}, I: CreateTaskRequest, O: Task },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Task },
     { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: Task },
-    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
+    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse },
+    { name: "Using", options: {}, I: UsageRequest, O: UsageResponse },
+    { name: "UsingStream", serverStreaming: true, options: {}, I: UsageRequest, O: UsageResponse }
 ]);
