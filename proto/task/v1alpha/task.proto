@@ -14,6 +14,7 @@ service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (Task) {};
   rpc UpdateTask(UpdateTaskRequest) returns (Task) {};
   rpc DeleteTask(DeleteTaskRequest) returns (Task) {};
+  
   rpc StreamTasks (StreamTasksRequest) returns (stream StreamTasksResponse) {};
 }
 

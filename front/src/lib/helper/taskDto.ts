@@ -26,7 +26,7 @@ export const toJson = (task: Task): ITask => {
 export const toPb = (task: ITask) =>
 	Task.create({
 		name: task.name,
-		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toDateString(),
+		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toISOString(),
 		fields: JSON.stringify(task.fields || {})
 	});
 

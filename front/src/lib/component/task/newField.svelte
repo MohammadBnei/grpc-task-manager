@@ -3,47 +3,39 @@
 	import type { ITask } from '../../helper/taskDto';
 
 	export let task: ITask;
+	const updateTask = (data: FormData) => {
+		const fieldName = data.get('fieldName') as string;
+		const fieldValue = data.get('fieldValue') as string;
+
+		const uTask = { ...task };
+		uTask.fields[fieldName] = fieldValue;
+
+		return fetch('/task', {
+			method: 'post',
+			body: JSON.stringify(uTask)
+		});
+	};
 </script>
 
 <form
 	method="post"
 	use:enhance={({ data, cancel, form }) => {
 		cancel();
-		const fieldName = data.get('fieldName');
-		const fieldValue = data.get('fieldValue');
-
-		const uTask = {
-			...task,
-			fields: {
-				...task.fields,
-				[fieldName]: fieldValue
-			}
-		};
-
-		fetch('/task', {
-			method: 'post',
-			body: JSON.stringify(uTask)
-		}).then(() => {
+		updateTask(data).then(() => {
 			form.reset();
 		});
 	}}
 >
-	<input
-		class="mt-1 py-4 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input px-1"
-		name="fieldName"
-		placeholder="new field name"
-		required
-	/>
-	<input
-		class="mt-1 py-4 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input px-1"
-		name="fieldValue"
-		placeholder="new field value"
-		required
-	/>
-	<button
-		type="submit"
-		class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-600 border border-transparent rounded-lg active:bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:shadow-outline-yellow"
-	>
-		+
-	</button>
+	<!-- svelte-ignore a11y-label-has-associated-control -->
+	<div class="form-control">
+		<label class="input-group input-group-sm my-2">
+			<span class="w-24 p-2">Name</span>
+			<input type="text" class="input input-bordered" name="fieldName" required />
+		</label>
+		<label class="input-group input-group-sm my-2">
+			<span class="w-24 p-2">Value</span>
+			<input type="text" class="input input-bordered" name="fieldValue" required />
+		</label>
+	</div>
+	<button class="btn btn-xs btn-info">Create Field</button>
 </form>
