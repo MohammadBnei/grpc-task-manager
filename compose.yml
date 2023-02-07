@@ -8,3 +8,17 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: task
+
+  # server:
+  #   build: server
+  #   environment:
+  #     - PROTO_FILE=proto/task/v1alpha/task.proto
+  #     - MONGO_URL=mongodb://root:task@mongo
+  #     - insecure=true
+
+  # front:
+  #   build: front
+  #   environment:
+  #     - SERVER=server:4000
+  #   ports:
+  #     - 3000:3000
