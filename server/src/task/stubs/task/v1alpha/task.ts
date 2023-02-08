@@ -746,7 +746,12 @@ export const TaskService = new ServiceType("task.v1alpha.TaskService", [
     { name: "CreateTask", options: {}, I: CreateTaskRequest, O: Task },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Task },
     { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: Task },
-    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse },
+    { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
+]);
+/**
+ * @generated ServiceType for protobuf service task.v1alpha.UsageService
+ */
+export const UsageService = new ServiceType("task.v1alpha.UsageService", [
     { name: "Using", options: {}, I: UsageRequest, O: UsageResponse },
     { name: "UsingStream", serverStreaming: true, options: {}, I: UsageRequest, O: UsageResponse }
 ]);

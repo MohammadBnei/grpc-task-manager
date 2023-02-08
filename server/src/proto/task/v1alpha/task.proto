@@ -16,6 +16,9 @@ service TaskService {
   rpc DeleteTask(DeleteTaskRequest) returns (Task) {};
   
   rpc StreamTasks (StreamTasksRequest) returns (stream StreamTasksResponse) {};
+}
+
+service UsageService {
   rpc Using (UsageRequest) returns (UsageResponse) {};
   rpc UsingStream (UsageRequest) returns (stream UsageResponse) {};
 }
