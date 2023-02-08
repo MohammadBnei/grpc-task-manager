@@ -20,7 +20,7 @@ async function bootstrap() {
               },
             ])
           : ServerCredentials.createInsecure(),
-        package: 'task.v1alpha',
+        package: 'task.v1beta',
         protoPath: join(__dirname, process.env.PROTO_FILE),
       },
     },

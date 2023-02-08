@@ -2,7 +2,7 @@ import {
 	CreateTaskRequest,
 	UpdateTaskRequest,
 	DeleteTaskRequest
-} from '$lib/stubs/task/v1alpha/task';
+} from '$lib/stubs/task/v1beta/task';
 import { toJson, toPb } from '$src/lib/helper/taskDto';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';

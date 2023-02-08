@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { ListTasksRequest } from '$lib/stubs/task/v1alpha/task';
+import { ListTasksRequest } from '$lib/stubs/task/v1beta/task';
 import { toJson } from '$src/lib/helper/taskDto';
 
 export const load: PageServerLoad = async ({ locals }) => {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { sendUsage, UsageEvent } from '$src/lib/service/usage';
+	import { sendUsage } from '$src/lib/service/usage';
+	import { EventType } from '$src/lib/stubs/task/v1beta/task';
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';
 	import type { ITask } from '../../helper/taskDto';
@@ -12,12 +13,16 @@
 	$: fields = Object.entries(task.fields);
 
 	let showNewField = false;
+
+	$: if (showNewField) {
+		sendUsage(EventType.UPDATE, task.name)
+	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="card w-96 bg-base-100 shadow-xl m-1"
-	on:click|capture={() => sendUsage(UsageEvent.hover, task.name)}
+	on:click|capture={() => sendUsage(EventType.CLICK, task.name)}
 >
 	<div class="card-body">
 		<h2 class="card-title">
@@ -57,7 +62,7 @@
 		<div class="card-actions justify-end">
 			<form action="/task?/deleteTask" method="POST" use:enhance>
 				<input value={task.name} name="name" hidden />
-				<button class="btn btn-warning">Remove</button>
+				<button class="btn btn-warning" on:click={() => sendUsage(EventType.DELETE, task.name)}>Remove</button>
 			</form>
 		</div>
 	</div>

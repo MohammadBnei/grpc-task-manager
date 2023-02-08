@@ -1,4 +1,4 @@
-import { Task } from '$lib/stubs/task/v1alpha/task';
+import { Task } from '$lib/stubs/task/v1beta/task';
 
 export interface ITask {
 	name: string;

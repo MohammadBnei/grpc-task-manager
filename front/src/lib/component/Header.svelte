@@ -5,8 +5,15 @@
 	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
 	import { muteToast, username } from '$src/stores/user';
+	import { sendUsage } from '../service/usage';
+	import { EventType } from '../stubs/task/v1beta/task';
 
 	export let headerHeight;
+
+	const handleNewTask = () => {
+		sendUsage(EventType.CREATE, '');
+		modal.open(NewTask);
+	};
 </script>
 
 <div class="pt-2 px-2 bg-base-200" bind:clientHeight={headerHeight}>
@@ -65,7 +72,9 @@
 							<li on:click={() => taskStore.sortByName(false)}><a>Name (⬇)</a></li>
 						</ul>
 					</li>
-					<li on:click={() => relativeDate.update((r) => !r)}><a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a></li>
+					<li on:click={() => relativeDate.update((r) => !r)}>
+						<a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a>
+					</li>
 					<li on:click={() => muteToast.update((r) => !r)}>
 						<a>{$muteToast ? 'Unmute Toast' : 'Mute Toast'}</a>
 					</li>
@@ -104,7 +113,9 @@
 						<li on:click={() => taskStore.sortByName(false)}><a>Name (⬇)</a></li>
 					</ul>
 				</li>
-				<li on:click={() => relativeDate.update((r) => !r)}><a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a></li>
+				<li on:click={() => relativeDate.update((r) => !r)}>
+					<a>{$relativeDate ? 'Relative Date' : 'Normal Date'}</a>
+				</li>
 				<li on:click={() => muteToast.update((r) => !r)}>
 					<a>{$muteToast ? 'Unmute Toast' : 'Mute Toast'}</a>
 				</li>
@@ -137,7 +148,7 @@
 					</li>
 				</ul>
 			</div>
-			<button class="btn btn-primary btn-square" on:click={() => modal.open(NewTask)}>+</button>
+			<button class="btn btn-primary btn-square" on:click={handleNewTask}>+</button>
 		</div>
 	</div>
 </div>

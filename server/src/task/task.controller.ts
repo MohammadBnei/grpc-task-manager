@@ -12,7 +12,7 @@ import {
   Task,
   StreamTasksRequest,
   StreamTasksResponse,
-} from './stubs/task/v1alpha/task';
+} from './stubs/task/v1beta/task';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, Subject } from 'rxjs';
 
