@@ -1,11 +1,11 @@
 import { sse } from '$src/lib/helper/sse';
-import { toJson, toPb } from '$src/lib/helper/taskDto';
+import { toPb } from '$src/lib/helper/taskDto';
 import { UpdateTaskRequest, UsageRequest } from '$lib/stubs/task/v1alpha/task';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.client.streamTasks({});
+		const stream = locals.taskClient.streamTasks({});
 
 		return sse<any>(async ({ write }) => {
 			for await (const msg of stream.responses) {
@@ -26,7 +26,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		const updateTaskRequest = UpdateTaskRequest.create({
 			task: toPb(data)
 		});
-		await locals.client.updateTask(updateTaskRequest);
+		await locals.taskClient.updateTask(updateTaskRequest);
 
 		return new Response();
 	} catch (error: any) {
@@ -45,7 +45,7 @@ export const PUT: RequestHandler = async ({ locals, request }) => {
 			taskName: data.taskName
 		});
 		
-		await locals.client.using(usageRequest);
+		await locals.usageClient.using(usageRequest);
 
 		return new Response();
 	} catch (error: any) {

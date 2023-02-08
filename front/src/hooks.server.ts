@@ -1,7 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 import { ChannelCredentials } from '@grpc/grpc-js';
-import { TaskServiceClient } from '$lib/stubs/task/v1alpha/task.client';
+import { TaskServiceClient, UsageServiceClient } from '$lib/stubs/task/v1alpha/task.client';
 import fs from 'fs';
 
 const transport = new GrpcTransport({
@@ -13,10 +13,12 @@ const transport = new GrpcTransport({
 		  )
 		: ChannelCredentials.createInsecure()
 });
-const client = new TaskServiceClient(transport);
+const taskClient = new TaskServiceClient(transport);
+const usageClient = new UsageServiceClient(transport);
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.client = client;
+	event.locals.taskClient = taskClient;
+	event.locals.usageClient = usageClient;
 
 	const response = await resolve(event);
 

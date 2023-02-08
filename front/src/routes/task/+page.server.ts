@@ -21,7 +21,7 @@ export const actions: Actions = {
 			const createTaskRequest = CreateTaskRequest.create({
 				task: toPb({ fields, name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
-			const req = await locals.client.createTask(createTaskRequest);
+			const req = await locals.taskClient.createTask(createTaskRequest);
 			const nTask = req.response;
 
 			return { success: 200, data: { task: toJson(nTask) } };
@@ -41,7 +41,7 @@ export const actions: Actions = {
 			const updateTaskRequest = UpdateTaskRequest.create({
 				task: toPb({ fields, name, dueDate: new Date(dueDate) })
 			});
-			const req = await locals.client.updateTask(updateTaskRequest);
+			const req = await locals.taskClient.updateTask(updateTaskRequest);
 			const nTask = req.response;
 
 			return { success: true, data: { task: toJson(nTask) } };
@@ -59,7 +59,7 @@ export const actions: Actions = {
 			const deleteTaskRequest = DeleteTaskRequest.create({
 				name
 			});
-			const req = await locals.client.deleteTask(deleteTaskRequest);
+			const req = await locals.taskClient.deleteTask(deleteTaskRequest);
 			const nTask = req.response;
 
 			return { success: true, data: { task: toJson(nTask) } };

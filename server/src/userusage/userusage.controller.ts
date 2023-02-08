@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 export class UserusageController {
   constructor(private eventEmitter: EventEmitter2) {}
 
-  @GrpcMethod('UserService')
+  @GrpcMethod('UsageService')
   async Using(request: UsageRequest): Promise<UsageResponse> {
     const { username, taskName } = request;
 
@@ -23,7 +23,7 @@ export class UserusageController {
     };
   }
 
-  @GrpcMethod('UserService')
+  @GrpcMethod('UsageService')
   UsingStream(request: UsageRequest): Observable<UsageResponse> {
     try {
       const stream$ = new Subject<UsageResponse>();

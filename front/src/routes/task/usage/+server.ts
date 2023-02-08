@@ -4,7 +4,7 @@ import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.client.usingStream(UsageRequest.create());
+		const stream = locals.usageClient.usingStream(UsageRequest.create());
 
 		return sse<any>(async ({ write }) => {
 			for await (const msg of stream.responses) {
