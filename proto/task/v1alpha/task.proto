@@ -24,10 +24,10 @@ service UsageService {
 }
 
 enum EventType {
-  EVENT_TYPE_CLICK = 1;
-  EVENT_TYPE_CREATE = 2;
-  EVENT_TYPE_UPDATE = 3;
-  EVENT_TYPE_DELETE = 4;
+  EVENT_TYPE_CLICK = 0;
+  EVENT_TYPE_CREATE = 1;
+  EVENT_TYPE_UPDATE = 2;
+  EVENT_TYPE_DELETE = 3;
 }
 
 message UsageRequest {
