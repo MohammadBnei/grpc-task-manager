@@ -23,14 +23,23 @@ service UsageService {
   rpc UsingStream (UsageRequest) returns (stream UsageResponse) {};
 }
 
+enum EventType {
+  EVENT_TYPE_CLICK = 1;
+  EVENT_TYPE_CREATE = 2;
+  EVENT_TYPE_UPDATE = 3;
+  EVENT_TYPE_DELETE = 4;
+}
+
 message UsageRequest {
   string username = 1;
   string task_name = 2;
+  EventType event_type = 3;
 }
 
 message UsageResponse {
   string username = 1;
   string task_name = 2;
+  EventType event_type = 3;
 }
 
 message StreamTasksRequest {}
