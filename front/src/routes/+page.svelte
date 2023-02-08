@@ -37,7 +37,7 @@
 	<title>Dashboard</title>
 </svelte:head>
 
-<div class="flex">
+<div class="flex mx-4">
 	{#each tasks as task (task.name)}
 		<Task {task} />
 	{:else}

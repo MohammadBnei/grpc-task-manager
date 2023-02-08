@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const request = await locals.client.listTasks(listTaskRequest);
 	const listTasksResponse = request.response;
 
-	const tasks = listTasksResponse.tasks.reverse().map(toJson);
+	const tasks = listTasksResponse.tasks.map(toJson);
 
 	return {
 		tasks
