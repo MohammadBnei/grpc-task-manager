@@ -41,6 +41,10 @@ export interface UsageRequest {
      * @generated from protobuf field: string task_name = 2;
      */
     taskName: string;
+    /**
+     * @generated from protobuf field: task.v1alpha.EventType event_type = 3;
+     */
+    eventType: EventType;
 }
 /**
  * @generated from protobuf message task.v1alpha.UsageResponse
@@ -54,6 +58,10 @@ export interface UsageResponse {
      * @generated from protobuf field: string task_name = 2;
      */
     taskName: string;
+    /**
+     * @generated from protobuf field: task.v1alpha.EventType event_type = 3;
+     */
+    eventType: EventType;
 }
 /**
  * @generated from protobuf message task.v1alpha.StreamTasksRequest
@@ -171,6 +179,27 @@ export interface DeleteTaskRequest {
      */
     name: string;
 }
+/**
+ * @generated from protobuf enum task.v1alpha.EventType
+ */
+export enum EventType {
+    /**
+     * @generated from protobuf enum value: EVENT_TYPE_CLICK = 0;
+     */
+    CLICK = 0,
+    /**
+     * @generated from protobuf enum value: EVENT_TYPE_CREATE = 1;
+     */
+    CREATE = 1,
+    /**
+     * @generated from protobuf enum value: EVENT_TYPE_UPDATE = 2;
+     */
+    UPDATE = 2,
+    /**
+     * @generated from protobuf enum value: EVENT_TYPE_DELETE = 3;
+     */
+    DELETE = 3
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class Task$Type extends MessageType<Task> {
     constructor() {
@@ -237,11 +266,12 @@ class UsageRequest$Type extends MessageType<UsageRequest> {
     constructor() {
         super("task.v1alpha.UsageRequest", [
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "event_type", kind: "enum", T: () => ["task.v1alpha.EventType", EventType, "EVENT_TYPE_"] }
         ]);
     }
     create(value?: PartialMessage<UsageRequest>): UsageRequest {
-        const message = { username: "", taskName: "" };
+        const message = { username: "", taskName: "", eventType: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UsageRequest>(this, message, value);
@@ -257,6 +287,9 @@ class UsageRequest$Type extends MessageType<UsageRequest> {
                     break;
                 case /* string task_name */ 2:
                     message.taskName = reader.string();
+                    break;
+                case /* task.v1alpha.EventType event_type */ 3:
+                    message.eventType = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -276,6 +309,9 @@ class UsageRequest$Type extends MessageType<UsageRequest> {
         /* string task_name = 2; */
         if (message.taskName !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.taskName);
+        /* task.v1alpha.EventType event_type = 3; */
+        if (message.eventType !== 0)
+            writer.tag(3, WireType.Varint).int32(message.eventType);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -291,11 +327,12 @@ class UsageResponse$Type extends MessageType<UsageResponse> {
     constructor() {
         super("task.v1alpha.UsageResponse", [
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "event_type", kind: "enum", T: () => ["task.v1alpha.EventType", EventType, "EVENT_TYPE_"] }
         ]);
     }
     create(value?: PartialMessage<UsageResponse>): UsageResponse {
-        const message = { username: "", taskName: "" };
+        const message = { username: "", taskName: "", eventType: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UsageResponse>(this, message, value);
@@ -311,6 +348,9 @@ class UsageResponse$Type extends MessageType<UsageResponse> {
                     break;
                 case /* string task_name */ 2:
                     message.taskName = reader.string();
+                    break;
+                case /* task.v1alpha.EventType event_type */ 3:
+                    message.eventType = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -330,6 +370,9 @@ class UsageResponse$Type extends MessageType<UsageResponse> {
         /* string task_name = 2; */
         if (message.taskName !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.taskName);
+        /* task.v1alpha.EventType event_type = 3; */
+        if (message.eventType !== 0)
+            writer.tag(3, WireType.Varint).int32(message.eventType);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
