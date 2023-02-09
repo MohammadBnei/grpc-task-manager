@@ -1,18 +1,20 @@
 import { Controller } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UsageRequest, UsageResponse } from '../task/stubs/task/v1beta/task';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { Observable, Subject } from 'rxjs';
 
 @Controller('userusage')
 export class UserusageController {
-  constructor(private eventEmitter: EventEmitter2) {}
+  usageStream$: Subject<UsageResponse>;
+  constructor() {
+    this.usageStream$ = new Subject<UsageResponse>();
+  }
 
   @GrpcMethod('UsageService')
   async Using(request: UsageRequest): Promise<UsageResponse> {
     const { username, taskName, eventType } = request;
 
-    this.eventEmitter.emit('using', {
+    this.usageStream$.next({
       username,
       taskName,
       eventType,
@@ -28,12 +30,7 @@ export class UserusageController {
   @GrpcMethod('UsageService')
   UsingStream(request: UsageRequest): Observable<UsageResponse> {
     try {
-      const stream$ = new Subject<UsageResponse>();
-      this.eventEmitter.on('using', (payload) => {
-        if (payload.username) stream$.next(UsageResponse.create(payload));
-      });
-
-      return stream$.asObservable();
+      return this.usageStream$.asObservable();
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
