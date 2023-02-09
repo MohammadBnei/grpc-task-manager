@@ -1,4 +1,4 @@
-import type { Task } from '$src/lib/stubs/task/v1alpha/task';
+import type { Task } from '$src/lib/stubs/task/v1beta/task';
 import { writable } from 'svelte/store';
 import { toJson, type ITask } from '../lib/helper/taskDto';
 

@@ -1,6 +1,6 @@
 import { sse } from '$src/lib/helper/sse';
 import { toPb } from '$src/lib/helper/taskDto';
-import { UpdateTaskRequest, UsageRequest } from '$lib/stubs/task/v1alpha/task';
+import { UpdateTaskRequest, UsageRequest } from '$lib/stubs/task/v1beta/task';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
@@ -37,21 +37,3 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	}
 };
 
-export const PUT: RequestHandler = async ({ locals, request }) => {
-	try {
-		const data = await request.json();
-		const usageRequest = UsageRequest.create({
-			username: data.username,
-			taskName: data.taskName
-		});
-		
-		await locals.usageClient.using(usageRequest);
-
-		return new Response();
-	} catch (error: any) {
-		console.error(error);
-		return new Response(null, {
-			status: 400
-		});
-	}
-};

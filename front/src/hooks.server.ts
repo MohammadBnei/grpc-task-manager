@@ -1,7 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 import { ChannelCredentials } from '@grpc/grpc-js';
-import { TaskServiceClient, UsageServiceClient } from '$lib/stubs/task/v1alpha/task.client';
+import { TaskServiceClient, UsageServiceClient } from '$lib/stubs/task/v1beta/task.client';
 import fs from 'fs';
 
 const transport = new GrpcTransport({

@@ -1,5 +1,5 @@
 import { sse } from '$src/lib/helper/sse';
-import { UsageRequest } from '$src/lib/stubs/task/v1alpha/task';
+import { UsageRequest } from '$src/lib/stubs/task/v1beta/task';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
@@ -16,4 +16,24 @@ export const GET: RequestHandler = ({ locals }) => {
 	}
 
 	return new Response();
+};
+
+export const POST: RequestHandler = async ({ locals, request }) => {
+	try {
+		const data = await request.json();
+		const usageRequest = UsageRequest.create({
+			username: data.username,
+			taskName: data.taskName,
+			eventType: data.eventType
+		});
+
+		await locals.usageClient.using(usageRequest);
+
+		return new Response();
+	} catch (error: any) {
+		console.error(error);
+		return new Response(null, {
+			status: 400
+		});
+	}
 };

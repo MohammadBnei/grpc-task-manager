@@ -1,6 +1,11 @@
 import { Controller, HttpStatus } from '@nestjs/common';
-import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { status } from '@grpc/grpc-js';
+import {
+  GrpcMethod,
+  GrpcStreamCall,
+  GrpcStreamMethod,
+  RpcException,
+} from '@nestjs/microservices';
+import { Metadata, ServerWritableStream, status } from '@grpc/grpc-js';
 import { TaskService } from './task.service';
 import {
   DeleteTaskRequest,
@@ -12,16 +17,19 @@ import {
   Task,
   StreamTasksRequest,
   StreamTasksResponse,
-} from './stubs/task/v1alpha/task';
+} from './stubs/task/v1beta/task';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, Subject } from 'rxjs';
 
 @Controller('task')
 export class TaskController {
+  taskStream: Subject<StreamTasksResponse>;
   constructor(
     private taskService: TaskService,
     private eventEmitter: EventEmitter2,
-  ) {}
+  ) {
+    this.taskStream = new Subject<StreamTasksResponse>();
+  }
 
   @GrpcMethod('TaskService')
   async GetTask(request: GetTaskRequest): Promise<Task> {
@@ -87,9 +95,9 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.created', {
+      this.taskStream.next({
         eventType: 'create',
-        pbTask,
+        task: pbTask,
       });
 
       return pbTask;
@@ -117,9 +125,9 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.updated', {
+      this.taskStream.next({
         eventType: 'update',
-        pbTask,
+        task: pbTask,
       });
 
       return pbTask;
@@ -139,9 +147,9 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.eventEmitter.emit('task.deleted', {
+      this.taskStream.next({
         eventType: 'delete',
-        pbTask,
+        task: pbTask,
       });
 
       return pbTask;
@@ -154,17 +162,7 @@ export class TaskController {
   @GrpcMethod('TaskService')
   StreamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
     try {
-      const stream$ = new Subject<StreamTasksResponse>();
-      this.eventEmitter.on('task.*', (payload) => {
-        stream$.next(
-          StreamTasksResponse.create({
-            eventType: payload.eventType,
-            task: payload.pbTask,
-          }),
-        );
-      });
-
-      return stream$.asObservable();
+      return this.taskStream.asObservable();
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
