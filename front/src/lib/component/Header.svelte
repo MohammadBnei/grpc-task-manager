@@ -21,7 +21,7 @@
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="navbar p-0 pr-2 bg-base-100 rounded-xl">
+	<div class="navbar p-0 pr-2 glass rounded-xl">
 		<div class="navbar-start">
 			<div class="dropdown">
 				<label tabindex="0" class="btn btn-ghost lg:hidden">
