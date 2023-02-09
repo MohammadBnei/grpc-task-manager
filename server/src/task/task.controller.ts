@@ -1,11 +1,6 @@
 import { Controller, HttpStatus } from '@nestjs/common';
-import {
-  GrpcMethod,
-  GrpcStreamCall,
-  GrpcStreamMethod,
-  RpcException,
-} from '@nestjs/microservices';
-import { Metadata, ServerWritableStream, status } from '@grpc/grpc-js';
+import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 import { TaskService } from './task.service';
 import {
   DeleteTaskRequest,
@@ -18,16 +13,12 @@ import {
   StreamTasksRequest,
   StreamTasksResponse,
 } from './stubs/task/v1beta/task';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, Subject } from 'rxjs';
 
 @Controller('task')
 export class TaskController {
   taskStream: Subject<StreamTasksResponse>;
-  constructor(
-    private taskService: TaskService,
-    private eventEmitter: EventEmitter2,
-  ) {
+  constructor(private taskService: TaskService) {
     this.taskStream = new Subject<StreamTasksResponse>();
   }
 

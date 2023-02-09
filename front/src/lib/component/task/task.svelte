@@ -21,7 +21,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="card w-96 bg-base-100 shadow-xl m-1"
+	class="card w-full lg:w-96 bg-base-100 shadow-xl m-1"
 	on:click|capture={() => sendUsage(EventType.CLICK, task.name)}
 >
 	<div class="card-body">

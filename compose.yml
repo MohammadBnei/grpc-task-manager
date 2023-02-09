@@ -12,7 +12,7 @@ services:
   server:
     build: server
     environment:
-      - PROTO_FILE=proto/task/v1alpha/task.proto
+      - PROTO_FILE=proto/task/v1beta/task.proto
       - MONGO_URL=mongodb://root:task@mongo
       - insecure=true
     ports:
