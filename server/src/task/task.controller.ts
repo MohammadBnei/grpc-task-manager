@@ -14,11 +14,15 @@ import {
   StreamTasksResponse,
 } from './stubs/task/v1beta/task';
 import { Observable, Subject } from 'rxjs';
+import { ProfanityService } from 'src/profanity/profanity.service';
 
 @Controller('task')
 export class TaskController {
   taskStream: Subject<StreamTasksResponse>;
-  constructor(private taskService: TaskService) {
+  constructor(
+    private taskService: TaskService,
+    private profanityService: ProfanityService,
+  ) {
     this.taskStream = new Subject<StreamTasksResponse>();
   }
 
@@ -79,6 +83,9 @@ export class TaskController {
           code: HttpStatus.BAD_REQUEST,
           status: status.INVALID_ARGUMENT,
         });
+
+      this.profanityService.checkTask(nTask);
+
       const task = await this.taskService.create(nTask);
       const pbTask = Task.create({
         name: task.name,
@@ -105,6 +112,8 @@ export class TaskController {
         fields: request.task.fields && JSON.parse(request.task.fields),
         dueDate: new Date(request.task.dueDate),
       };
+
+      this.profanityService.checkTask(nTask);
 
       const task = await this.taskService.updateTask(
         { name: request.task.name },

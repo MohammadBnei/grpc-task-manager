@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { UserusageModule } from './userusage/userusage.module';
+import { ProfanityService } from './profanity/profanity.service';
+import { ProfanityModule } from './profanity/profanity.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,8 +15,9 @@ import { UserusageModule } from './userusage/userusage.module';
     MongooseModule.forRoot(process.env.MONGO_URL),
     TaskModule,
     UserusageModule,
+    ProfanityModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ProfanityService],
 })
 export class AppModule {}

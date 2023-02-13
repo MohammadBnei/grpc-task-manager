@@ -15,7 +15,7 @@
 	let showNewField = false;
 
 	$: if (showNewField) {
-		sendUsage(EventType.UPDATE, task.name)
+		sendUsage(EventType.UPDATE, task.name);
 	}
 </script>
 
@@ -62,7 +62,9 @@
 		<div class="card-actions justify-end">
 			<form action="/task?/deleteTask" method="POST" use:enhance>
 				<input value={task.name} name="name" hidden />
-				<button class="btn btn-warning" on:click={() => sendUsage(EventType.DELETE, task.name)}>Remove</button>
+				<button class="btn btn-warning" on:click={() => sendUsage(EventType.DELETE, task.name)}
+					>Remove</button
+				>
 			</form>
 		</div>
 	</div>

@@ -20,3 +20,9 @@ export class UpdateTaskDto {
   @MinDate(() => new Date())
   dueDate: Date;
 }
+
+export interface ITask {
+  name: string;
+  dueDate: Date;
+  fields: Record<string, string>;
+}
