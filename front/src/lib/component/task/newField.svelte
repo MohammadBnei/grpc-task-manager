@@ -1,31 +1,39 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { ITask } from '../../helper/taskDto';
+	import FormError from '../FormError.svelte';
 
+	let error = '';
 	export let task: ITask;
-	const updateTask = (data: FormData) => {
+	const getUTask = (data: FormData) => {
 		const fieldName = data.get('fieldName') as string;
 		const fieldValue = data.get('fieldValue') as string;
+
+		data.delete('fieldName');
+		data.delete('fieldValue');
 
 		const uTask = { ...task };
 		uTask.fields[fieldName] = fieldValue;
 
-		return fetch('/task', {
-			method: 'post',
-			body: JSON.stringify(uTask)
-		});
+		return uTask;
 	};
 </script>
 
 <form
 	method="post"
-	use:enhance={({ data, cancel, form }) => {
-		cancel();
-		updateTask(data).then(() => {
-			form.reset();
-		});
+	action="/task?/updateTask"
+	use:enhance={({ data, form }) => {
+		data.append('task', JSON.stringify(getUTask(data)));
+
+		return ({ result }) => {
+			if (result.type === 'success') {
+				form.reset();
+			}
+			error = result.data?.error;
+		};
 	}}
 >
+	<FormError {error} />
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="form-control">
 		<label class="input-group input-group-sm my-2">

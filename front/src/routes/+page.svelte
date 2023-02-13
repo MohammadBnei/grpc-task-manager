@@ -2,14 +2,14 @@
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { searchTerm, taskStore } from '$src/stores/task';
-	import type { ITask } from '$src/lib/helper/taskDto';
-	import Task from '$src/lib/component/task/task.svelte';
+	import { searchTerm, taskStore } from '$stores/task';
+	import type { ITask } from '$lib/helper/taskDto';
+	import Task from '$lib/component/task/Task.svelte';
 	import FuzzySearch from 'fuzzy-search';
-	import modal from '$src/stores/modal';
-	import NewTask from '$src/lib/component/task/newTask.svelte';
-	import { connectToTaskStream } from '$src/lib/service/task';
-	import { connectToUsageStream } from '$src/lib/service/usage';
+	import modal from '$stores/modal';
+	import NewTask from '$lib/component/task/NewTask.svelte';
+	import { connectToTaskStream } from '$lib/service/task';
+	import { connectToUsageStream } from '$lib/service/usage';
 
 	export let data: PageData;
 

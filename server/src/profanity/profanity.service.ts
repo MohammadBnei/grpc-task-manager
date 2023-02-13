@@ -17,7 +17,7 @@ export class ProfanityService {
   }
 
   checkTask(task: Partial<ITask>): void {
-    let result: ProfanityResult = this.profanity(task.name);
+    let result: ProfanityResult = this.profanity(task.name || '');
     if (result.isBadWord) throw this.createError(result);
 
     if (!task.fields) return;

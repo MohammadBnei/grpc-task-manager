@@ -5,8 +5,8 @@
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';
 	import type { ITask } from '../../helper/taskDto';
-	import NewField from './newField.svelte';
-	import RemoveField from './removeField.svelte';
+	import NewField from './NewField.svelte';
+	import RemoveField from './RemoveField.svelte';
 
 	export let task: ITask;
 

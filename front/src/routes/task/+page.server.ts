@@ -33,13 +33,11 @@ export const actions: Actions = {
 
 	updateTask: async ({ request, locals }) => {
 		const data = await request.formData();
-		const name = data.get('name') as string;
-		const fields = data.get('fields') as any;
-		const dueDate = data.get('dueDate') as string;
+		const stringTask = data.get('task') as string;
 
 		try {
 			const updateTaskRequest = UpdateTaskRequest.create({
-				task: toPb({ fields, name, dueDate: new Date(dueDate) })
+				task: toPb(JSON.parse(stringTask))
 			});
 			const req = await locals.taskClient.updateTask(updateTaskRequest);
 			const nTask = req.response;
