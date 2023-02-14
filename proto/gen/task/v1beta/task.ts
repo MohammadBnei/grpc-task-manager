@@ -30,6 +30,23 @@ export interface Task {
     dueDate: string;
 }
 /**
+ * @generated from protobuf message task.v1beta.AddFieldRequest
+ */
+export interface AddFieldRequest {
+    /**
+     * @generated from protobuf field: string field_name = 1;
+     */
+    fieldName: string;
+    /**
+     * @generated from protobuf field: string field_value = 2;
+     */
+    fieldValue: string;
+    /**
+     * @generated from protobuf field: task.v1beta.FieldType field_type = 3;
+     */
+    fieldType: FieldType;
+}
+/**
  * @generated from protobuf message task.v1beta.UsageRequest
  */
 export interface UsageRequest {
@@ -134,6 +151,15 @@ export interface GetTaskRequest {
     name: string;
 }
 /**
+ * @generated from protobuf message task.v1beta.TaskResponse
+ */
+export interface TaskResponse {
+    /**
+     * @generated from protobuf field: task.v1beta.Task task = 1;
+     */
+    task?: Task;
+}
+/**
  * @generated from protobuf message task.v1beta.CreateTaskRequest
  */
 export interface CreateTaskRequest {
@@ -178,6 +204,15 @@ export interface DeleteTaskRequest {
      * @generated from protobuf field: string name = 1;
      */
     name: string;
+}
+/**
+ * @generated from protobuf enum task.v1beta.FieldType
+ */
+export enum FieldType {
+    /**
+     * @generated from protobuf enum value: FIELD_TYPE_STRING = 0;
+     */
+    STRING = 0
 }
 /**
  * @generated from protobuf enum task.v1beta.EventType
@@ -261,6 +296,67 @@ class Task$Type extends MessageType<Task> {
  * @generated MessageType for protobuf message task.v1beta.Task
  */
 export const Task = new Task$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
+    constructor() {
+        super("task.v1beta.AddFieldRequest", [
+            { no: 1, name: "field_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "field_value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "field_type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
+        ]);
+    }
+    create(value?: PartialMessage<AddFieldRequest>): AddFieldRequest {
+        const message = { fieldName: "", fieldValue: "", fieldType: 0 };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<AddFieldRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddFieldRequest): AddFieldRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field_name */ 1:
+                    message.fieldName = reader.string();
+                    break;
+                case /* string field_value */ 2:
+                    message.fieldValue = reader.string();
+                    break;
+                case /* task.v1beta.FieldType field_type */ 3:
+                    message.fieldType = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddFieldRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field_name = 1; */
+        if (message.fieldName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.fieldName);
+        /* string field_value = 2; */
+        if (message.fieldValue !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.fieldValue);
+        /* task.v1beta.FieldType field_type = 3; */
+        if (message.fieldType !== 0)
+            writer.tag(3, WireType.Varint).int32(message.fieldType);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1beta.AddFieldRequest
+ */
+export const AddFieldRequest = new AddFieldRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UsageRequest$Type extends MessageType<UsageRequest> {
     constructor() {
@@ -626,6 +722,53 @@ class GetTaskRequest$Type extends MessageType<GetTaskRequest> {
  */
 export const GetTaskRequest = new GetTaskRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class TaskResponse$Type extends MessageType<TaskResponse> {
+    constructor() {
+        super("task.v1beta.TaskResponse", [
+            { no: 1, name: "task", kind: "message", T: () => Task }
+        ]);
+    }
+    create(value?: PartialMessage<TaskResponse>): TaskResponse {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<TaskResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TaskResponse): TaskResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* task.v1beta.Task task */ 1:
+                    message.task = Task.internalBinaryRead(reader, reader.uint32(), options, message.task);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TaskResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* task.v1beta.Task task = 1; */
+        if (message.task)
+            Task.internalBinaryWrite(message.task, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1beta.TaskResponse
+ */
+export const TaskResponse = new TaskResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class CreateTaskRequest$Type extends MessageType<CreateTaskRequest> {
     constructor() {
         super("task.v1beta.CreateTaskRequest", [
@@ -785,10 +928,11 @@ export const DeleteTaskRequest = new DeleteTaskRequest$Type();
  */
 export const TaskService = new ServiceType("task.v1beta.TaskService", [
     { name: "ListTasks", options: {}, I: ListTasksRequest, O: ListTasksResponse },
-    { name: "GetTask", options: {}, I: GetTaskRequest, O: Task },
-    { name: "CreateTask", options: {}, I: CreateTaskRequest, O: Task },
-    { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: Task },
-    { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: Task },
+    { name: "GetTask", options: {}, I: GetTaskRequest, O: TaskResponse },
+    { name: "CreateTask", options: {}, I: CreateTaskRequest, O: TaskResponse },
+    { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: TaskResponse },
+    { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: TaskResponse },
+    { name: "AddField", options: {}, I: AddFieldRequest, O: TaskResponse },
     { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);
 /**

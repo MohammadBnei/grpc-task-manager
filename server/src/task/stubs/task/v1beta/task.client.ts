@@ -10,10 +10,11 @@ import { TaskService } from "./task";
 import type { StreamTasksResponse } from "./task";
 import type { StreamTasksRequest } from "./task";
 import type { ServerStreamingCall } from "@protobuf-ts/runtime-rpc";
+import type { AddFieldRequest } from "./task";
 import type { DeleteTaskRequest } from "./task";
 import type { UpdateTaskRequest } from "./task";
 import type { CreateTaskRequest } from "./task";
-import type { Task } from "./task";
+import type { TaskResponse } from "./task";
 import type { GetTaskRequest } from "./task";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { ListTasksResponse } from "./task";
@@ -29,21 +30,25 @@ export interface ITaskServiceClient {
      */
     listTasks(input: ListTasksRequest, options?: RpcOptions): UnaryCall<ListTasksRequest, ListTasksResponse>;
     /**
-     * @generated from protobuf rpc: GetTask(task.v1beta.GetTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: GetTask(task.v1beta.GetTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    getTask(input: GetTaskRequest, options?: RpcOptions): UnaryCall<GetTaskRequest, Task>;
+    getTask(input: GetTaskRequest, options?: RpcOptions): UnaryCall<GetTaskRequest, TaskResponse>;
     /**
-     * @generated from protobuf rpc: CreateTask(task.v1beta.CreateTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: CreateTask(task.v1beta.CreateTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    createTask(input: CreateTaskRequest, options?: RpcOptions): UnaryCall<CreateTaskRequest, Task>;
+    createTask(input: CreateTaskRequest, options?: RpcOptions): UnaryCall<CreateTaskRequest, TaskResponse>;
     /**
-     * @generated from protobuf rpc: UpdateTask(task.v1beta.UpdateTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: UpdateTask(task.v1beta.UpdateTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, Task>;
+    updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, TaskResponse>;
     /**
-     * @generated from protobuf rpc: DeleteTask(task.v1beta.DeleteTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: DeleteTask(task.v1beta.DeleteTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, Task>;
+    deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, TaskResponse>;
+    /**
+     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse>;
     /**
      * @generated from protobuf rpc: StreamTasks(task.v1beta.StreamTasksRequest) returns (stream task.v1beta.StreamTasksResponse);
      */
@@ -66,38 +71,45 @@ export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {
         return stackIntercept<ListTasksRequest, ListTasksResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: GetTask(task.v1beta.GetTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: GetTask(task.v1beta.GetTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    getTask(input: GetTaskRequest, options?: RpcOptions): UnaryCall<GetTaskRequest, Task> {
+    getTask(input: GetTaskRequest, options?: RpcOptions): UnaryCall<GetTaskRequest, TaskResponse> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
-        return stackIntercept<GetTaskRequest, Task>("unary", this._transport, method, opt, input);
+        return stackIntercept<GetTaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: CreateTask(task.v1beta.CreateTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: CreateTask(task.v1beta.CreateTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    createTask(input: CreateTaskRequest, options?: RpcOptions): UnaryCall<CreateTaskRequest, Task> {
+    createTask(input: CreateTaskRequest, options?: RpcOptions): UnaryCall<CreateTaskRequest, TaskResponse> {
         const method = this.methods[2], opt = this._transport.mergeOptions(options);
-        return stackIntercept<CreateTaskRequest, Task>("unary", this._transport, method, opt, input);
+        return stackIntercept<CreateTaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: UpdateTask(task.v1beta.UpdateTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: UpdateTask(task.v1beta.UpdateTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, Task> {
+    updateTask(input: UpdateTaskRequest, options?: RpcOptions): UnaryCall<UpdateTaskRequest, TaskResponse> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);
-        return stackIntercept<UpdateTaskRequest, Task>("unary", this._transport, method, opt, input);
+        return stackIntercept<UpdateTaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: DeleteTask(task.v1beta.DeleteTaskRequest) returns (task.v1beta.Task);
+     * @generated from protobuf rpc: DeleteTask(task.v1beta.DeleteTaskRequest) returns (task.v1beta.TaskResponse);
      */
-    deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, Task> {
+    deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, TaskResponse> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
-        return stackIntercept<DeleteTaskRequest, Task>("unary", this._transport, method, opt, input);
+        return stackIntercept<DeleteTaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AddFieldRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: StreamTasks(task.v1beta.StreamTasksRequest) returns (stream task.v1beta.StreamTasksResponse);
      */
     streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<StreamTasksRequest, StreamTasksResponse>("serverStreaming", this._transport, method, opt, input);
     }
 }
