@@ -10,7 +10,7 @@ message Task {
 
 message Field {
   string value = 1;
-  FieldType field_type = 2;
+  FieldType type = 2;
 }
 
 service TaskService {
