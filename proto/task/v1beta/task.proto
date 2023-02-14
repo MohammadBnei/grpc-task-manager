@@ -30,9 +30,10 @@ enum FieldType {
 }
 
 message AddFieldRequest {
-  string field_name = 1;
-  string field_value = 2;
-  FieldType field_type = 3;
+  string task_name = 1;
+  string field_name = 2;
+  string field_value = 3;
+  FieldType field_type = 4;
 }
 
 enum EventType {

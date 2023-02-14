@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { UsageRequest, UsageResponse } from '../task/stubs/task/v1beta/task';
+import { UsageRequest, UsageResponse } from '../stubs/task/v1beta/task';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { Observable, Subject } from 'rxjs';
 
