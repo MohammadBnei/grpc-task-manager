@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   server-front:
+    restart: unless-stopped
     build: .
     ports:
       - 4000:3000
