@@ -12,6 +12,8 @@ import {
   Task,
   StreamTasksRequest,
   StreamTasksResponse,
+  AddFieldRequest,
+  TaskResponse,
 } from '../stubs/task/v1beta/task';
 import { Observable, Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
@@ -27,7 +29,33 @@ export class TaskController {
   }
 
   @GrpcMethod('TaskService')
-  async GetTask(request: GetTaskRequest): Promise<Task> {
+  async AddField(request: AddFieldRequest): Promise<TaskResponse> {
+    try {
+      const { fieldName, fieldValue, taskName } = request;
+      console.log({ request });
+      const task = await this.taskService.find('', taskName);
+
+      this.profanityService.checkStr(fieldName, fieldValue);
+
+      task.fields[fieldName] = fieldValue;
+
+      const uTask = await this.taskService.updateTask({ name: taskName }, task);
+
+      const pbTask = Task.create({
+        name: uTask.name,
+        fields: JSON.stringify(uTask.fields),
+        dueDate: uTask.dueDate.toISOString(),
+      });
+
+      return { task: pbTask };
+    } catch (error) {
+      console.error(error);
+      throw new RpcException(error);
+    }
+  }
+
+  @GrpcMethod('TaskService')
+  async GetTask(request: GetTaskRequest): Promise<TaskResponse> {
     const name = request.name;
 
     try {
@@ -39,10 +67,10 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      return pbTask;
+      return { task: pbTask };
     } catch (error) {
       console.error(error);
-      throw new Error(error);
+      throw new RpcException(error);
     }
   }
 
@@ -64,12 +92,12 @@ export class TaskController {
       return listTasksResponse;
     } catch (error) {
       console.error(error);
-      throw new Error(error);
+      throw new RpcException(error);
     }
   }
 
   @GrpcMethod('TaskService')
-  async CreateTask(request: CreateTaskRequest): Promise<Task> {
+  async CreateTask(request: CreateTaskRequest): Promise<TaskResponse> {
     try {
       const nTask = {
         name: request.task.name,
@@ -98,7 +126,7 @@ export class TaskController {
         task: pbTask,
       });
 
-      return pbTask;
+      return { task: pbTask };
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
@@ -106,7 +134,7 @@ export class TaskController {
   }
 
   @GrpcMethod('TaskService')
-  async UpdateTask(request: UpdateTaskRequest): Promise<Task> {
+  async UpdateTask(request: UpdateTaskRequest): Promise<TaskResponse> {
     try {
       const nTask = {
         fields: request.task.fields && JSON.parse(request.task.fields),
@@ -130,7 +158,7 @@ export class TaskController {
         task: pbTask,
       });
 
-      return pbTask;
+      return { task: pbTask };
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
@@ -138,7 +166,7 @@ export class TaskController {
   }
 
   @GrpcMethod('TaskService')
-  async DeleteTask(request: DeleteTaskRequest): Promise<Task> {
+  async DeleteTask(request: DeleteTaskRequest): Promise<TaskResponse> {
     try {
       const task = await this.taskService.deleteTask(request.name);
       const pbTask = Task.create({
@@ -152,7 +180,7 @@ export class TaskController {
         task: pbTask,
       });
 
-      return pbTask;
+      return { task: pbTask };
     } catch (error) {
       console.error(error);
       throw new RpcException(error);

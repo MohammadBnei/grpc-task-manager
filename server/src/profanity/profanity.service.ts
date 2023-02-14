@@ -31,6 +31,13 @@ export class ProfanityService {
     }
   }
 
+  checkStr(...fields: string[]): void {
+    for (const s of fields) {
+      const result = this.profanity(s);
+      if (result.isBadWord) throw this.createError(result);
+    }
+  }
+
   private createError(profanityCheck: ProfanityResult): Error {
     return new Error(
       `${profanityCheck.detectedWord} is a profanity (${profanityCheck.profanityWordRelated})`,

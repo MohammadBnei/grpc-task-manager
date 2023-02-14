@@ -39,7 +39,7 @@ export class TaskService {
     }
 
     if (!task) {
-      throw new Error(`task with id ${id} not found`);
+      throw new Error(`task with id ${id} or name ${name} not found`);
     }
 
     Object.assign(task, uTask);
