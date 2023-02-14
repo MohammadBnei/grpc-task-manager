@@ -33,9 +33,9 @@ jobs:
       - name: Update server stubs and proto
         run: |
           rm -rf ./server/src/proto
-          rm -rf ./server/src/task/stubs
+          rm -rf ./server/src/stubs
           buf export buf.build/bneiconseil/taskmanagerapi -o ./server/src/proto
-          cp -r ./proto/gen ./server/src/task/stubs
+          cp -r ./proto/gen ./server/src/stubs
 
       - name: Commit stubs
         run: |
