@@ -3,24 +3,36 @@ syntax = "proto3";
 package task.v1beta;
 
 message Task {
-    string name = 1;
-    string fields = 2;
-    string due_date = 3;
+  string name = 1;
+  string fields = 2;
+  string due_date = 3;
 }
 
 service TaskService {
-  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {};
-  rpc GetTask(GetTaskRequest) returns (Task) {};
-  rpc CreateTask(CreateTaskRequest) returns (Task) {};
-  rpc UpdateTask(UpdateTaskRequest) returns (Task) {};
-  rpc DeleteTask(DeleteTaskRequest) returns (Task) {};
-  
-  rpc StreamTasks (StreamTasksRequest) returns (stream StreamTasksResponse) {};
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
+  rpc GetTask(GetTaskRequest) returns (TaskResponse) {}
+  rpc CreateTask(CreateTaskRequest) returns (TaskResponse) {}
+  rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse) {}
+  rpc DeleteTask(DeleteTaskRequest) returns (TaskResponse) {}
+
+  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
+
+  rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
 }
 
 service UsageService {
-  rpc Using (UsageRequest) returns (UsageResponse) {};
-  rpc UsingStream (UsageRequest) returns (stream UsageResponse) {};
+  rpc Using(UsageRequest) returns (UsageResponse) {}
+  rpc UsingStream(UsageRequest) returns (stream UsageResponse) {}
+}
+
+enum FieldType {
+  FIELD_TYPE_STRING = 0;
+}
+
+message AddFieldRequest {
+  string field_name = 1;
+  string field_value = 2;
+  FieldType field_type = 3;
 }
 
 enum EventType {
@@ -33,16 +45,17 @@ enum EventType {
 message UsageRequest {
   string username = 1;
   string task_name = 2;
-  EventType event_type = 3; 
+  EventType event_type = 3;
 }
 
 message UsageResponse {
   string username = 1;
   string task_name = 2;
-  EventType event_type = 3; 
+  EventType event_type = 3;
 }
 
 message StreamTasksRequest {}
+
 message StreamTasksResponse {
   Task task = 1;
   string event_type = 2;
@@ -72,6 +85,9 @@ message GetTaskRequest {
   // The field will contain name of the resource requested.
   string name = 1;
 }
+message TaskResponse {
+  Task task = 1;
+}
 
 message CreateTaskRequest {
   // The parent resource name where the Task is to be created.
@@ -94,5 +110,3 @@ message DeleteTaskRequest {
   // The resource name of the Task to be deleted.
   string name = 1;
 }
-
-
