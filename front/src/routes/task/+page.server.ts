@@ -1,9 +1,10 @@
 import {
 	CreateTaskRequest,
 	UpdateTaskRequest,
-	DeleteTaskRequest
+	DeleteTaskRequest,
+	FieldType
 } from '$lib/stubs/task/v1beta/task';
-import { toJson, toPb } from '$src/lib/helper/taskDto';
+import { toPb } from '$src/lib/helper/taskDto';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
@@ -21,10 +22,30 @@ export const actions: Actions = {
 			const createTaskRequest = CreateTaskRequest.create({
 				task: toPb({ fields, name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
-			const req = await locals.taskClient.createTask(createTaskRequest);
-			const nTask = req.response;
+			await locals.taskClient.createTask(createTaskRequest);
 
-			return { success: 200, data: { task: toJson(nTask) } };
+			return { success: 200 };
+		} catch (error: any) {
+			console.error(error);
+			return fail(400, { error: error?.message || 'something went wront' });
+		}
+	},
+
+	addField: async ({ request, locals }) => {
+		const data = await request.formData();
+		const taskName = data.get('taskName') as string;
+		const fieldName = data.get('fieldName') as string;
+		const fieldValue = data.get('fieldValue') as string;
+
+		try {
+			await locals.taskClient.addField({
+				fieldName,
+				fieldValue,
+				fieldType: FieldType.STRING,
+				taskName
+			});
+
+			return { success: true };
 		} catch (error: any) {
 			console.error(error);
 			return fail(400, { error: error?.message || 'something went wront' });
@@ -39,10 +60,9 @@ export const actions: Actions = {
 			const updateTaskRequest = UpdateTaskRequest.create({
 				task: toPb(JSON.parse(stringTask))
 			});
-			const req = await locals.taskClient.updateTask(updateTaskRequest);
-			const nTask = req.response;
+			await locals.taskClient.updateTask(updateTaskRequest);
 
-			return { success: true, data: { task: toJson(nTask) } };
+			return { success: true };
 		} catch (error: any) {
 			console.error(error);
 			return fail(400, { error: error?.message || 'something went wront' });
@@ -57,10 +77,9 @@ export const actions: Actions = {
 			const deleteTaskRequest = DeleteTaskRequest.create({
 				name
 			});
-			const req = await locals.taskClient.deleteTask(deleteTaskRequest);
-			const nTask = req.response;
+			await locals.taskClient.deleteTask(deleteTaskRequest);
 
-			return { success: true, data: { task: toJson(nTask) } };
+			return { success: true };
 		} catch (error: any) {
 			console.error(error);
 			return fail(400, { error: error?.message || 'something went wront' });

@@ -5,25 +5,13 @@
 
 	let error = '';
 	export let task: ITask;
-	const getUTask = (data: FormData) => {
-		const fieldName = data.get('fieldName') as string;
-		const fieldValue = data.get('fieldValue') as string;
-
-		data.delete('fieldName');
-		data.delete('fieldValue');
-
-		const uTask = { ...task };
-		uTask.fields[fieldName] = fieldValue;
-
-		return uTask;
-	};
 </script>
 
 <form
 	method="post"
-	action="/task?/updateTask"
+	action="/task?/addField"
 	use:enhance={({ data, form }) => {
-		data.append('task', JSON.stringify(getUTask(data)));
+		data.append('taskName', task.name);
 
 		return ({ result }) => {
 			if (result.type === 'success') {

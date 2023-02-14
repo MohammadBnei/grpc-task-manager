@@ -32,7 +32,6 @@ export class TaskController {
   async AddField(request: AddFieldRequest): Promise<TaskResponse> {
     try {
       const { fieldName, fieldValue, taskName } = request;
-      console.log({ request });
       const task = await this.taskService.find('', taskName);
 
       this.profanityService.checkStr(fieldName, fieldValue);
@@ -45,6 +44,11 @@ export class TaskController {
         name: uTask.name,
         fields: JSON.stringify(uTask.fields),
         dueDate: uTask.dueDate.toISOString(),
+      });
+
+      this.taskStream.next({
+        eventType: 'update',
+        task: pbTask,
       });
 
       return { task: pbTask };
