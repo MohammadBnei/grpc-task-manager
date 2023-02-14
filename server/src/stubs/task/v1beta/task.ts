@@ -40,9 +40,9 @@ export interface Field {
      */
     value: string;
     /**
-     * @generated from protobuf field: task.v1beta.FieldType field_type = 2;
+     * @generated from protobuf field: task.v1beta.FieldType type = 2;
      */
-    fieldType: FieldType;
+    type: FieldType;
 }
 /**
  * @generated from protobuf message task.v1beta.AddFieldRequest
@@ -340,11 +340,11 @@ class Field$Type extends MessageType<Field> {
     constructor() {
         super("task.v1beta.Field", [
             { no: 1, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "field_type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
+            { no: 2, name: "type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
         ]);
     }
     create(value?: PartialMessage<Field>): Field {
-        const message = { value: "", fieldType: 0 };
+        const message = { value: "", type: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Field>(this, message, value);
@@ -358,8 +358,8 @@ class Field$Type extends MessageType<Field> {
                 case /* string value */ 1:
                     message.value = reader.string();
                     break;
-                case /* task.v1beta.FieldType field_type */ 2:
-                    message.fieldType = reader.int32();
+                case /* task.v1beta.FieldType type */ 2:
+                    message.type = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -376,9 +376,9 @@ class Field$Type extends MessageType<Field> {
         /* string value = 1; */
         if (message.value !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.value);
-        /* task.v1beta.FieldType field_type = 2; */
-        if (message.fieldType !== 0)
-            writer.tag(2, WireType.Varint).int32(message.fieldType);
+        /* task.v1beta.FieldType type = 2; */
+        if (message.type !== 0)
+            writer.tag(2, WireType.Varint).int32(message.type);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
