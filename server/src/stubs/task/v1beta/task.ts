@@ -34,15 +34,19 @@ export interface Task {
  */
 export interface AddFieldRequest {
     /**
-     * @generated from protobuf field: string field_name = 1;
+     * @generated from protobuf field: string task_name = 1;
+     */
+    taskName: string;
+    /**
+     * @generated from protobuf field: string field_name = 2;
      */
     fieldName: string;
     /**
-     * @generated from protobuf field: string field_value = 2;
+     * @generated from protobuf field: string field_value = 3;
      */
     fieldValue: string;
     /**
-     * @generated from protobuf field: task.v1beta.FieldType field_type = 3;
+     * @generated from protobuf field: task.v1beta.FieldType field_type = 4;
      */
     fieldType: FieldType;
 }
@@ -300,13 +304,14 @@ export const Task = new Task$Type();
 class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
     constructor() {
         super("task.v1beta.AddFieldRequest", [
-            { no: 1, name: "field_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "field_value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "field_type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
+            { no: 1, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "field_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "field_value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "field_type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
         ]);
     }
     create(value?: PartialMessage<AddFieldRequest>): AddFieldRequest {
-        const message = { fieldName: "", fieldValue: "", fieldType: 0 };
+        const message = { taskName: "", fieldName: "", fieldValue: "", fieldType: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<AddFieldRequest>(this, message, value);
@@ -317,13 +322,16 @@ class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string field_name */ 1:
+                case /* string task_name */ 1:
+                    message.taskName = reader.string();
+                    break;
+                case /* string field_name */ 2:
                     message.fieldName = reader.string();
                     break;
-                case /* string field_value */ 2:
+                case /* string field_value */ 3:
                     message.fieldValue = reader.string();
                     break;
-                case /* task.v1beta.FieldType field_type */ 3:
+                case /* task.v1beta.FieldType field_type */ 4:
                     message.fieldType = reader.int32();
                     break;
                 default:
@@ -338,15 +346,18 @@ class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
         return message;
     }
     internalBinaryWrite(message: AddFieldRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string field_name = 1; */
+        /* string task_name = 1; */
+        if (message.taskName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.taskName);
+        /* string field_name = 2; */
         if (message.fieldName !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.fieldName);
-        /* string field_value = 2; */
+            writer.tag(2, WireType.LengthDelimited).string(message.fieldName);
+        /* string field_value = 3; */
         if (message.fieldValue !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.fieldValue);
-        /* task.v1beta.FieldType field_type = 3; */
+            writer.tag(3, WireType.LengthDelimited).string(message.fieldValue);
+        /* task.v1beta.FieldType field_type = 4; */
         if (message.fieldType !== 0)
-            writer.tag(3, WireType.Varint).int32(message.fieldType);
+            writer.tag(4, WireType.Varint).int32(message.fieldType);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
