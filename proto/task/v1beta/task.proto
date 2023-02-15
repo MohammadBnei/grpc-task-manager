@@ -21,9 +21,12 @@ service TaskService {
   rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse) {}
   rpc DeleteTask(DeleteTaskRequest) returns (TaskResponse) {}
 
-  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
-
   rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
+}
+
+service FieldService {
+  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
+  rpc RemoveField(RemoveFieldRequest) returns (TaskResponse) {}
 }
 
 service UsageService {
@@ -40,6 +43,11 @@ message AddFieldRequest {
   string field_name = 2;
   string field_value = 3;
   FieldType field_type = 4;
+}
+
+message RemoveFieldRequest {
+  string task_name = 1;
+  string field_name = 2;
 }
 
 enum EventType {
