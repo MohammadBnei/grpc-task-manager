@@ -68,6 +68,19 @@ export interface AddFieldRequest {
     fieldType: FieldType;
 }
 /**
+ * @generated from protobuf message task.v1beta.UpdateDateRequest
+ */
+export interface UpdateDateRequest {
+    /**
+     * @generated from protobuf field: string task_name = 1;
+     */
+    taskName: string;
+    /**
+     * @generated from protobuf field: string due_date = 2;
+     */
+    dueDate: string;
+}
+/**
  * @generated from protobuf message task.v1beta.RemoveFieldRequest
  */
 export interface RemoveFieldRequest {
@@ -459,6 +472,60 @@ class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
  * @generated MessageType for protobuf message task.v1beta.AddFieldRequest
  */
 export const AddFieldRequest = new AddFieldRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateDateRequest$Type extends MessageType<UpdateDateRequest> {
+    constructor() {
+        super("task.v1beta.UpdateDateRequest", [
+            { no: 1, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "due_date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateDateRequest>): UpdateDateRequest {
+        const message = { taskName: "", dueDate: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<UpdateDateRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateDateRequest): UpdateDateRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string task_name */ 1:
+                    message.taskName = reader.string();
+                    break;
+                case /* string due_date */ 2:
+                    message.dueDate = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateDateRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string task_name = 1; */
+        if (message.taskName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.taskName);
+        /* string due_date = 2; */
+        if (message.dueDate !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.dueDate);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1beta.UpdateDateRequest
+ */
+export const UpdateDateRequest = new UpdateDateRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class RemoveFieldRequest$Type extends MessageType<RemoveFieldRequest> {
     constructor() {
@@ -1088,6 +1155,7 @@ export const TaskService = new ServiceType("task.v1beta.TaskService", [
     { name: "CreateTask", options: {}, I: CreateTaskRequest, O: TaskResponse },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: TaskResponse },
     { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: TaskResponse },
+    { name: "UpdateDate", options: {}, I: UpdateDateRequest, O: TaskResponse },
     { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
 ]);
 /**
