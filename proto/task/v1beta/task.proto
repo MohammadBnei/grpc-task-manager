@@ -4,13 +4,14 @@ package task.v1beta;
 
 message Task {
   string name = 1;
-  map<string, Field> fields = 2;
+  repeated Field fields = 2;
   string due_date = 3;
 }
 
 message Field {
-  string value = 1;
-  FieldType type = 2;
+  string name = 1;
+  string value = 2;
+  FieldType type = 3;
 }
 
 service TaskService {
