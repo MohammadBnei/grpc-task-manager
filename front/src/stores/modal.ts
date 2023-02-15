@@ -4,6 +4,7 @@ import { writable } from 'svelte/store';
 interface ModalComponent {
 	component?: SvelteComponent;
 	open: boolean;
+	props?: Record<string, any>;
 }
 
 const createOpenModal = () => {
@@ -11,16 +12,18 @@ const createOpenModal = () => {
 		open: false
 	});
 
-	const open = (component: SvelteComponent) =>
+	const open = (component: SvelteComponent, props: Record<string, any>) =>
 		modalComponent.set({
 			component,
-			open: true
+			open: true,
+			props
 		});
 
 	const close = () =>
 		modalComponent.set({
 			component: undefined,
-			open: false
+			open: false,
+			props: undefined
 		});
 
 	return {

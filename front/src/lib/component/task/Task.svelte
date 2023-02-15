@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { sendUsage } from '$src/lib/service/usage';
 	import { EventType, Field } from '$src/lib/stubs/task/v1beta/task';
+	import modal from '$src/stores/modal';
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';
 	import type { ITask } from '../../helper/taskDto';
@@ -10,28 +11,29 @@
 
 	export let task: ITask;
 
-	let showNewField = false;
-
-	$: if (showNewField) {
+	const handleNewField = () => {
 		sendUsage(EventType.UPDATE, task.name);
-	}
+		modal.open(NewField as any, { task });
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="card w-full lg:w-96 bg-base-100 shadow-xl m-1"
+	class="card w-full h-full lg:w-96 bg-base-100 shadow-xl"
 	on:click|capture={() => sendUsage(EventType.CLICK, task.name)}
 >
 	<div class="card-body justify-between">
 		<h2 class="card-title justify-between">
-			{task.name}
+			<span class="text-3xl underline underline-offset-8">
+				{task.name}
+			</span>
 			<div class="badge badge-secondary">
 				<Time format="H:mm · D MMM YY" timestamp={task.dueDate} relative={$relativeDate} />
 			</div>
 		</h2>
 
-		<div class="stats stats-vertical shadow">
-			{#each task.fields as {name, value} (name)}
+		<div class="stats stats-vertical shadow pb-2 text-xl">
+			{#each task.fields as { name, value } (name)}
 				<div class="flex justify-between items-center pr-2">
 					<div class="stat">
 						<div class="stat-desc">{name}</div>
@@ -44,23 +46,15 @@
 					<div class="stat-title">No field</div>
 				</div>
 			{/each}
+			<button class="btn btn-primary w-fit place-self-center text-sm" on:click={handleNewField}
+				>New Field</button
+			>
 		</div>
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div
-			tabindex="0"
-			class="collapse border border-base-300 bg-base-100 rounded-box"
-			class:w-32={!showNewField}
-		>
-			<input type="checkbox" bind:checked={showNewField} />
-			<div class="collapse-title pr-2 font-medium">New Field</div>
-			<div class="collapse-content">
-				<NewField {task} />
-			</div>
-		</div>
+
 		<div class="card-actions justify-end">
 			<form action="/task?/deleteTask" method="POST" use:enhance>
 				<input value={task.name} name="name" hidden />
-				<button class="btn btn-warning" on:click={() => sendUsage(EventType.DELETE, task.name)}
+				<button class="btn btn-warning text-base" on:click={() => sendUsage(EventType.DELETE, task.name)}
 					>Remove</button
 				>
 			</form>

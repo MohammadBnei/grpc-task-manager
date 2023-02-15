@@ -12,20 +12,18 @@ import {
   StreamTasksRequest,
   StreamTasksResponse,
   TaskResponse,
-  UpdateTaskRequest,
 } from '../stubs/task/v1beta/task';
 import { Observable, Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
+import { StreamsService } from 'src/streams/streams.service';
 
 @Controller('task')
 export class TaskController {
-  taskStream: Subject<StreamTasksResponse>;
   constructor(
     private taskService: TaskService,
     private profanityService: ProfanityService,
-  ) {
-    this.taskStream = new Subject<StreamTasksResponse>();
-  }
+    private streams: StreamsService,
+  ) {}
 
   @GrpcMethod('TaskService')
   async GetTask(request: GetTaskRequest): Promise<TaskResponse> {
@@ -92,7 +90,7 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.taskStream.next({
+      this.streams.taskStream$.next({
         eventType: 'create',
         task: pbTask,
       });
@@ -100,7 +98,7 @@ export class TaskController {
       return { task: pbTask };
     } catch (error) {
       console.error(error);
-      throw new RpcException(error);
+      throw new RpcException((error as RpcException).message || error);
     }
   }
 
@@ -124,7 +122,7 @@ export class TaskController {
   //       dueDate: task.dueDate.toISOString(),
   //     });
 
-  //     this.taskStream.next({
+  //     this.streams.taskStream$.next({
   //       eventType: 'update',
   //       task: pbTask,
   //     });
@@ -146,7 +144,7 @@ export class TaskController {
         dueDate: task.dueDate.toISOString(),
       });
 
-      this.taskStream.next({
+      this.streams.taskStream$.next({
         eventType: 'delete',
         task: pbTask,
       });
@@ -161,7 +159,7 @@ export class TaskController {
   @GrpcMethod('TaskService')
   StreamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
     try {
-      return this.taskStream.asObservable();
+      return this.streams.taskStream$.asObservable();
     } catch (error) {
       console.error(error);
       throw new RpcException(error);

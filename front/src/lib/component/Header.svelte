@@ -1,7 +1,7 @@
 <script>
 	import modal from '$src/stores/modal';
 	import { relativeDate, searchTerm, taskStore } from '$src/stores/task';
-	import NewTask from './task/newTask.svelte';
+	import NewTask from './task/NewTask.svelte';
 	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
 	import { muteToast, username } from '$src/stores/user';

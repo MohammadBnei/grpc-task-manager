@@ -3,23 +3,20 @@ import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { TaskService } from './task.service';
 import {
   Task,
-  StreamTasksResponse,
   AddFieldRequest,
   TaskResponse,
   RemoveFieldRequest,
 } from '../stubs/task/v1beta/task';
-import { Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
+import { StreamsService } from 'src/streams/streams.service';
 
 @Controller('task')
 export class FieldController {
-  taskStream: Subject<StreamTasksResponse>;
   constructor(
     private taskService: TaskService,
     private profanityService: ProfanityService,
-  ) {
-    this.taskStream = new Subject<StreamTasksResponse>();
-  }
+    private streams: StreamsService,
+  ) {}
 
   @GrpcMethod('FieldService')
   async AddField(request: AddFieldRequest): Promise<TaskResponse> {
@@ -39,7 +36,7 @@ export class FieldController {
         dueDate: uTask.dueDate.toISOString(),
       });
 
-      this.taskStream.next({
+      this.streams.taskStream$.next({
         eventType: 'update',
         task: pbTask,
       });
@@ -64,7 +61,7 @@ export class FieldController {
         dueDate: uTask.dueDate.toISOString(),
       });
 
-      this.taskStream.next({
+      this.streams.taskStream$.next({
         eventType: 'update',
         task: pbTask,
       });

@@ -38,10 +38,27 @@ export const actions: Actions = {
 		const fieldValue = data.get('fieldValue') as string;
 
 		try {
-			await locals.taskClient.addField({
+			await locals.fieldClient.addField({
 				fieldName,
 				fieldValue,
 				fieldType: FieldType.STRING,
+				taskName
+			});
+
+			return { success: true };
+		} catch (error: any) {
+			console.error(error);
+			return fail(400, { error: error?.message || 'something went wront' });
+		}
+	},
+	removeTask: async ({ request, locals }) => {
+		const data = await request.formData();
+		const taskName = data.get('taskName') as string;
+		const fieldName = data.get('fieldName') as string;
+
+		try {
+			await locals.fieldClient.removeField({
+				fieldName,
 				taskName
 			});
 

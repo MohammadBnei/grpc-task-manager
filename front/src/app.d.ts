@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import type { TaskServiceClient, UsageServiceClient } from '$lib/stubs/task/v1beta/task.client';
+import type { TaskServiceClient, UsageServiceClient, FieldServiceClient } from '$lib/stubs/Field/v1beta/task.client';
 
 // and what to do when importing types
 declare global {
@@ -9,6 +9,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			taskClient: TaskServiceClient;
+			fieldClient: FieldServiceClient;
 			usageClient: UsageServiceClient;
 		}
 

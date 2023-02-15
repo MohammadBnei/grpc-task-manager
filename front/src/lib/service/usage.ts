@@ -3,6 +3,7 @@ import { username } from '$src/stores/user';
 import { get } from 'svelte/store';
 import { toast } from '@zerodevx/svelte-toast';
 import { EventType, type UsageResponse } from '../stubs/task/v1beta/task';
+import { showInfoToast } from './notification';
 
 export enum UsageEvent {
 	hover = 'hover'
@@ -26,16 +27,16 @@ export const connectToUsageStream = () => {
 			if (browser && data.username !== get(username)) {
 				switch (data.eventType) {
 					case EventType.CLICK:
-						toast.push(`<strong>${data.username}</strong> is on the ${data.taskName} task.`);
+						showInfoToast(`<strong>${data.username}</strong> is on the ${data.taskName} task.`);
 						break;
 					case EventType.CREATE:
-						toast.push(`<strong>${data.username}</strong> is creating a task.`);
+						showInfoToast(`<strong>${data.username}</strong> is creating a task.`);
 						break;
 					case EventType.UPDATE:
-						toast.push(`<strong>${data.username}</strong> is updating the ${data.taskName} task.`);
+						showInfoToast(`<strong>${data.username}</strong> is updating the ${data.taskName} task.`);
 						break;
 					case EventType.DELETE:
-						toast.push(`<strong>${data.username}</strong> is deleting the ${data.taskName} task.`);
+						showInfoToast(`<strong>${data.username}</strong> is deleting the ${data.taskName} task.`);
 						break;
 				}
 			}

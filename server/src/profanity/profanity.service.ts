@@ -20,6 +20,8 @@ export class ProfanityService {
     let result: ProfanityResult = this.profanity(task.name || '');
     if (result.isBadWord) throw this.createError(result);
 
+    if (!task.fields) return;
+
     for (const { name, value } of task.fields) {
       result = this.profanity(name);
       if (result.isBadWord) throw this.createError(result);

@@ -7,6 +7,7 @@ import { TaskModule } from './task/task.module';
 import { UserusageModule } from './userusage/userusage.module';
 import { ProfanityService } from './profanity/profanity.service';
 import { ProfanityModule } from './profanity/profanity.module';
+import { StreamsModule } from './streams/streams.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +17,7 @@ import { ProfanityModule } from './profanity/profanity.module';
     TaskModule,
     UserusageModule,
     ProfanityModule,
+    StreamsModule,
   ],
   controllers: [AppController],
   providers: [AppService, ProfanityService],

@@ -16,9 +16,10 @@ export class Task {
         fieldType: schema.Types.Number,
         value: schema.Types.String,
       },
+      default: new Map(),
     }),
   )
-  fields: IFields = new Map();
+  fields: IFields;
 
   @Prop()
   dueDate: Date;

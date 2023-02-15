@@ -8,17 +8,10 @@
 
 <form
 	method="post"
-	use:enhance={({ cancel, form }) => {
-		cancel();
-		const uTask = { ...task };
-		delete uTask.fields[fieldToRemove];
-
-		fetch('/task', {
-			method: 'post',
-			body: JSON.stringify(uTask)
-		}).then(() => {
-			form.reset();
-		});
+	action="/task?/removeTask"
+	use:enhance={({ data }) => {
+		data.append('taskName', task.name);
+		data.append('fieldName', fieldToRemove);
 	}}
 >
 	<button class="btn btn-xs btn-circle btn-warning">-</button>

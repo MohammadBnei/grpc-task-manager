@@ -2,16 +2,21 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FieldsArray, Task, TaskDocument } from './entity/task.schema';
-import { AddFieldDto, CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
-import { Field, FieldType } from 'src/stubs/task/v1beta/task';
+import { CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
 
 @Injectable()
 export class TaskService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const createdTask = new this.taskModel(createTaskDto);
-    return createdTask.save();
+    try {
+      const createdTask = new this.taskModel(createTaskDto);
+      return await createdTask.save();
+    } catch (error) {
+      if ((error?.message as string)?.includes('E11000')) {
+        throw new Error(`${createTaskDto.name} name is taken`);
+      }
+    }
   }
 
   async findAll(): Promise<Task[]> {

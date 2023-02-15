@@ -24,7 +24,7 @@
 
 	let tasks: ITask[];
 	$: if ($searchTerm) {
-		const searcher = new FuzzySearch(tasks, ['name'], {
+		const searcher = new FuzzySearch(tasks, ['name', 'fields.name'], {
 			caseSensitive: false
 		});
 		tasks = searcher.search($searchTerm);
@@ -37,11 +37,11 @@
 	<title>Dashboard</title>
 </svelte:head>
 
-<div class="flex w-full h-full flex-col lg:flex-row flex-wrap justify-center">
+<div class="flex w-full h-full flex-col lg:flex-row flex-wrap items-center justify-center p-4">
 	{#each tasks as task (task.name)}
 		<Task {task} />
 	{:else}
-		<div class="card w-96 bg-base-100 shadow-x">
+		<div class="card w-96 h-36 bg-base-100 shadow-x">
 			<div class="card-body items-center text-center">
 				<h2 class="card-title">No Task.</h2>
 				<div class="card-actions justify-end">

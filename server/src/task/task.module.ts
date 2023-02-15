@@ -5,12 +5,13 @@ import { TaskService } from './task.service';
 import { TaskController } from './task.controller';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { FieldController } from './field.controller';
+import { StreamsService } from 'src/streams/streams.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Task.name, schema: TaskSchema }]),
   ],
-  providers: [TaskService, ProfanityService],
+  providers: [TaskService, ProfanityService, StreamsService],
   controllers: [TaskController, FieldController],
 })
 export class TaskModule {}
