@@ -1,4 +1,10 @@
-import { Length, IsDefined, MinDate, IsObject } from 'class-validator';
+import {
+  Length,
+  IsDefined,
+  MinDate,
+  IsObject,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateTaskDto {
   @Length(3, 50)
@@ -11,6 +17,16 @@ export class CreateTaskDto {
 export class CreateFieldsDto {
   @IsDefined()
   fields: any;
+}
+export class AddFieldDto {
+  @IsNotEmpty()
+  taskName: string;
+
+  @IsNotEmpty()
+  fieldName: string;
+
+  @IsNotEmpty()
+  fieldValue: string;
 }
 
 export class UpdateTaskDto {

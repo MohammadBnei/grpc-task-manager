@@ -37,7 +37,7 @@
 	<title>Dashboard</title>
 </svelte:head>
 
-<div class="flex w-full flex-col lg:flex-row flex-wrap justify-center">
+<div class="flex w-full h-full flex-col lg:flex-row flex-wrap justify-center">
 	{#each tasks as task (task.name)}
 		<Task {task} />
 	{:else}

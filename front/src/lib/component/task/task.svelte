@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { sendUsage } from '$src/lib/service/usage';
-	import { EventType } from '$src/lib/stubs/task/v1beta/task';
+	import { EventType, Field } from '$src/lib/stubs/task/v1beta/task';
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';
 	import type { ITask } from '../../helper/taskDto';
@@ -9,8 +9,6 @@
 	import RemoveField from './RemoveField.svelte';
 
 	export let task: ITask;
-
-	$: fields = Object.entries(task.fields);
 
 	let showNewField = false;
 
@@ -24,22 +22,22 @@
 	class="card w-full lg:w-96 bg-base-100 shadow-xl m-1"
 	on:click|capture={() => sendUsage(EventType.CLICK, task.name)}
 >
-	<div class="card-body">
-		<h2 class="card-title">
+	<div class="card-body justify-between">
+		<h2 class="card-title justify-between">
 			{task.name}
 			<div class="badge badge-secondary">
 				<Time format="H:mm · D MMM YY" timestamp={task.dueDate} relative={$relativeDate} />
 			</div>
 		</h2>
 
-		<div class="stats stats-vertical shadow h-52">
-			{#each fields as field}
+		<div class="stats stats-vertical shadow">
+			{#each task.fields as {name, value} (name)}
 				<div class="flex justify-between items-center pr-2">
 					<div class="stat">
-						<div class="stat-desc">{field[0]}</div>
-						<div class="stat-title">{field[1]}</div>
+						<div class="stat-desc">{name}</div>
+						<div class="stat-title">{value}</div>
 					</div>
-					<RemoveField {task} fieldToRemove={field[0]} />
+					<RemoveField {task} fieldToRemove={name} />
 				</div>
 			{:else}
 				<div class="stat">

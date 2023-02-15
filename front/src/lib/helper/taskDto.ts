@@ -1,32 +1,27 @@
-import { Task } from '$lib/stubs/task/v1beta/task';
+import { FieldType, Task } from '$lib/stubs/task/v1beta/task';
 
 export interface ITask {
 	name: string;
-	fields: Record<string, unknown>;
+	fields: IField[];
 	dueDate: Date;
 }
 
+export interface IField {
+	name: string;
+	value: string;
+	type: FieldType;
+}
+
 export const toJson = (task: Task): ITask => {
-	try {
-		return {
-			name: task.name,
-			fields: JSON.parse(task.fields) || {},
-			dueDate: new Date(task.dueDate)
-		};
-	} catch (error) {
-		return {
-			name: task.name,
-			fields: {},
-			dueDate: new Date(task.dueDate)
-		};
-	}
+	return {
+		name: task.name,
+		fields: task.fields.map(({ name, value, type }) => ({ name, value, type })),
+		dueDate: new Date(task.dueDate)
+	};
 };
 
 export const toPb = (task: ITask) =>
 	Task.create({
-		name: task.name,
-		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toISOString(),
-		fields: JSON.stringify(task.fields || {})
+		...task,
+		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toISOString()
 	});
-
-

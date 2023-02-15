@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@buf/bneiconseil_taskmanagerapi.bufbuild_es': 1.0.0-20230215093621-e7633d08020b.1
   '@grpc/grpc-js': ^1.8.5
   '@grpc/proto-loader': ^0.7.4
   '@nestjs/cli': ^9.0.0
@@ -46,6 +47,7 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
+  '@buf/bneiconseil_taskmanagerapi.bufbuild_es': 1.0.0-20230215093621-e7633d08020b.1
   '@grpc/grpc-js': 1.8.5
   '@grpc/proto-loader': 0.7.4
   '@nestjs/common': 9.2.1_welcnyot5bzd5wa2aovbkxpi4i
@@ -1324,6 +1326,20 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@buf/bneiconseil_taskmanagerapi.bufbuild_es/1.0.0-20230215093621-e7633d08020b.1:
+    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/bneiconseil_taskmanagerapi.bufbuild_es/1.0.0-20230215093621-e7633d08020b.1/tarball}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.0.0
+    dependencies:
+      '@buf/googleapis_googleapis.bufbuild_es': 1.0.0-20221214150216-75b4300737fb.1
+    dev: false
+
+  /@buf/googleapis_googleapis.bufbuild_es/1.0.0-20221214150216-75b4300737fb.1:
+    resolution: {registry: https://buf.build/gen/npm/v1, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.bufbuild_es/1.0.0-20221214150216-75b4300737fb.1/tarball}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.0.0
+    dev: false
 
   /@colors/colors/1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
