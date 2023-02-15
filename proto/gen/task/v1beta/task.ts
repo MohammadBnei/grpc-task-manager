@@ -21,11 +21,9 @@ export interface Task {
      */
     name: string;
     /**
-     * @generated from protobuf field: map<string, task.v1beta.Field> fields = 2;
+     * @generated from protobuf field: repeated task.v1beta.Field fields = 2;
      */
-    fields: {
-        [key: string]: Field;
-    };
+    fields: Field[];
     /**
      * @generated from protobuf field: string due_date = 3;
      */
@@ -36,11 +34,15 @@ export interface Task {
  */
 export interface Field {
     /**
-     * @generated from protobuf field: string value = 1;
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * @generated from protobuf field: string value = 2;
      */
     value: string;
     /**
-     * @generated from protobuf field: task.v1beta.FieldType type = 2;
+     * @generated from protobuf field: task.v1beta.FieldType type = 3;
      */
     type: FieldType;
 }
@@ -259,12 +261,12 @@ class Task$Type extends MessageType<Task> {
     constructor() {
         super("task.v1beta.Task", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "fields", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => Field } },
+            { no: 2, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Field },
             { no: 3, name: "due_date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Task>): Task {
-        const message = { name: "", fields: {}, dueDate: "" };
+        const message = { name: "", fields: [], dueDate: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Task>(this, message, value);
@@ -278,8 +280,8 @@ class Task$Type extends MessageType<Task> {
                 case /* string name */ 1:
                     message.name = reader.string();
                     break;
-                case /* map<string, task.v1beta.Field> fields */ 2:
-                    this.binaryReadMap2(message.fields, reader, options);
+                case /* repeated task.v1beta.Field fields */ 2:
+                    message.fields.push(Field.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 case /* string due_date */ 3:
                     message.dueDate = reader.string();
@@ -295,33 +297,13 @@ class Task$Type extends MessageType<Task> {
         }
         return message;
     }
-    private binaryReadMap2(map: Task["fields"], reader: IBinaryReader, options: BinaryReadOptions): void {
-        let len = reader.uint32(), end = reader.pos + len, key: keyof Task["fields"] | undefined, val: Task["fields"][any] | undefined;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case 1:
-                    key = reader.string();
-                    break;
-                case 2:
-                    val = Field.internalBinaryRead(reader, reader.uint32(), options);
-                    break;
-                default: throw new globalThis.Error("unknown map entry field for field task.v1beta.Task.fields");
-            }
-        }
-        map[key ?? ""] = val ?? Field.create();
-    }
     internalBinaryWrite(message: Task, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string name = 1; */
         if (message.name !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* map<string, task.v1beta.Field> fields = 2; */
-        for (let k of Object.keys(message.fields)) {
-            writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
-            writer.tag(2, WireType.LengthDelimited).fork();
-            Field.internalBinaryWrite(message.fields[k], writer, options);
-            writer.join().join();
-        }
+        /* repeated task.v1beta.Field fields = 2; */
+        for (let i = 0; i < message.fields.length; i++)
+            Field.internalBinaryWrite(message.fields[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         /* string due_date = 3; */
         if (message.dueDate !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.dueDate);
@@ -339,12 +321,13 @@ export const Task = new Task$Type();
 class Field$Type extends MessageType<Field> {
     constructor() {
         super("task.v1beta.Field", [
-            { no: 1, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "type", kind: "enum", T: () => ["task.v1beta.FieldType", FieldType, "FIELD_TYPE_"] }
         ]);
     }
     create(value?: PartialMessage<Field>): Field {
-        const message = { value: "", type: 0 };
+        const message = { name: "", value: "", type: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Field>(this, message, value);
@@ -355,10 +338,13 @@ class Field$Type extends MessageType<Field> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string value */ 1:
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string value */ 2:
                     message.value = reader.string();
                     break;
-                case /* task.v1beta.FieldType type */ 2:
+                case /* task.v1beta.FieldType type */ 3:
                     message.type = reader.int32();
                     break;
                 default:
@@ -373,12 +359,15 @@ class Field$Type extends MessageType<Field> {
         return message;
     }
     internalBinaryWrite(message: Field, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string value = 1; */
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string value = 2; */
         if (message.value !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.value);
-        /* task.v1beta.FieldType type = 2; */
+            writer.tag(2, WireType.LengthDelimited).string(message.value);
+        /* task.v1beta.FieldType type = 3; */
         if (message.type !== 0)
-            writer.tag(2, WireType.Varint).int32(message.type);
+            writer.tag(3, WireType.Varint).int32(message.type);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
