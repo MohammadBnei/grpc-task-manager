@@ -11,12 +11,11 @@ import {
   Task,
   StreamTasksRequest,
   StreamTasksResponse,
-  AddFieldRequest,
   TaskResponse,
+  UpdateTaskRequest,
 } from '../stubs/task/v1beta/task';
 import { Observable, Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
-import { IFields } from './entity/task.schema';
 
 @Controller('task')
 export class TaskController {
@@ -28,40 +27,6 @@ export class TaskController {
     this.taskStream = new Subject<StreamTasksResponse>();
   }
 
-  private taskFieldToArray(fields: IFields) {
-    return [...fields.entries()].map(([name, { type, value }]) => ({
-      name,
-      value,
-      type,
-    }));
-  }
-
-  @GrpcMethod('TaskService')
-  async AddField(request: AddFieldRequest): Promise<TaskResponse> {
-    try {
-      const { fieldName, fieldValue } = request;
-      this.profanityService.checkStr(fieldName, fieldValue);
-
-      const uTask = await this.taskService.addField(request);
-
-      const pbTask = Task.create({
-        name: uTask.name,
-        fields: this.taskFieldToArray(uTask.fields) as any,
-        dueDate: uTask.dueDate.toISOString(),
-      });
-
-      this.taskStream.next({
-        eventType: 'update',
-        task: pbTask,
-      });
-
-      return { task: pbTask };
-    } catch (error) {
-      console.error(error);
-      throw new RpcException(error);
-    }
-  }
-
   @GrpcMethod('TaskService')
   async GetTask(request: GetTaskRequest): Promise<TaskResponse> {
     const name = request.name;
@@ -71,7 +36,7 @@ export class TaskController {
 
       const pbTask = Task.create({
         name: task.name,
-        fields: this.taskFieldToArray(task.fields),
+        fields: task.fieldsArray,
         dueDate: task.dueDate.toISOString(),
       });
 
@@ -91,7 +56,7 @@ export class TaskController {
         tasks: tasks.map((t) =>
           Task.create({
             name: t.name,
-            fields: this.taskFieldToArray(t.fields),
+            fields: t.fieldsArray,
             dueDate: t.dueDate.toISOString(),
           }),
         ),
@@ -119,7 +84,7 @@ export class TaskController {
           status: status.INVALID_ARGUMENT,
         });
 
-      this.profanityService.checkTask(nTask);
+      this.profanityService.checkTask(request.task);
 
       const task = await this.taskService.create(nTask);
       const pbTask = Task.create({
@@ -143,11 +108,11 @@ export class TaskController {
   // async UpdateTask(request: UpdateTaskRequest): Promise<TaskResponse> {
   //   try {
   //     const nTask = {
-  //       fields: request.task.fields && JSON.parse(request.task.fields),
+  //       fields: request.task.fields,
   //       dueDate: new Date(request.task.dueDate),
   //     };
 
-  //     this.profanityService.checkTask(nTask);
+  //     this.profanityService.checkTask(request.task);
 
   //     const task = await this.taskService.updateTask(
   //       { name: request.task.name },
@@ -155,7 +120,7 @@ export class TaskController {
   //     );
   //     const pbTask = Task.create({
   //       name: task.name,
-  //       fields: JSON.stringify(task.fields),
+  //       fields: task.fieldsArray,
   //       dueDate: task.dueDate.toISOString(),
   //     });
 
@@ -177,7 +142,7 @@ export class TaskController {
       const task = await this.taskService.deleteTask(request.name);
       const pbTask = Task.create({
         name: task.name,
-        fields: this.taskFieldToArray(task.fields),
+        fields: task.fieldsArray,
         dueDate: task.dueDate.toISOString(),
       });
 

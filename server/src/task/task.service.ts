@@ -1,9 +1,9 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Task, TaskDocument } from './entity/task.schema';
+import { FieldsArray, Task, TaskDocument } from './entity/task.schema';
 import { AddFieldDto, CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
-import { FieldType } from 'src/stubs/task/v1beta/task';
+import { Field, FieldType } from 'src/stubs/task/v1beta/task';
 
 @Injectable()
 export class TaskService {
@@ -28,13 +28,20 @@ export class TaskService {
     return task;
   }
 
-  async addField(data: AddFieldDto) {
-    const task = await this.find('', data.taskName);
+  async addField(taskName: string, ...fields: FieldsArray) {
+    const task = await this.find('', taskName);
 
-    task.set(`fields.${data.fieldName}`, {
-      fieldType: FieldType.STRING,
-      value: data.fieldValue,
-    });
+    task.fieldsArray = fields;
+
+    await task.save();
+
+    return task;
+  }
+
+  async deleteField(taskName: string, fieldName: string) {
+    const task = await this.find('', taskName);
+
+    task.fields.delete(fieldName);
 
     await task.save();
 
@@ -45,7 +52,7 @@ export class TaskService {
     { id, name }: { name?: string; id?: string },
     uTask: UpdateTaskDto,
   ): Promise<Task> {
-    let task;
+    let task: TaskDocument;
     if (id) {
       task = await this.taskModel.findById(id);
     } else {

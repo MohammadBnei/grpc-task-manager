@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ITask } from 'src/task/entity/task.dto';
+import { Task } from 'src/stubs/task/v1beta/task';
 import { profanity, changeMainLanguage } from 'super-profanity';
 
 interface ProfanityResult {
@@ -16,14 +16,12 @@ export class ProfanityService {
     this.profanity = profanity;
   }
 
-  checkTask(task: Partial<ITask>): void {
+  checkTask(task: Partial<Task>): void {
     let result: ProfanityResult = this.profanity(task.name || '');
     if (result.isBadWord) throw this.createError(result);
 
-    if (!task.fields) return;
-
-    for (const [key, value] of Object.entries(task.fields)) {
-      result = this.profanity(key);
+    for (const { name, value } of task.fields) {
+      result = this.profanity(name);
       if (result.isBadWord) throw this.createError(result);
 
       result = this.profanity(value);

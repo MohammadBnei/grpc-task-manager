@@ -1,5 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Schema as schema } from 'mongoose';
+import { HydratedDocument, Schema as schema, VirtualType } from 'mongoose';
 import { FieldType } from 'src/stubs/task/v1beta/task';
 
 export type TaskDocument = HydratedDocument<Task>;
@@ -22,7 +22,27 @@ export class Task {
 
   @Prop()
   dueDate: Date;
+
+  fieldsArray: FieldsArray;
 }
 
+export type FieldsArray = { type: FieldType; value: string; name: string }[];
 export type IFields = Map<string, { type: FieldType; value: string }>;
-export const TaskSchema = SchemaFactory.createForClass(Task);
+
+const TaskSchema = SchemaFactory.createForClass(Task);
+
+TaskSchema.virtual('fieldsArray')
+  .get(function (this: TaskDocument) {
+    return [...this.fields.entries()].map(([name, { type, value }]) => ({
+      name,
+      value,
+      type,
+    }));
+  })
+  .set(function (this: TaskDocument, fieldsArray: FieldsArray) {
+    for (const { name, type, value } of fieldsArray) {
+      this.fields.set(name, { type, value });
+    }
+  });
+
+export { TaskSchema };
