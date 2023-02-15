@@ -68,6 +68,19 @@ export interface AddFieldRequest {
     fieldType: FieldType;
 }
 /**
+ * @generated from protobuf message task.v1beta.RemoveFieldRequest
+ */
+export interface RemoveFieldRequest {
+    /**
+     * @generated from protobuf field: string task_name = 1;
+     */
+    taskName: string;
+    /**
+     * @generated from protobuf field: string field_name = 2;
+     */
+    fieldName: string;
+}
+/**
  * @generated from protobuf message task.v1beta.UsageRequest
  */
 export interface UsageRequest {
@@ -446,6 +459,60 @@ class AddFieldRequest$Type extends MessageType<AddFieldRequest> {
  * @generated MessageType for protobuf message task.v1beta.AddFieldRequest
  */
 export const AddFieldRequest = new AddFieldRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class RemoveFieldRequest$Type extends MessageType<RemoveFieldRequest> {
+    constructor() {
+        super("task.v1beta.RemoveFieldRequest", [
+            { no: 1, name: "task_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "field_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<RemoveFieldRequest>): RemoveFieldRequest {
+        const message = { taskName: "", fieldName: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<RemoveFieldRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RemoveFieldRequest): RemoveFieldRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string task_name */ 1:
+                    message.taskName = reader.string();
+                    break;
+                case /* string field_name */ 2:
+                    message.fieldName = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: RemoveFieldRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string task_name = 1; */
+        if (message.taskName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.taskName);
+        /* string field_name = 2; */
+        if (message.fieldName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.fieldName);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message task.v1beta.RemoveFieldRequest
+ */
+export const RemoveFieldRequest = new RemoveFieldRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UsageRequest$Type extends MessageType<UsageRequest> {
     constructor() {
@@ -1021,8 +1088,14 @@ export const TaskService = new ServiceType("task.v1beta.TaskService", [
     { name: "CreateTask", options: {}, I: CreateTaskRequest, O: TaskResponse },
     { name: "UpdateTask", options: {}, I: UpdateTaskRequest, O: TaskResponse },
     { name: "DeleteTask", options: {}, I: DeleteTaskRequest, O: TaskResponse },
-    { name: "AddField", options: {}, I: AddFieldRequest, O: TaskResponse },
     { name: "StreamTasks", serverStreaming: true, options: {}, I: StreamTasksRequest, O: StreamTasksResponse }
+]);
+/**
+ * @generated ServiceType for protobuf service task.v1beta.FieldService
+ */
+export const FieldService = new ServiceType("task.v1beta.FieldService", [
+    { name: "AddField", options: {}, I: AddFieldRequest, O: TaskResponse },
+    { name: "RemoveField", options: {}, I: RemoveFieldRequest, O: TaskResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service task.v1beta.UsageService

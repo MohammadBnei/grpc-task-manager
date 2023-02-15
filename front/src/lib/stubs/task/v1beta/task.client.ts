@@ -4,13 +4,15 @@
 import { UsageService } from "./task";
 import type { UsageResponse } from "./task";
 import type { UsageRequest } from "./task";
+import { FieldService } from "./task";
+import type { RemoveFieldRequest } from "./task";
+import type { AddFieldRequest } from "./task";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TaskService } from "./task";
 import type { StreamTasksResponse } from "./task";
 import type { StreamTasksRequest } from "./task";
 import type { ServerStreamingCall } from "@protobuf-ts/runtime-rpc";
-import type { AddFieldRequest } from "./task";
 import type { DeleteTaskRequest } from "./task";
 import type { UpdateTaskRequest } from "./task";
 import type { CreateTaskRequest } from "./task";
@@ -45,10 +47,6 @@ export interface ITaskServiceClient {
      * @generated from protobuf rpc: DeleteTask(task.v1beta.DeleteTaskRequest) returns (task.v1beta.TaskResponse);
      */
     deleteTask(input: DeleteTaskRequest, options?: RpcOptions): UnaryCall<DeleteTaskRequest, TaskResponse>;
-    /**
-     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
-     */
-    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse>;
     /**
      * @generated from protobuf rpc: StreamTasks(task.v1beta.StreamTasksRequest) returns (stream task.v1beta.StreamTasksResponse);
      */
@@ -99,18 +97,48 @@ export class TaskServiceClient implements ITaskServiceClient, ServiceInfo {
         return stackIntercept<DeleteTaskRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
-     */
-    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
-        return stackIntercept<AddFieldRequest, TaskResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
      * @generated from protobuf rpc: StreamTasks(task.v1beta.StreamTasksRequest) returns (stream task.v1beta.StreamTasksResponse);
      */
     streamTasks(input: StreamTasksRequest, options?: RpcOptions): ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> {
-        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<StreamTasksRequest, StreamTasksResponse>("serverStreaming", this._transport, method, opt, input);
+    }
+}
+/**
+ * @generated from protobuf service task.v1beta.FieldService
+ */
+export interface IFieldServiceClient {
+    /**
+     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse>;
+    /**
+     * @generated from protobuf rpc: RemoveField(task.v1beta.RemoveFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    removeField(input: RemoveFieldRequest, options?: RpcOptions): UnaryCall<RemoveFieldRequest, TaskResponse>;
+}
+/**
+ * @generated from protobuf service task.v1beta.FieldService
+ */
+export class FieldServiceClient implements IFieldServiceClient, ServiceInfo {
+    typeName = FieldService.typeName;
+    methods = FieldService.methods;
+    options = FieldService.options;
+    constructor(private readonly _transport: RpcTransport) {
+    }
+    /**
+     * @generated from protobuf rpc: AddField(task.v1beta.AddFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    addField(input: AddFieldRequest, options?: RpcOptions): UnaryCall<AddFieldRequest, TaskResponse> {
+        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AddFieldRequest, TaskResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: RemoveField(task.v1beta.RemoveFieldRequest) returns (task.v1beta.TaskResponse);
+     */
+    removeField(input: RemoveFieldRequest, options?: RpcOptions): UnaryCall<RemoveFieldRequest, TaskResponse> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<RemoveFieldRequest, TaskResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**
