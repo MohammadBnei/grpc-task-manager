@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
 
 @Controller('task')
-export class TaskController {
+export class FieldController {
   taskStream: Subject<StreamTasksResponse>;
   constructor(
     private taskService: TaskService,
@@ -27,10 +27,11 @@ export class TaskController {
       const { fieldName, fieldValue } = request;
       this.profanityService.checkStr(fieldName, fieldValue);
 
-      const uTask = await this.taskService.addField(
-        request.taskName,
-        request as any,
-      );
+      const uTask = await this.taskService.addField(request.taskName, {
+        name: request.fieldName,
+        value: request.fieldValue,
+        type: request.fieldType,
+      });
 
       const pbTask = Task.create({
         name: uTask.name,
