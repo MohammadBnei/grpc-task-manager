@@ -31,13 +31,15 @@
 	} else {
 		tasks = $taskStore;
 	}
+
+	const handleCreateTask = () => modal.open(NewTask as any)
 </script>
 
 <svelte:head>
 	<title>Dashboard</title>
 </svelte:head>
 
-<div class="flex w-full flex-row lg:flex-wrap items-center justify-center p-4 overflow-x-auto">
+<div class="flex w-full flex-wrap items-center justify-center p-4 overflow-x-auto">
 	{#each tasks as task (task.name)}
 		<Task {task} />
 	{:else}
@@ -45,7 +47,7 @@
 			<div class="card-body items-center text-center">
 				<h2 class="card-title">No Task.</h2>
 				<div class="card-actions justify-end">
-					<button class="btn btn-primary" on:click={() => modal.open(NewTask)}>Create Task</button>
+					<button class="btn btn-primary" on:click={handleCreateTask}>Create Task</button>
 				</div>
 			</div>
 		</div>

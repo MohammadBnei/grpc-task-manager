@@ -12,7 +12,7 @@ const createOpenModal = () => {
 		open: false
 	});
 
-	const open = (component: SvelteComponent, props: Record<string, any>) =>
+	const open = (component: SvelteComponent, props?: Record<string, any>) =>
 		modalComponent.set({
 			component,
 			open: true,
