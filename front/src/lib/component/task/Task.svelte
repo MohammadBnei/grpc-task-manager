@@ -19,10 +19,10 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="card w-full h-full lg:w-96 bg-base-100 shadow-xl"
+	class="card w-full h-[calc(100vh-8rem)] lg:min-h-[50rem] lg:w-96 bg-base-100 shadow-xl mx-2 my-1"
 	on:click|capture={() => sendUsage(EventType.CLICK, task.name)}
 >
-	<div class="card-body justify-between">
+	<div class="card-body justify-between h-full">
 		<h2 class="card-title justify-between">
 			<span class="text-3xl underline underline-offset-8">
 				{task.name}
@@ -32,7 +32,7 @@
 			</div>
 		</h2>
 
-		<div class="stats stats-vertical shadow pb-2 text-xl">
+		<div class="stats stats-vertical shadow pb-2 text-xl overflow-y-auto h-full">
 			{#each task.fields as { name, value } (name)}
 				<div class="flex justify-between items-center pr-2">
 					<div class="stat">
