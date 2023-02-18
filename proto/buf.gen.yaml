@@ -3,4 +3,6 @@ managed:
   enabled: true
 plugins:
   - plugin: buf.build/community/timostamm-protobuf-ts
-    out: gen
+    out: ../front/src/lib/stubs
+  - plugin: buf.build/community/timostamm-protobuf-ts
+    out: ../server/src/stubs

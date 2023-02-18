@@ -25,17 +25,9 @@ jobs:
           cd proto
           buf generate
 
-      - name: Update front stubs
-        run: |
-          rm -rf ./front/src/lib/stubs
-          cp -r ./proto/gen ./front/src/lib/stubs
-
       - name: Update server stubs and proto
         run: |
-          rm -rf ./server/src/proto
-          rm -rf ./server/src/stubs
           buf export buf.build/bneiconseil/taskmanagerapi -o ./server/src/proto
-          cp -r ./proto/gen ./server/src/stubs
 
       - name: Commit stubs
         run: |
