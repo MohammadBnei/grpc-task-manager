@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package user.v1alpha;
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message RegisterRequest {
+  string password = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+}
+
+message RegisterResponse {
+  User user = 1;
+}
+
+message UpdateRequest {
+  User user = 1;
+}
+
+message UpdateResponse {
+  User user = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {
+  User user = 1;
+}
+
+

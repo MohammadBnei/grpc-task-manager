@@ -1,5 +1,7 @@
 version: v1
 name: buf.build/bneiconseil/taskmanagerapi
+deps:
+  - buf.build/googleapis/googleapis
 breaking:
   use:
     - FILE

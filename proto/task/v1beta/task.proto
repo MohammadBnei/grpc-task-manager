@@ -6,6 +6,7 @@ message Task {
   string name = 1;
   repeated Field fields = 2;
   string due_date = 3;
+  bool done = 4;
 }
 
 message Field {
