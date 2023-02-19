@@ -2,7 +2,6 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { TaskService } from './task.service';
 import {
-  Task,
   AddFieldRequest,
   TaskResponse,
   RemoveFieldRequest,
@@ -30,11 +29,7 @@ export class FieldController {
         type: request.fieldType,
       });
 
-      const pbTask = Task.create({
-        name: uTask.name,
-        fields: uTask.fieldsArray,
-        dueDate: uTask.dueDate.toISOString(),
-      });
+      const pbTask = this.taskService.toTaskPb(uTask);
 
       this.streams.taskStream$.next({
         eventType: 'update',
@@ -55,11 +50,7 @@ export class FieldController {
 
       const uTask = await this.taskService.deleteField(taskName, fieldName);
 
-      const pbTask = Task.create({
-        name: uTask.name,
-        fields: uTask.fieldsArray,
-        dueDate: uTask.dueDate.toISOString(),
-      });
+      const pbTask = this.taskService.toTaskPb(uTask);
 
       this.streams.taskStream$.next({
         eventType: 'update',

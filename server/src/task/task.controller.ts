@@ -32,12 +32,7 @@ export class TaskController {
     try {
       const task = await this.taskService.find('', name);
 
-      const pbTask = Task.create({
-        name: task.name,
-        fields: task.fieldsArray,
-        dueDate: task.dueDate.toISOString(),
-        done: task.done,
-      });
+      const pbTask = this.taskService.toTaskPb(task);
 
       return { task: pbTask };
     } catch (error) {
@@ -52,14 +47,7 @@ export class TaskController {
       const tasks = await this.taskService.findAll();
 
       const listTasksResponse = ListTasksResponse.create({
-        tasks: tasks.map((t) =>
-          Task.create({
-            name: t.name,
-            fields: t.fieldsArray,
-            dueDate: t.dueDate.toISOString(),
-            done: t.done,
-          }),
-        ),
+        tasks: tasks.map(this.taskService.toTaskPb),
       });
 
       return listTasksResponse;
@@ -87,12 +75,7 @@ export class TaskController {
       this.profanityService.checkTask(request.task);
 
       const task = await this.taskService.create(nTask);
-      const pbTask = Task.create({
-        name: task.name,
-        dueDate: task.dueDate.toISOString(),
-        fields: task.fieldsArray,
-        done: task.done,
-      });
+      const pbTask = this.taskService.toTaskPb(task);
 
       this.streams.taskStream$.next({
         eventType: 'create',
@@ -142,12 +125,7 @@ export class TaskController {
   async DeleteTask(request: DeleteTaskRequest): Promise<TaskResponse> {
     try {
       const task = await this.taskService.deleteTask(request.name);
-      const pbTask = Task.create({
-        name: task.name,
-        fields: task.fieldsArray,
-        dueDate: task.dueDate.toISOString(),
-        done: task.done,
-      });
+      const pbTask = this.taskService.toTaskPb(task);
 
       this.streams.taskStream$.next({
         eventType: 'delete',

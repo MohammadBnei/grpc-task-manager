@@ -3,10 +3,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FieldsArray, Task, TaskDocument } from './entity/task.schema';
 import { CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
-
+import { Task as TaskPb } from '../stubs/task/v1beta/task';
 @Injectable()
 export class TaskService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
+
+  toTaskPb(task: Task): TaskPb {
+    return TaskPb.create({
+      name: task.name,
+      fields: task.fieldsArray,
+      dueDate: task.dueDate.toISOString(),
+      done: task.done,
+    });
+  }
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     try {
