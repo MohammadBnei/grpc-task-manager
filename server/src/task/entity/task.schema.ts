@@ -26,7 +26,7 @@ export class Task {
 
   fieldsArray: FieldsArray;
 
-  @Prop()
+  @Prop({ type: Boolean })
   done = false;
 }
 
