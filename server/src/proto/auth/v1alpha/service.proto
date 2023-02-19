@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package auth.v1alpha;
+
+option go_package = "stubs";
+
+import "auth/v1alpha/message.proto";
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+  rpc Validate(ValidateRequest) returns (ValidateResponse) {}
+}
