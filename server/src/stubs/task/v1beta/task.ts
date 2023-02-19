@@ -28,6 +28,10 @@ export interface Task {
      * @generated from protobuf field: string due_date = 3;
      */
     dueDate: string;
+    /**
+     * @generated from protobuf field: bool done = 4;
+     */
+    done: boolean;
 }
 /**
  * @generated from protobuf message task.v1beta.Field
@@ -288,11 +292,12 @@ class Task$Type extends MessageType<Task> {
         super("task.v1beta.Task", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Field },
-            { no: 3, name: "due_date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "due_date", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "done", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<Task>): Task {
-        const message = { name: "", fields: [], dueDate: "" };
+        const message = { name: "", fields: [], dueDate: "", done: false };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Task>(this, message, value);
@@ -311,6 +316,9 @@ class Task$Type extends MessageType<Task> {
                     break;
                 case /* string due_date */ 3:
                     message.dueDate = reader.string();
+                    break;
+                case /* bool done */ 4:
+                    message.done = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -333,6 +341,9 @@ class Task$Type extends MessageType<Task> {
         /* string due_date = 3; */
         if (message.dueDate !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.dueDate);
+        /* bool done = 4; */
+        if (message.done !== false)
+            writer.tag(4, WireType.Varint).bool(message.done);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
