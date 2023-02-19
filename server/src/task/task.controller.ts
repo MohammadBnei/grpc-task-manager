@@ -36,6 +36,7 @@ export class TaskController {
         name: task.name,
         fields: task.fieldsArray,
         dueDate: task.dueDate.toISOString(),
+        done: task.done,
       });
 
       return { task: pbTask };
@@ -56,6 +57,7 @@ export class TaskController {
             name: t.name,
             fields: t.fieldsArray,
             dueDate: t.dueDate.toISOString(),
+            done: t.done,
           }),
         ),
       });
@@ -88,6 +90,8 @@ export class TaskController {
       const pbTask = Task.create({
         name: task.name,
         dueDate: task.dueDate.toISOString(),
+        fields: task.fieldsArray,
+        done: task.done,
       });
 
       this.streams.taskStream$.next({
@@ -142,6 +146,7 @@ export class TaskController {
         name: task.name,
         fields: task.fieldsArray,
         dueDate: task.dueDate.toISOString(),
+        done: task.done,
       });
 
       this.streams.taskStream$.next({

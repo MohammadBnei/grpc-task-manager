@@ -25,6 +25,9 @@ export class Task {
   dueDate: Date;
 
   fieldsArray: FieldsArray;
+
+  @Prop()
+  done = false;
 }
 
 export type FieldsArray = { type: FieldType; value: string; name: string }[];
