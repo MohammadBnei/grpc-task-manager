@@ -129,6 +129,36 @@ export interface UpdatePasswordResponse {
      */
     user?: User;
 }
+/**
+ * @generated from protobuf message user.v1alpha.FindRequest
+ */
+export interface FindRequest {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string first_name = 2;
+     */
+    firstName: string;
+    /**
+     * @generated from protobuf field: string last_name = 3;
+     */
+    lastName: string;
+    /**
+     * @generated from protobuf field: string email = 4;
+     */
+    email: string;
+}
+/**
+ * @generated from protobuf message user.v1alpha.FindResponse
+ */
+export interface FindResponse {
+    /**
+     * @generated from protobuf field: repeated user.v1alpha.User user = 1;
+     */
+    user: User[];
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class User$Type extends MessageType<User> {
     constructor() {
@@ -615,3 +645,118 @@ class UpdatePasswordResponse$Type extends MessageType<UpdatePasswordResponse> {
  * @generated MessageType for protobuf message user.v1alpha.UpdatePasswordResponse
  */
 export const UpdatePasswordResponse = new UpdatePasswordResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FindRequest$Type extends MessageType<FindRequest> {
+    constructor() {
+        super("user.v1alpha.FindRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "first_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "last_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<FindRequest>): FindRequest {
+        const message = { id: "", firstName: "", lastName: "", email: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<FindRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FindRequest): FindRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string first_name */ 2:
+                    message.firstName = reader.string();
+                    break;
+                case /* string last_name */ 3:
+                    message.lastName = reader.string();
+                    break;
+                case /* string email */ 4:
+                    message.email = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FindRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string first_name = 2; */
+        if (message.firstName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.firstName);
+        /* string last_name = 3; */
+        if (message.lastName !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.lastName);
+        /* string email = 4; */
+        if (message.email !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.email);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.FindRequest
+ */
+export const FindRequest = new FindRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FindResponse$Type extends MessageType<FindResponse> {
+    constructor() {
+        super("user.v1alpha.FindResponse", [
+            { no: 1, name: "user", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => User }
+        ]);
+    }
+    create(value?: PartialMessage<FindResponse>): FindResponse {
+        const message = { user: [] };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<FindResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FindResponse): FindResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated user.v1alpha.User user */ 1:
+                    message.user.push(User.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FindResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated user.v1alpha.User user = 1; */
+        for (let i = 0; i < message.user.length; i++)
+            User.internalBinaryWrite(message.user[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.FindResponse
+ */
+export const FindResponse = new FindResponse$Type();
