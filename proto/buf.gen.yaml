@@ -5,4 +5,6 @@ plugins:
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../front/src/lib/stubs
   - plugin: buf.build/community/timostamm-protobuf-ts
-    out: ../server/src/stubs
+    out: ../task-api/src/stubs
+  - plugin: buf.build/community/timostamm-protobuf-ts
+    out: ../user-api/src/stubs

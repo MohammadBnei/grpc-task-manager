@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package user.v1alpha;
 
-option go_package = "stubs";
-
 import "google/protobuf/timestamp.proto";
 import "user/v1alpha/message.proto";
 
+option go_package = "stubs";
+
 service UserService {
   rpc Register(RegisterRequest) returns (RegisterResponse);
-  rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Delete (DeleteRequest) returns (DeleteResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
-

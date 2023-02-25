@@ -9,18 +9,26 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: task
 
-  server:
-    build: server
-    environment:
-      - PROTO_FILE=proto/task/v1beta/task.proto
-      - MONGO_URL=mongodb://root:task@mongo
-      - insecure=true
+  mariadb:
+    image: mariadb
     ports:
-      - 4000:4000
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: passwd
+      MARIADB_DATABASE: user
 
-  front:
-    build: front
-    environment:
-      - SERVER=server:4000
-    ports:
-      - 3000:3000
+  # server:
+  #   build: server
+  #   environment:
+  #     - PROTO_FILE=proto/task/v1beta/task.proto
+  #     - MONGO_URL=mongodb://root:task@mongo
+  #     - insecure=true
+  #   ports:
+  #     - 4000:4000
+
+  # front:
+  #   build: front
+  #   environment:
+  #     - SERVER=server:4000
+  #   ports:
+  #     - 3000:3000

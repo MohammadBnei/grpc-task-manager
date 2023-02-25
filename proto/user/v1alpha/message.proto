@@ -41,4 +41,13 @@ message DeleteResponse {
   User user = 1;
 }
 
+message UpdatePasswordRequest {
+  string id = 1;
+  string password = 2;
+}
+
+message UpdatePasswordResponse {
+  User user = 1;
+}
+
 
