@@ -3,6 +3,8 @@
 // tslint:disable
 import { DeleteResponse } from "./message";
 import { DeleteRequest } from "./message";
+import { UpdatePasswordResponse } from "./message";
+import { UpdatePasswordRequest } from "./message";
 import { UpdateResponse } from "./message";
 import { UpdateRequest } from "./message";
 import { RegisterResponse } from "./message";
@@ -14,5 +16,6 @@ import { ServiceType } from "@protobuf-ts/runtime-rpc";
 export const UserService = new ServiceType("user.v1alpha.UserService", [
     { name: "Register", options: {}, I: RegisterRequest, O: RegisterResponse },
     { name: "Update", options: {}, I: UpdateRequest, O: UpdateResponse },
+    { name: "UpdatePassword", options: {}, I: UpdatePasswordRequest, O: UpdatePasswordResponse },
     { name: "Delete", options: {}, I: DeleteRequest, O: DeleteResponse }
 ]);

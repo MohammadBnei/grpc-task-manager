@@ -6,6 +6,8 @@ import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { UserService } from "./service";
 import type { DeleteResponse } from "./message";
 import type { DeleteRequest } from "./message";
+import type { UpdatePasswordResponse } from "./message";
+import type { UpdatePasswordRequest } from "./message";
 import type { UpdateResponse } from "./message";
 import type { UpdateRequest } from "./message";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
@@ -25,6 +27,10 @@ export interface IUserServiceClient {
      * @generated from protobuf rpc: Update(user.v1alpha.UpdateRequest) returns (user.v1alpha.UpdateResponse);
      */
     update(input: UpdateRequest, options?: RpcOptions): UnaryCall<UpdateRequest, UpdateResponse>;
+    /**
+     * @generated from protobuf rpc: UpdatePassword(user.v1alpha.UpdatePasswordRequest) returns (user.v1alpha.UpdatePasswordResponse);
+     */
+    updatePassword(input: UpdatePasswordRequest, options?: RpcOptions): UnaryCall<UpdatePasswordRequest, UpdatePasswordResponse>;
     /**
      * @generated from protobuf rpc: Delete(user.v1alpha.DeleteRequest) returns (user.v1alpha.DeleteResponse);
      */
@@ -54,10 +60,17 @@ export class UserServiceClient implements IUserServiceClient, ServiceInfo {
         return stackIntercept<UpdateRequest, UpdateResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: UpdatePassword(user.v1alpha.UpdatePasswordRequest) returns (user.v1alpha.UpdatePasswordResponse);
+     */
+    updatePassword(input: UpdatePasswordRequest, options?: RpcOptions): UnaryCall<UpdatePasswordRequest, UpdatePasswordResponse> {
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UpdatePasswordRequest, UpdatePasswordResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * @generated from protobuf rpc: Delete(user.v1alpha.DeleteRequest) returns (user.v1alpha.DeleteResponse);
      */
     delete(input: DeleteRequest, options?: RpcOptions): UnaryCall<DeleteRequest, DeleteResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteRequest, DeleteResponse>("unary", this._transport, method, opt, input);
     }
 }
