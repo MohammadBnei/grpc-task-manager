@@ -40,6 +40,31 @@ export interface LoginResponse {
      * @generated from protobuf field: string jwt = 2;
      */
     jwt: string;
+    /**
+     * @generated from protobuf field: auth.v1alpha.LoginResponse.STATUS status = 3;
+     */
+    status: LoginResponse_STATUS;
+}
+/**
+ * @generated from protobuf enum auth.v1alpha.LoginResponse.STATUS
+ */
+export enum LoginResponse_STATUS {
+    /**
+     * @generated from protobuf enum value: OK = 0;
+     */
+    OK = 0,
+    /**
+     * @generated from protobuf enum value: WRONG_PASSWORD = 1;
+     */
+    WRONG_PASSWORD = 1,
+    /**
+     * @generated from protobuf enum value: NOT_FOUND = 2;
+     */
+    NOT_FOUND = 2,
+    /**
+     * @generated from protobuf enum value: INTERNAL = 3;
+     */
+    INTERNAL = 3
 }
 /**
  * @generated from protobuf message auth.v1alpha.RefreshTokenRequest
@@ -155,11 +180,12 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
     constructor() {
         super("auth.v1alpha.LoginResponse", [
             { no: 1, name: "refresh_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "status", kind: "enum", T: () => ["auth.v1alpha.LoginResponse.STATUS", LoginResponse_STATUS] }
         ]);
     }
     create(value?: PartialMessage<LoginResponse>): LoginResponse {
-        const message = { refreshToken: "", jwt: "" };
+        const message = { refreshToken: "", jwt: "", status: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<LoginResponse>(this, message, value);
@@ -175,6 +201,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
                     break;
                 case /* string jwt */ 2:
                     message.jwt = reader.string();
+                    break;
+                case /* auth.v1alpha.LoginResponse.STATUS status */ 3:
+                    message.status = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -194,6 +223,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
         /* string jwt = 2; */
         if (message.jwt !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.jwt);
+        /* auth.v1alpha.LoginResponse.STATUS status = 3; */
+        if (message.status !== 0)
+            writer.tag(3, WireType.Varint).int32(message.status);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
