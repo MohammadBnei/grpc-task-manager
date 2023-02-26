@@ -22,6 +22,7 @@ specifiers:
   '@prisma/client': ^4.10.1
   '@protobuf-ts/runtime': ^2.8.2
   '@protobuf-ts/runtime-rpc': ^2.8.2
+  '@types/bcrypt': ^5.0.0
   '@types/express': ^4.17.13
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
@@ -33,6 +34,7 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   jest: 29.3.1
+  nestjs-grpc-reflection: ^0.0.21
   nestjs-otel: ^5.0.0
   nestjs-pino: ^3.1.2
   pino-http: ^8.3.3
@@ -68,6 +70,7 @@ dependencies:
   '@protobuf-ts/runtime': 2.8.2
   '@protobuf-ts/runtime-rpc': 2.8.2
   bcrypt: 5.1.0
+  nestjs-grpc-reflection: 0.0.21_bziy7jhqae4ompa472jpqtrble
   nestjs-otel: 5.0.0_77foi4w27ghy47yutmnzv7krjy
   nestjs-pino: 3.1.2_atacoy3e24brwbzjtinj7jrj3e
   pino-http: 8.3.3
@@ -78,6 +81,7 @@ devDependencies:
   '@nestjs/cli': 9.2.0
   '@nestjs/schematics': 9.0.4_typescript@4.9.5
   '@nestjs/testing': 9.3.9_cxzk3mfpwtv2pzfdoj4lpmi7pa
+  '@types/bcrypt': 5.0.0
   '@types/express': 4.17.17
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
@@ -3026,6 +3030,12 @@ packages:
       '@babel/types': 7.21.2
     dev: true
 
+  /@types/bcrypt/5.0.0:
+    resolution: {integrity: sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: true
+
   /@types/bluebird/3.5.38:
     resolution: {integrity: sha512-yR/Kxc0dd4FfwtEoLZMoqJbM/VE/W7hXn/MIjb+axcwag0iFmSPK7OBUZq1YWLynJUoWQkfUrI7T0HDqGApNSg==}
     dev: false
@@ -5016,6 +5026,10 @@ packages:
       slash: 3.0.0
     dev: true
 
+  /google-protobuf/3.21.2:
+    resolution: {integrity: sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==}
+    dev: false
+
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
     dev: true
@@ -6104,6 +6118,27 @@ packages:
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
+
+  /nestjs-grpc-reflection/0.0.21_bziy7jhqae4ompa472jpqtrble:
+    resolution: {integrity: sha512-sZZvj4psBtfc/0Mu6JGzue86MIDGtuTpuvQU3N/D2uqL0LlafPIi6tLiJyf5xBKDjdhm7rLPj5Xn+SBU921RIQ==}
+    peerDependencies:
+      '@grpc/grpc-js': '>=1.5.4'
+      '@grpc/proto-loader': '>=0.6.9'
+      '@nestjs/common': '>=8.0.0'
+      '@nestjs/core': '>=8.0.0'
+      '@nestjs/microservices': '>=8.0.0'
+    dependencies:
+      '@grpc/grpc-js': 1.8.11
+      '@grpc/proto-loader': 0.7.5
+      '@nestjs/common': 9.3.9_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/core': 9.3.9_2gy3ue5x42wrsmq2vmyf6yjc3m
+      '@nestjs/microservices': 9.3.9_24tx2i2qxxh4fmnj7x3kin6mwi
+      google-protobuf: 3.21.2
+      protobufjs: 7.2.2
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.0
+      ts-case-convert: 2.0.2
+    dev: false
 
   /nestjs-otel/5.0.0_77foi4w27ghy47yutmnzv7krjy:
     resolution: {integrity: sha512-ZAyNrjwpEUDH97JdYTnfeCTdHpYoeKuiq8BKugxj7geWr64krO1aCKihdcS/sJhC+uqB6Fdc/C7w8xfwfhEUXw==}
@@ -7200,6 +7235,10 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
     dev: true
+
+  /ts-case-convert/2.0.2:
+    resolution: {integrity: sha512-vdKfx1VAdpvEBOBv5OpVu5ZFqRg9HdTI4sYt6qqMeICBeNyXvitrarCnFWNDAki51IKwCyx+ZssY46Q9jH5otA==}
+    dev: false
 
   /ts-jest/29.0.3_hfbqr3rujuziiw7lzul6vua4r4:
     resolution: {integrity: sha512-Ibygvmuyq1qp/z3yTh9QTwVVAbFdDy/+4BtIQR2sp6baF2SJU/8CKK/hhnGIDY2L90Az2jIqTwZPnN2p+BweiQ==}

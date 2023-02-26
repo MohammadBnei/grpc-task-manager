@@ -19,22 +19,32 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
     this.$use(async (params, next) => {
       const result = await next(params);
-      if (params?.model === 'User' && params?.args?.select?.password !== true) {
-        delete result.password;
-      }
-      result.id = result.id + '';
-      result.createdAt = Timestamp.fromDate(result.createdAt);
-      result.createdAt = {
-        nanos: result.createdAt.nanos,
-        seconds: result.createdAt.seconds + '',
-      };
-      result.updatedAt = Timestamp.fromDate(result.updatedAt);
-      result.updatedAt = {
-        nanos: result.updatedAt.nanos,
-        seconds: result.updatedAt.seconds + '',
-      };
+      const mapToTimestamp = (result) => {
+        if (
+          params?.model === 'User' &&
+          params?.args?.select?.password !== true
+        ) {
+          delete result.password;
+        }
+        result.id = result.id + '';
 
-      return result;
+        result.createdAt = Timestamp.fromDate(result.createdAt);
+        result.createdAt = {
+          nanos: result.createdAt.nanos,
+          seconds: result.createdAt.seconds + '',
+        };
+        result.updatedAt = Timestamp.fromDate(result.updatedAt);
+        result.updatedAt = {
+          nanos: result.updatedAt.nanos,
+          seconds: result.updatedAt.seconds + '',
+        };
+
+        return result;
+      };
+      if (result.length) {
+        return result.map(mapToTimestamp);
+      }
+      return mapToTimestamp(result);
     });
   }
 

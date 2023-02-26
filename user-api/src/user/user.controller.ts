@@ -2,12 +2,15 @@ import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import {
+  CheckPasswordRequest,
+  CheckPasswordResponse,
   FindRequest,
   FindResponse,
   RegisterRequest,
   RegisterResponse,
   UpdateRequest,
   UpdateResponse,
+  CheckPasswordResponse_STATUS,
 } from 'src/stubs/user/v1alpha/message';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 
@@ -64,6 +67,33 @@ export class UserController {
       });
 
       return { user: user as any };
+    } catch (error) {
+      this.handlePrismaErr(error);
+    }
+  }
+
+  @Span()
+  @GrpcMethod('UserService')
+  async CheckPassword(
+    req: CheckPasswordRequest,
+  ): Promise<CheckPasswordResponse> {
+    try {
+      const user = await this.userService.checkPassword(
+        req.email,
+        req.password,
+      );
+
+      if (user) {
+        console.log({ user });
+        return CheckPasswordResponse.create({
+          user: user as any,
+          status: CheckPasswordResponse_STATUS.OK,
+        });
+      }
+
+      return CheckPasswordResponse.create({
+        status: CheckPasswordResponse_STATUS.WRONG_PASSWORD,
+      });
     } catch (error) {
       this.handlePrismaErr(error);
     }

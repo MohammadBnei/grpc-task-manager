@@ -5,6 +5,8 @@ import { UserModule } from './user/user.module';
 import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
+import grpcOption from './grpcOption';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
         }),
       ) as any,
     }),
+    GrpcReflectionModule.register(grpcOption),
     UserModule,
   ],
   providers: [AppService, PrismaService],
