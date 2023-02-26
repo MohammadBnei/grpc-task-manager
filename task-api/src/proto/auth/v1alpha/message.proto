@@ -11,6 +11,13 @@ message LoginRequest {
 message LoginResponse {
   string refresh_token = 1;
   string jwt = 2;
+  enum STATUS {
+    OK = 0;
+    WRONG_PASSWORD = 1;
+    NOT_FOUND = 2;
+    INTERNAL = 3;
+  }
+  STATUS status = 3;
 }
 
 message RefreshTokenRequest {
@@ -31,4 +38,3 @@ message ValidateResponse {
   string refresh_token = 1;
   string jwt = 2;
 }
-
