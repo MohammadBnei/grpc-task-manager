@@ -190,17 +190,21 @@ export interface CheckPasswordResponse {
  */
 export enum CheckPasswordResponse_STATUS {
     /**
-     * @generated from protobuf enum value: NOT_FOUND = 0;
+     * @generated from protobuf enum value: OK = 0;
      */
-    NOT_FOUND = 0,
+    OK = 0,
     /**
      * @generated from protobuf enum value: WRONG_PASSWORD = 1;
      */
     WRONG_PASSWORD = 1,
     /**
-     * @generated from protobuf enum value: INTERNAL = 2;
+     * @generated from protobuf enum value: NOT_FOUND = 2;
      */
-    INTERNAL = 2
+    NOT_FOUND = 2,
+    /**
+     * @generated from protobuf enum value: INTERNAL = 3;
+     */
+    INTERNAL = 3
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class User$Type extends MessageType<User> {

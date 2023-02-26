@@ -66,9 +66,10 @@ message CheckPasswordRequest {
 
 message CheckPasswordResponse {
   enum STATUS {
-    NOT_FOUND = 0;
+    OK = 0;
     WRONG_PASSWORD = 1;
-    INTERNAL = 2;
+    NOT_FOUND = 2;
+    INTERNAL = 3;
   }
   STATUS status = 1;
   User user = 2;
