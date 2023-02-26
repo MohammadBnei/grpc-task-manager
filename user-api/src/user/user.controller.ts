@@ -61,13 +61,9 @@ export class UserController {
       delete req.user.updatedAt;
 
       const user = await this.userService.updateUser({
-        where: req.user.id
-          ? {
-              id: +req.user.id,
-            }
-          : {
-              email: req.user.email,
-            },
+        where: {
+          id: +req.user.id,
+        },
         data: req.user as any,
       });
 
