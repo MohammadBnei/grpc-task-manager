@@ -35,6 +35,7 @@ jobs:
         run: |
           buf export buf.build/bneiconseil/taskmanagerapi -o ./task-api/src/proto
           buf export buf.build/bneiconseil/taskmanagerapi -o ./user-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./auth-api/src/proto
 
       - name: Commit stubs
         run: |

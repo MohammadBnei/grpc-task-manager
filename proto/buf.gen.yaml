@@ -8,3 +8,5 @@ plugins:
     out: ../task-api/src/stubs
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../user-api/src/stubs
+  - plugin: buf.build/community/timostamm-protobuf-ts
+    out: ../auth-api/src/stubs
