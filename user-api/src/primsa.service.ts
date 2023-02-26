@@ -1,6 +1,7 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { Timestamp } from './stubs/google/protobuf/timestamp';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -21,6 +22,18 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       if (params?.model === 'User' && params?.args?.select?.password !== true) {
         delete result.password;
       }
+      result.id = result.id + '';
+      result.createdAt = Timestamp.fromDate(result.createdAt);
+      result.createdAt = {
+        nanos: result.createdAt.nanos,
+        seconds: result.createdAt.seconds + '',
+      };
+      result.updatedAt = Timestamp.fromDate(result.updatedAt);
+      result.updatedAt = {
+        nanos: result.updatedAt.nanos,
+        seconds: result.updatedAt.seconds + '',
+      };
+
       return result;
     });
   }

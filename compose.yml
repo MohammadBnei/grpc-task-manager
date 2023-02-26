@@ -17,6 +17,15 @@ services:
       MARIADB_ROOT_PASSWORD: passwd
       MARIADB_DATABASE: user
 
+  tracing:
+    image: openzipkin/zipkin
+    environment:
+      - STORAGE_TYPE=mem
+      # Point the zipkin at the storage backend
+      - MYSQL_HOST=mysql
+    ports:
+      - 9411:9411 
+
   # server:
   #   build: server
   #   environment:
