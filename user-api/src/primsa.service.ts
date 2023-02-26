@@ -8,7 +8,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super();
     this.$use(async (params, next) => {
-      if (params.model === 'User' && params.action == 'create') {
+      if (
+        params.model === 'User' &&
+        ['create', 'update'].includes(params.action)
+      ) {
         const user = params.args.data;
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(user.password, salt);
@@ -41,7 +44,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
         return result;
       };
-      if (result.length) {
+      if (!result) {
+        return result;
+      }
+      if (result?.length > -1) {
         return result.map(mapToTimestamp);
       }
       return mapToTimestamp(result);

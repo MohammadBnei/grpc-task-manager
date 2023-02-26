@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../primsa.service';
 import * as bcrypt from 'bcrypt';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 
 @Injectable()
 export class UserService {
@@ -68,6 +70,13 @@ export class UserService {
         password: true,
       },
     });
+
+    if (!user) {
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `${email} not found`,
+      });
+    }
 
     const match = await bcrypt.compare(password, user.password);
 

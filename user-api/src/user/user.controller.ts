@@ -11,6 +11,10 @@ import {
   UpdateRequest,
   UpdateResponse,
   CheckPasswordResponse_STATUS,
+  DeleteRequest,
+  DeleteResponse,
+  UpdatePasswordRequest,
+  UpdatePasswordResponse,
 } from 'src/stubs/user/v1alpha/message';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 
@@ -20,7 +24,8 @@ export class UserController {
 
   handlePrismaErr(err: Error) {
     console.error(err);
-    throw new RpcException(err);
+    if (err instanceof RpcException) throw err;
+    else throw new RpcException(err);
   }
 
   @Span('Register')
@@ -99,13 +104,25 @@ export class UserController {
     }
   }
 
-  // @GrpcMethod('UserService')
-  // UpdatePassword(updateUserDto: UpdateUserDto): Promise<RegisterResponse> {
-  //   return this.userService.updateUser(updateUserDto.id, updateUserDto);
-  // }
+  @GrpcMethod('UserService')
+  async UpdatePassword(
+    req: UpdatePasswordRequest,
+  ): Promise<UpdatePasswordResponse> {
+    const user = await this.userService.updateUser({
+      where: { id: +req.id },
+      data: {
+        password: req.password,
+      },
+    });
+    return { user: user as any };
+  }
 
-  // @GrpcMethod('UserService')
-  // Delete(id: number): Promise<RegisterResponse> {
-  //   return this.userService.remove(id);
-  // }
+  @GrpcMethod('UserService')
+  async Delete(req: DeleteRequest): Promise<DeleteResponse> {
+    const user = await this.userService.deleteUser({
+      id: +req.id,
+    });
+
+    return { user: user as any };
+  }
 }
