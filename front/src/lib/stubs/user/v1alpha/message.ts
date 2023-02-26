@@ -159,6 +159,49 @@ export interface FindResponse {
      */
     user: User[];
 }
+/**
+ * @generated from protobuf message user.v1alpha.CheckPasswordRequest
+ */
+export interface CheckPasswordRequest {
+    /**
+     * @generated from protobuf field: string email = 1;
+     */
+    email: string;
+    /**
+     * @generated from protobuf field: string password = 2;
+     */
+    password: string;
+}
+/**
+ * @generated from protobuf message user.v1alpha.CheckPasswordResponse
+ */
+export interface CheckPasswordResponse {
+    /**
+     * @generated from protobuf field: user.v1alpha.CheckPasswordResponse.STATUS status = 1;
+     */
+    status: CheckPasswordResponse_STATUS;
+    /**
+     * @generated from protobuf field: user.v1alpha.User user = 2;
+     */
+    user?: User;
+}
+/**
+ * @generated from protobuf enum user.v1alpha.CheckPasswordResponse.STATUS
+ */
+export enum CheckPasswordResponse_STATUS {
+    /**
+     * @generated from protobuf enum value: NOT_FOUND = 0;
+     */
+    NOT_FOUND = 0,
+    /**
+     * @generated from protobuf enum value: WRONG_PASSWORD = 1;
+     */
+    WRONG_PASSWORD = 1,
+    /**
+     * @generated from protobuf enum value: INTERNAL = 2;
+     */
+    INTERNAL = 2
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class User$Type extends MessageType<User> {
     constructor() {
@@ -760,3 +803,111 @@ class FindResponse$Type extends MessageType<FindResponse> {
  * @generated MessageType for protobuf message user.v1alpha.FindResponse
  */
 export const FindResponse = new FindResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CheckPasswordRequest$Type extends MessageType<CheckPasswordRequest> {
+    constructor() {
+        super("user.v1alpha.CheckPasswordRequest", [
+            { no: 1, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CheckPasswordRequest>): CheckPasswordRequest {
+        const message = { email: "", password: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<CheckPasswordRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CheckPasswordRequest): CheckPasswordRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string email */ 1:
+                    message.email = reader.string();
+                    break;
+                case /* string password */ 2:
+                    message.password = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CheckPasswordRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string email = 1; */
+        if (message.email !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.email);
+        /* string password = 2; */
+        if (message.password !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.password);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.CheckPasswordRequest
+ */
+export const CheckPasswordRequest = new CheckPasswordRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CheckPasswordResponse$Type extends MessageType<CheckPasswordResponse> {
+    constructor() {
+        super("user.v1alpha.CheckPasswordResponse", [
+            { no: 1, name: "status", kind: "enum", T: () => ["user.v1alpha.CheckPasswordResponse.STATUS", CheckPasswordResponse_STATUS] },
+            { no: 2, name: "user", kind: "message", T: () => User }
+        ]);
+    }
+    create(value?: PartialMessage<CheckPasswordResponse>): CheckPasswordResponse {
+        const message = { status: 0 };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<CheckPasswordResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CheckPasswordResponse): CheckPasswordResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* user.v1alpha.CheckPasswordResponse.STATUS status */ 1:
+                    message.status = reader.int32();
+                    break;
+                case /* user.v1alpha.User user */ 2:
+                    message.user = User.internalBinaryRead(reader, reader.uint32(), options, message.user);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CheckPasswordResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* user.v1alpha.CheckPasswordResponse.STATUS status = 1; */
+        if (message.status !== 0)
+            writer.tag(1, WireType.Varint).int32(message.status);
+        /* user.v1alpha.User user = 2; */
+        if (message.user)
+            User.internalBinaryWrite(message.user, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.CheckPasswordResponse
+ */
+export const CheckPasswordResponse = new CheckPasswordResponse$Type();

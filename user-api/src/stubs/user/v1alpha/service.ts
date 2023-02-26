@@ -9,6 +9,8 @@ import { UpdateResponse } from "./message";
 import { UpdateRequest } from "./message";
 import { RegisterResponse } from "./message";
 import { RegisterRequest } from "./message";
+import { CheckPasswordResponse } from "./message";
+import { CheckPasswordRequest } from "./message";
 import { FindResponse } from "./message";
 import { FindRequest } from "./message";
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
@@ -17,6 +19,7 @@ import { ServiceType } from "@protobuf-ts/runtime-rpc";
  */
 export const UserService = new ServiceType("user.v1alpha.UserService", [
     { name: "Find", options: {}, I: FindRequest, O: FindResponse },
+    { name: "CheckPassword", options: {}, I: CheckPasswordRequest, O: CheckPasswordResponse },
     { name: "Register", options: {}, I: RegisterRequest, O: RegisterResponse },
     { name: "Update", options: {}, I: UpdateRequest, O: UpdateResponse },
     { name: "UpdatePassword", options: {}, I: UpdatePasswordRequest, O: UpdatePasswordResponse },

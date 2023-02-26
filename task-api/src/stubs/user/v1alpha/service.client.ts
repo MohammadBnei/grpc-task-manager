@@ -12,6 +12,8 @@ import type { UpdateResponse } from "./message";
 import type { UpdateRequest } from "./message";
 import type { RegisterResponse } from "./message";
 import type { RegisterRequest } from "./message";
+import type { CheckPasswordResponse } from "./message";
+import type { CheckPasswordRequest } from "./message";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { FindResponse } from "./message";
 import type { FindRequest } from "./message";
@@ -25,6 +27,10 @@ export interface IUserServiceClient {
      * @generated from protobuf rpc: Find(user.v1alpha.FindRequest) returns (user.v1alpha.FindResponse);
      */
     find(input: FindRequest, options?: RpcOptions): UnaryCall<FindRequest, FindResponse>;
+    /**
+     * @generated from protobuf rpc: CheckPassword(user.v1alpha.CheckPasswordRequest) returns (user.v1alpha.CheckPasswordResponse);
+     */
+    checkPassword(input: CheckPasswordRequest, options?: RpcOptions): UnaryCall<CheckPasswordRequest, CheckPasswordResponse>;
     /**
      * @generated from protobuf rpc: Register(user.v1alpha.RegisterRequest) returns (user.v1alpha.RegisterResponse);
      */
@@ -59,31 +65,38 @@ export class UserServiceClient implements IUserServiceClient, ServiceInfo {
         return stackIntercept<FindRequest, FindResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: CheckPassword(user.v1alpha.CheckPasswordRequest) returns (user.v1alpha.CheckPasswordResponse);
+     */
+    checkPassword(input: CheckPasswordRequest, options?: RpcOptions): UnaryCall<CheckPasswordRequest, CheckPasswordResponse> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<CheckPasswordRequest, CheckPasswordResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * @generated from protobuf rpc: Register(user.v1alpha.RegisterRequest) returns (user.v1alpha.RegisterResponse);
      */
     register(input: RegisterRequest, options?: RpcOptions): UnaryCall<RegisterRequest, RegisterResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<RegisterRequest, RegisterResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: Update(user.v1alpha.UpdateRequest) returns (user.v1alpha.UpdateResponse);
      */
     update(input: UpdateRequest, options?: RpcOptions): UnaryCall<UpdateRequest, UpdateResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateRequest, UpdateResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdatePassword(user.v1alpha.UpdatePasswordRequest) returns (user.v1alpha.UpdatePasswordResponse);
      */
     updatePassword(input: UpdatePasswordRequest, options?: RpcOptions): UnaryCall<UpdatePasswordRequest, UpdatePasswordResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdatePasswordRequest, UpdatePasswordResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: Delete(user.v1alpha.DeleteRequest) returns (user.v1alpha.DeleteResponse);
      */
     delete(input: DeleteRequest, options?: RpcOptions): UnaryCall<DeleteRequest, DeleteResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteRequest, DeleteResponse>("unary", this._transport, method, opt, input);
     }
 }

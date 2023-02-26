@@ -9,7 +9,7 @@ message User {
   string first_name = 2;
   string last_name = 3;
   string email = 4;
-  
+
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
 }
@@ -59,4 +59,17 @@ message FindResponse {
   repeated User user = 1;
 }
 
+message CheckPasswordRequest {
+  string email = 1;
+  string password = 2;
+}
 
+message CheckPasswordResponse {
+  enum STATUS {
+    NOT_FOUND = 0;
+    WRONG_PASSWORD = 1;
+    INTERNAL = 2;
+  }
+  STATUS status = 1;
+  User user = 2;
+}
