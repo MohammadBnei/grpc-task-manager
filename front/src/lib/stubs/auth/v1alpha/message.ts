@@ -99,20 +99,16 @@ export interface ValidateRequest {
     /**
      * @generated from protobuf field: string jwt = 1;
      */
-    jwt: string;
+    jwt: string; // Add role here
 }
 /**
  * @generated from protobuf message auth.v1alpha.ValidateResponse
  */
 export interface ValidateResponse {
     /**
-     * @generated from protobuf field: string refresh_token = 1;
+     * @generated from protobuf field: bool ok = 1;
      */
-    refreshToken: string;
-    /**
-     * @generated from protobuf field: string jwt = 2;
-     */
-    jwt: string;
+    ok: boolean; // Add role here
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class LoginRequest$Type extends MessageType<LoginRequest> {
@@ -395,12 +391,11 @@ export const ValidateRequest = new ValidateRequest$Type();
 class ValidateResponse$Type extends MessageType<ValidateResponse> {
     constructor() {
         super("auth.v1alpha.ValidateResponse", [
-            { no: 1, name: "refresh_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "ok", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<ValidateResponse>): ValidateResponse {
-        const message = { refreshToken: "", jwt: "" };
+        const message = { ok: false };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<ValidateResponse>(this, message, value);
@@ -411,11 +406,8 @@ class ValidateResponse$Type extends MessageType<ValidateResponse> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string refresh_token */ 1:
-                    message.refreshToken = reader.string();
-                    break;
-                case /* string jwt */ 2:
-                    message.jwt = reader.string();
+                case /* bool ok */ 1:
+                    message.ok = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -429,12 +421,9 @@ class ValidateResponse$Type extends MessageType<ValidateResponse> {
         return message;
     }
     internalBinaryWrite(message: ValidateResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string refresh_token = 1; */
-        if (message.refreshToken !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.refreshToken);
-        /* string jwt = 2; */
-        if (message.jwt !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.jwt);
+        /* bool ok = 1; */
+        if (message.ok !== false)
+            writer.tag(1, WireType.Varint).bool(message.ok);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

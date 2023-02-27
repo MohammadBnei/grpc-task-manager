@@ -32,9 +32,10 @@ message RefreshTokenResponse {
 
 message ValidateRequest {
   string jwt = 1;
+  // Add role here
 }
 
 message ValidateResponse {
-  string refresh_token = 1;
-  string jwt = 2;
+  bool ok = 1;
+  // Add role here
 }
