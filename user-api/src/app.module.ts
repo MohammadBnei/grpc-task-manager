@@ -9,6 +9,7 @@ import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption from './grpcOption';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -17,6 +18,15 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         MYSQL_URL: Joi.string().required(),
         PORT: Joi.number(),
+        insecure: Joi.boolean().required(),
+        USER_CERT: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
+        USER_KEY: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
       }),
     }),
     OpenTelemetryModule.forRoot({
@@ -29,6 +39,7 @@ import * as Joi from 'joi';
     }),
     GrpcReflectionModule.register(grpcOption()),
     UserModule,
+    HealthModule,
   ],
   providers: [AppService, PrismaService],
 })

@@ -10,6 +10,7 @@ import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
+import { HealthModule } from './health/health.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -21,6 +22,15 @@ import * as Joi from 'joi';
         PORT: Joi.number(),
         USER_API_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        insecure: Joi.boolean().required(),
+        USER_CERT: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
+        USER_KEY: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
       }),
     }),
     GrpcReflectionModule.register(grpcOption()),
@@ -43,6 +53,7 @@ import * as Joi from 'joi';
       signOptions: { expiresIn: '5m' },
     }),
     RefreshTokenModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, RefreshTokenService, PrismaService],

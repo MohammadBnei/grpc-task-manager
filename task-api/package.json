@@ -22,7 +22,6 @@
     "nest": "nest"
   },
   "dependencies": {
-    "@buf/bneiconseil_taskmanagerapi.bufbuild_es": "1.0.0-20230215093621-e7633d08020b.1",
     "@grpc/grpc-js": "^1.8.5",
     "@grpc/proto-loader": "^0.7.4",
     "@nestjs/common": "^9.0.0",
@@ -31,6 +30,7 @@
     "@nestjs/microservices": "^9.2.1",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/terminus": "^9.2.1",
     "@protobuf-ts/plugin": "^2.8.2",
     "@protobuf-ts/runtime": "^2.8.2",
     "@protobuf-ts/runtime-rpc": "^2.8.2",

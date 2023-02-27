@@ -1,4 +1,6 @@
+import { ServerCredentials } from '@grpc/grpc-js';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
+import { readFileSync } from 'fs';
 import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 
@@ -8,6 +10,14 @@ export default () =>
     options: {
       package: 'task.v1beta',
       url: `0.0.0.0:${process.env.PORT || 4000}`,
+      credentials: !process.env.insecure
+        ? ServerCredentials.createSsl(null, [
+            {
+              private_key: readFileSync(process.env.TASK_KEY),
+              cert_chain: readFileSync(process.env.TASK_CERT),
+            },
+          ])
+        : ServerCredentials.createInsecure(),
       loader: {
         includeDirs: [join(__dirname, 'proto')],
       },
