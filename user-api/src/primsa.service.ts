@@ -22,6 +22,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
     this.$use(async (params, next) => {
       const result = await next(params);
+      if (params.model !== 'User') return result;
+
       const mapToTimestamp = (result) => {
         if (
           params?.model === 'User' &&
