@@ -52,7 +52,7 @@ jobs:
           context: task-api
           builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.event_name == 'push' }}
-          tags: ${{ secrets.DOCKER_HUB_TASKNAME }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
