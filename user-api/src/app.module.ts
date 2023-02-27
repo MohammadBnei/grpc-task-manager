@@ -7,9 +7,17 @@ import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption from './grpcOption';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        MYSQL_URL: Joi.string().required(),
+        PORT: Joi.number(),
+      }),
+    }),
     OpenTelemetryModule.forRoot({
       serviceName: 'user-api',
       spanProcessor: new SimpleSpanProcessor(
@@ -18,7 +26,7 @@ import grpcOption from './grpcOption';
         }),
       ) as any,
     }),
-    GrpcReflectionModule.register(grpcOption),
+    GrpcReflectionModule.register(grpcOption()),
     UserModule,
   ],
   providers: [AppService, PrismaService],
