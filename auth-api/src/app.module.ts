@@ -5,7 +5,10 @@ import grpcOption from './grpcOption';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { AppController } from './app.controller';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
+import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { RefreshTokenModule } from './refresh-token/refresh-token.module';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -24,8 +27,13 @@ import { JwtService } from '@nestjs/jwt';
         },
       },
     ]),
+    JwtModule.register({
+      secret: 'super-secret',
+      signOptions: { expiresIn: '60s' },
+    }),
+    RefreshTokenModule,
   ],
   controllers: [AppController],
-  providers: [AppService, JwtService],
+  providers: [AppService, RefreshTokenService, PrismaService],
 })
 export class AppModule {}

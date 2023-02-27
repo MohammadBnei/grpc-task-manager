@@ -29,14 +29,14 @@ export class AppService implements OnModuleInit {
       this.userService.checkPassword({ email, password }) as any,
     );
 
-    console.log({ res });
-
     return res;
   }
 
   async findUser(req: FindRequest): Promise<User> {
-    const res = await this.userService.find(req);
+    const res: FindResponse = await firstValueFrom(
+      this.userService.find(req) as any,
+    );
 
-    return res.response.user?.[0];
+    return res.user?.[0];
   }
 }

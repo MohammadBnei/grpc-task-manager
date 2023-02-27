@@ -64,7 +64,6 @@ export class TaskController {
         name: request.task.name,
         dueDate: new Date(request.task.dueDate),
       };
-      console.log('Creating task', { nTask });
       if (!nTask.name)
         throw new RpcException({
           message: 'No name provided',

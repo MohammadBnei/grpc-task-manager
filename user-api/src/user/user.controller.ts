@@ -43,6 +43,7 @@ export class UserController {
   @GrpcMethod('UserService')
   async Find(req: FindRequest): Promise<FindResponse> {
     try {
+      Object.keys(req).forEach((key) => req[key] === '' && delete req[key]);
       const where = {
         ...req,
         id: req.id ? +req.id : undefined,
@@ -85,7 +86,6 @@ export class UserController {
       );
 
       if (user) {
-        console.log({ user });
         return CheckPasswordResponse.create({
           user: user as any,
           status: CheckPasswordResponse_STATUS.OK,
