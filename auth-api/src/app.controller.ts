@@ -51,12 +51,7 @@ export class AppController {
             .digest('hex'),
         });
         return LoginResponse.create({
-          jwt: this.jwtService.sign(
-            { user },
-            {
-              expiresIn: '5m',
-            },
-          ),
+          jwt: this.jwtService.sign({ user }),
           refreshToken: rt.refreshToken,
         });
       case CheckPasswordResponse_STATUS.WRONG_PASSWORD:
