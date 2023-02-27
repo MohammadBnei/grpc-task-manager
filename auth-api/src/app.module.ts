@@ -15,6 +15,7 @@ import * as Joi from 'joi';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: Joi.object({
         MYSQL_URL: Joi.string().required(),
         PORT: Joi.number(),
