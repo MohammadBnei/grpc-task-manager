@@ -15,6 +15,7 @@ RUN pnpm build
 RUN pnpm prune --prod
 
 FROM keymetrics/pm2:18-slim
+
 ENV NODE_ENV=production
 
 WORKDIR /app
