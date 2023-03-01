@@ -31,6 +31,14 @@ import * as Joi from 'joi';
           is: false,
           then: Joi.required(),
         }),
+        AUTH_CERT: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
+        AUTH_KEY: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
       }),
     }),
     GrpcReflectionModule.register(grpcOption()),

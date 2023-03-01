@@ -17,6 +17,7 @@ import {
   UpdatePasswordResponse,
 } from 'src/stubs/user/v1alpha/message';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
+import { status } from '@grpc/grpc-js';
 
 @Controller()
 export class UserController {
@@ -96,6 +97,11 @@ export class UserController {
         status: CheckPasswordResponse_STATUS.WRONG_PASSWORD,
       });
     } catch (error) {
+      if (error?.code === status.NOT_FOUND) {
+        return CheckPasswordResponse.create({
+          status: CheckPasswordResponse_STATUS.NOT_FOUND,
+        });
+      }
       this.handlePrismaErr(error);
     }
   }
