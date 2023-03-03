@@ -1,78 +1,29 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo
-    ports:
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: task
-
   mariadb:
-    image: mariadb
-    ports:
-      - 3306:3306
-    environment:
-      MARIADB_ROOT_PASSWORD: passwd
-      MARIADB_DATABASE: user
+    extends:
+      file: ./compose/compose.db.yml
+      service: mariadb
 
-  tracing:
-    image: openzipkin/zipkin
-    environment:
-      - STORAGE_TYPE=mem
-      # Point the zipkin at the storage backend
-      - MYSQL_HOST=mysql
-    ports:
-      - 9411:9411
-
-  user-api:
-    image: user-api
-    environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
-      - insecure=true
-      - PORT=4000
-    ports:
-      - 4000:4000
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
-  task-api:
-    image: task-api
-    environment:
-      - MONGO_URL=mongodb://root:task@mongo
-      - insecure=true
-      - PORT=4000
-    ports:
-      - 4001:4000
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
+  mongo:
+    extends:
+      file: ./compose/compose.db.yml
+      service: mongo
 
   auth-api:
-    image: auth-api
-    environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
-      - insecure=true
-      - PORT=4000
-      - USER_API_URL=user-api:4000
-      - JWT_SECRET=super-secret
-    ports:
-      - 4002:4000
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
+    extends:
+      file: ./compose/compose.local.yml
+      service: auth-api
 
-  # front:
-  #   build: front
-  #   environment:
-  #     - SERVER=server:4000
-  #   ports:
-  #     - 3000:3000
+  user-api:
+    extends:
+      file: ./compose/compose.published.yml
+      service: user-api
+    
+networks:
+  default:
+    external: true
+    name: grpc-task-manager_default
+
+  

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  auth-api:
+    image: gplane/pnpm:node18
+    working_dir: /app
+    volumes:
+      - ../auth-api:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    environment:
+      - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
+      - insecure=false
+      - AUTH_CERT=/certs/auth.pem
+      - AUTH_KEY=/certs/auth-key.pem
+      - PORT=4000
+      - USER_API_URL=user-api:4000
+      - JWT_SECRET=super-secret
+      - USER_CERT=/certs/user.pem
+      - USER_KEY=/certs/user-key.pem
+    ports:
+      - 4002:4000
+    stdin_open: true
+    command: bash -c "pnpm i && pnpm start:dev"
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  user-api:
+    image: gplane/pnpm:node18
+    working_dir: /app
+    volumes:
+      - ../user-api:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    environment:
+      - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
+      - insecure=false
+      - PORT=4000
+      - USER_API_URL=user-api:4000
+      - USER_CERT=/certs/user.pem
+      - USER_KEY=/certs/user-key.pem
+    ports:
+      - 4001:4000
+    stdin_open: true
+    command: start:dev
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+networks:
+  default:
+    external: true
+    name: grpc-task-manager_default
