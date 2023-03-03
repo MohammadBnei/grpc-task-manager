@@ -10,14 +10,15 @@ export default () =>
     options: {
       package: 'user.v1alpha',
       url: `0.0.0.0:${process.env.PORT || 4002}`,
-      credentials: !process.env.insecure
-        ? ServerCredentials.createSsl(null, [
-            {
-              private_key: readFileSync(process.env.USER_KEY),
-              cert_chain: readFileSync(process.env.USER_CERT),
-            },
-          ])
-        : ServerCredentials.createInsecure(),
+      credentials:
+        process.env.insecure === 'false'
+          ? ServerCredentials.createSsl(null, [
+              {
+                private_key: readFileSync(process.env.USER_KEY),
+                cert_chain: readFileSync(process.env.USER_CERT),
+              },
+            ])
+          : ServerCredentials.createInsecure(),
       loader: {
         includeDirs: [join(__dirname, 'proto')],
       },

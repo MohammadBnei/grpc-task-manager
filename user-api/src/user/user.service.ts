@@ -57,7 +57,10 @@ export class UserService {
     });
   }
 
-  async checkPassword(email: string, password: string): Promise<User> {
+  async checkPassword(
+    email: string,
+    password: string,
+  ): Promise<{ user: User; match: boolean }> {
     const user = await this.prisma.user.findUnique({
       where: { email },
       select: {
@@ -72,18 +75,11 @@ export class UserService {
     });
 
     if (!user) {
-      throw new RpcException({
-        code: status.NOT_FOUND,
-        message: `${email} not found`,
-      });
+      return { user: null, match: false };
     }
 
     const match = await bcrypt.compare(password, user.password);
 
-    if (match) {
-      return user;
-    } else {
-      return null;
-    }
+    return { user, match };
   }
 }

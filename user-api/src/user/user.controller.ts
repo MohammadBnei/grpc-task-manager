@@ -81,12 +81,18 @@ export class UserController {
     req: CheckPasswordRequest,
   ): Promise<CheckPasswordResponse> {
     try {
-      const user = await this.userService.checkPassword(
+      const { user, match } = await this.userService.checkPassword(
         req.email,
         req.password,
       );
 
-      if (user) {
+      if (!user) {
+        return CheckPasswordResponse.create({
+          status: CheckPasswordResponse_STATUS.NOT_FOUND,
+        });
+      }
+
+      if (match) {
         return CheckPasswordResponse.create({
           user: user as any,
           status: CheckPasswordResponse_STATUS.OK,
@@ -97,11 +103,6 @@ export class UserController {
         status: CheckPasswordResponse_STATUS.WRONG_PASSWORD,
       });
     } catch (error) {
-      if (error?.code === status.NOT_FOUND) {
-        return CheckPasswordResponse.create({
-          status: CheckPasswordResponse_STATUS.NOT_FOUND,
-        });
-      }
       this.handlePrismaErr(error);
     }
   }
