@@ -19,6 +19,19 @@ import { status as RpcStatus } from '@grpc/grpc-js';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { createHash } from 'crypto';
 
+import { IsEmail, IsIP, validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+
+class LoginDTO {
+  @IsEmail()
+  email: string;
+
+  password: string;
+
+  @IsIP()
+  ip: string;
+}
+
 @Controller()
 export class AppController {
   constructor(
@@ -27,8 +40,28 @@ export class AppController {
     private rtService: RefreshTokenService,
   ) {}
 
+  private async validateDto(data: any, Dto: any) {
+    const dto = plainToInstance(Dto, data);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: errors
+          .map(
+            ({ value, property, constraints }) =>
+              `${value} is not a valid ${property} value (${Object.values(
+                constraints,
+              ).join(', ')})`,
+          )
+          .join('\n'),
+      });
+    }
+  }
+
   @GrpcMethod('AuthService')
   async Login(req: LoginRequest): Promise<LoginResponse> {
+    await this.validateDto(req, LoginDTO);
     const { user, status } = await this.appService.checkPassword(
       req.email,
       req.password,

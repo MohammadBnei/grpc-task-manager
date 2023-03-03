@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption from './grpcOption';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import grpcOption, { userGrpcOptions } from './grpcOption';
+import { ClientsModule } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
@@ -39,23 +38,14 @@ import * as Joi from 'joi';
           is: false,
           then: Joi.required(),
         }),
+        ROOT_CA: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
       }),
     }),
     GrpcReflectionModule.register(grpcOption()),
-    ClientsModule.register([
-      {
-        name: 'user',
-        transport: Transport.GRPC,
-        options: {
-          url: process.env.USER_API_URL,
-          package: 'user.v1alpha',
-          loader: {
-            includeDirs: [join(__dirname, 'proto')],
-          },
-          protoPath: [join(__dirname, 'proto/user/v1alpha/service.proto')],
-        },
-      },
-    ]),
+    ClientsModule.register([userGrpcOptions()]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '5m' },

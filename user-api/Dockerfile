@@ -1,25 +1,19 @@
-FROM keymetrics/pm2:18-slim
-
-RUN npm install -g pnpm
+FROM mohammaddocker/pm2-nest-prisma
 
 WORKDIR /app
 
 COPY ["package.json", "pnpm-lock.yaml",  "./"]
 
-RUN pnpm install
+RUN pnpm install --prod
 
 COPY prisma ./prisma/
 
-RUN pnpm prisma generate
+RUN prisma generate
 
 COPY . .
 
-RUN pnpm build
-
-RUN pnpm prune --prod
+RUN nest build
 
 ENV NODE_ENV=production
-
-RUN apt update && apt install curl -y
 
 CMD pm2 start dist/main.js && pm2 logs
