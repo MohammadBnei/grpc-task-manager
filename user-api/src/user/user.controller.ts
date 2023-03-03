@@ -17,7 +17,6 @@ import {
   UpdatePasswordResponse,
 } from 'src/stubs/user/v1alpha/message';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
-import { status } from '@grpc/grpc-js';
 
 @Controller()
 export class UserController {
