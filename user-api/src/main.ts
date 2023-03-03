@@ -11,6 +11,16 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
-  await app.listen(3000);
+  const healthCheckPort = 3000;
+  await app.listen(healthCheckPort);
+
+  (async () => {
+    console.log(
+      `Listening ${
+        process.env.insecure === 'false' ? 'securely' : 'insecurely'
+      } on port ${process.env.PORT || 4002}`,
+    );
+    console.log(`Health checks on port ${healthCheckPort}`);
+  })();
 }
 bootstrap();

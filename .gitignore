@@ -149,4 +149,5 @@ dist
 .svelte-kit/
 package
 
-# End of https://www.toptal.com/developers/gitignore/api/node,svelte
+# Removing certificates
+**.pem
