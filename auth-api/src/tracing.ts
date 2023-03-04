@@ -21,7 +21,9 @@ const spanProcessor =
 
 export const otelSDK = new NodeSDK({
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: `auth-api`, // update this to a more relevant name for you!
+    [SemanticResourceAttributes.SERVICE_NAME]: `auth-api`,
+    [SemanticResourceAttributes.SERVICE_VERSION]:
+      process.env.npm_package_version,
   }),
   spanProcessor,
   instrumentations: [new GrpcInstrumentation(), new NestInstrumentation()],
