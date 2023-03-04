@@ -10,7 +10,7 @@ export default () =>
     options: {
       package: 'task.v1beta',
       url: `0.0.0.0:${process.env.PORT || 4000}`,
-      credentials: 
+      credentials:
         process.env.insecure === 'false'
           ? ServerCredentials.createSsl(null, [
               {

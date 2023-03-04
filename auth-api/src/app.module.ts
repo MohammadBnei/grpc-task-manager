@@ -11,6 +11,8 @@ import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import * as Joi from 'joi';
+import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
+import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 
 @Module({
   imports: [
@@ -42,7 +44,11 @@ import * as Joi from 'joi';
           is: false,
           then: Joi.required(),
         }),
+        HEALTH_PORT: Joi.number(),
       }),
+    }),
+    OpenTelemetryModule.forRoot({
+      serviceName: 'auth-api',
     }),
     GrpcReflectionModule.register(grpcOption()),
     ClientsModule.register([userGrpcOptions()]),
