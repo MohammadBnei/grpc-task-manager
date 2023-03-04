@@ -16,7 +16,9 @@ async function bootstrap() {
   (async () => {
     if (process.env.NODE_ENV === 'production') return;
     console.log(
-      `Listening ${
+      `${process.env.npm_package_name}:${
+        process.env.npm_package_version
+      } Listening ${
         process.env.insecure === 'false' ? 'securely' : 'insecurely'
       } on port ${process.env.PORT || 4002}`,
     );

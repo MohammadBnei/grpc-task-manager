@@ -4,13 +4,15 @@ import {
   MinDate,
   IsObject,
   IsNotEmpty,
+  IsDate,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateTaskDto {
   @Length(3, 50)
   name: string;
 
-  @MinDate(() => new Date())
+  @IsDateString()
   dueDate: Date;
 }
 

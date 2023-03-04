@@ -40,7 +40,6 @@ export class UserController {
   }
 
   @UseGuards(GrpcAuthGuard)
-  @Roles(UserRole.USER_ROLE_ADMIN)
   @GrpcMethod('UserService')
   async Find(req: FindRequest): Promise<FindResponse> {
     try {

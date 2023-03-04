@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { UserusageModule } from './userusage/userusage.module';
 import { ProfanityService } from './profanity/profanity.service';
@@ -12,6 +10,9 @@ import * as Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption from './grpcOption';
 import { HealthModule } from './health/health.module';
+import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
+import { opentelemetryConfig } from './tracing';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,17 +30,24 @@ import { HealthModule } from './health/health.module';
           is: false,
           then: Joi.required(),
         }),
+        ROOT_CA: Joi.string().when('insecure', {
+          is: false,
+          then: Joi.required(),
+        }),
+        JAEGER_URL: Joi.string().required(),
+        AUTH_API_URL: Joi.string().required(),
       }),
     }),
+    OpenTelemetryModule.forRoot(opentelemetryConfig()),
     MongooseModule.forRoot(process.env.MONGO_URL),
     GrpcReflectionModule.register(grpcOption()),
     TaskModule,
+    AuthModule,
     HealthModule,
     UserusageModule,
     ProfanityModule,
     StreamsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ProfanityService],
+  providers: [ProfanityService],
 })
 export class AppModule {}

@@ -52,8 +52,8 @@ export const authGrpcOptions = (): ClientProviderOptions => ({
       process.env.insecure === 'false'
         ? ChannelCredentials.createSsl(
             readFileSync(process.env.ROOT_CA),
-            readFileSync(process.env.AUTH_KEY),
-            readFileSync(process.env.AUTH_CERT),
+            readFileSync(process.env.USER_KEY),
+            readFileSync(process.env.USER_CERT),
           )
         : ChannelCredentials.createInsecure(),
   },

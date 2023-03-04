@@ -1,4 +1,4 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { TaskService } from './task.service';
@@ -16,6 +16,12 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
+import { GrpcAuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/auth/role.decorator';
+import { UserRole } from 'src/stubs/user/v1alpha/message';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { CreateTaskDto } from './entity/task.dto';
 
 @Controller('task')
 export class TaskController {
@@ -57,9 +63,11 @@ export class TaskController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
   @GrpcMethod('TaskService')
   async CreateTask(request: CreateTaskRequest): Promise<TaskResponse> {
     try {
+      await this.validateDto(request.task, CreateTaskDto);
       const nTask = {
         name: request.task.name,
         dueDate: new Date(request.task.dueDate),
@@ -145,6 +153,25 @@ export class TaskController {
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
+    }
+  }
+
+  private async validateDto(data: any, Dto: any) {
+    const dto = plainToInstance(Dto, data);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: errors
+          .map(
+            ({ value, property, constraints }) =>
+              `${value} is not a valid ${property} value (${Object.values(
+                constraints,
+              ).join(', ')})`,
+          )
+          .join('\n'),
+      });
     }
   }
 }
