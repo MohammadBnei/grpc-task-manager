@@ -16,7 +16,6 @@ import {
   UpdatePasswordRequest,
   UpdatePasswordResponse,
 } from 'src/stubs/user/v1alpha/message';
-import { Span } from '@metinseylan/nestjs-opentelemetry';
 
 @Controller()
 export class UserController {
@@ -28,7 +27,6 @@ export class UserController {
     else throw new RpcException(err);
   }
 
-  @Span('Register')
   @GrpcMethod('UserService')
   async Register(req: RegisterRequest): Promise<RegisterResponse> {
     try {
@@ -39,7 +37,6 @@ export class UserController {
     }
   }
 
-  @Span()
   @GrpcMethod('UserService')
   async Find(req: FindRequest): Promise<FindResponse> {
     try {
@@ -54,7 +51,6 @@ export class UserController {
     }
   }
 
-  @Span()
   @GrpcMethod('UserService')
   async Update(req: UpdateRequest): Promise<UpdateResponse> {
     try {
@@ -74,7 +70,6 @@ export class UserController {
     }
   }
 
-  @Span()
   @GrpcMethod('UserService')
   async CheckPassword(
     req: CheckPasswordRequest,
