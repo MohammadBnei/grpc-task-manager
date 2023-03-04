@@ -14,4 +14,5 @@ service UserService {
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc MakeAdmin(MakeAdminRequest) returns (MakeAdminResponse);
 }

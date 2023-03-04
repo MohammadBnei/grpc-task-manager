@@ -14,7 +14,7 @@ message User {
   string first_name = 2;
   string last_name = 3;
   string email = 4;
-  
+
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
 
@@ -80,4 +80,12 @@ message CheckPasswordResponse {
   }
   STATUS status = 1;
   User user = 2;
+}
+
+message MakeAdminRequest {
+  string id = 1;
+  string email = 2;
+}
+message MakeAdminResponse {
+  User user = 1;
 }
