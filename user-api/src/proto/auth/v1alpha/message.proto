@@ -42,5 +42,5 @@ message ValidateResponse {
   string userId = 2;
   string userEmail = 3;
   user.v1alpha.UserRole userRole = 4;
-  // Add role here
+  bool internal = 5;
 }
