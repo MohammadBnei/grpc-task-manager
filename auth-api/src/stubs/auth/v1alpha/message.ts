@@ -11,6 +11,7 @@ import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MESSAGE_TYPE } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { UserRole } from "../../user/v1alpha/message";
 /**
  * @generated from protobuf message auth.v1alpha.LoginRequest
  */
@@ -108,7 +109,19 @@ export interface ValidateResponse {
     /**
      * @generated from protobuf field: bool ok = 1;
      */
-    ok: boolean; // Add role here
+    ok: boolean;
+    /**
+     * @generated from protobuf field: string userId = 2;
+     */
+    userId: string;
+    /**
+     * @generated from protobuf field: string userEmail = 3;
+     */
+    userEmail: string;
+    /**
+     * @generated from protobuf field: user.v1alpha.UserRole userRole = 4;
+     */
+    userRole: UserRole; // Add role here
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class LoginRequest$Type extends MessageType<LoginRequest> {
@@ -391,11 +404,14 @@ export const ValidateRequest = new ValidateRequest$Type();
 class ValidateResponse$Type extends MessageType<ValidateResponse> {
     constructor() {
         super("auth.v1alpha.ValidateResponse", [
-            { no: 1, name: "ok", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 1, name: "ok", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "userId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "userEmail", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "userRole", kind: "enum", T: () => ["user.v1alpha.UserRole", UserRole, "USER_ROLE_"] }
         ]);
     }
     create(value?: PartialMessage<ValidateResponse>): ValidateResponse {
-        const message = { ok: false };
+        const message = { ok: false, userId: "", userEmail: "", userRole: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<ValidateResponse>(this, message, value);
@@ -408,6 +424,15 @@ class ValidateResponse$Type extends MessageType<ValidateResponse> {
             switch (fieldNo) {
                 case /* bool ok */ 1:
                     message.ok = reader.bool();
+                    break;
+                case /* string userId */ 2:
+                    message.userId = reader.string();
+                    break;
+                case /* string userEmail */ 3:
+                    message.userEmail = reader.string();
+                    break;
+                case /* user.v1alpha.UserRole userRole */ 4:
+                    message.userRole = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -424,6 +449,15 @@ class ValidateResponse$Type extends MessageType<ValidateResponse> {
         /* bool ok = 1; */
         if (message.ok !== false)
             writer.tag(1, WireType.Varint).bool(message.ok);
+        /* string userId = 2; */
+        if (message.userId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.userId);
+        /* string userEmail = 3; */
+        if (message.userEmail !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.userEmail);
+        /* user.v1alpha.UserRole userRole = 4; */
+        if (message.userRole !== 0)
+            writer.tag(4, WireType.Varint).int32(message.userRole);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

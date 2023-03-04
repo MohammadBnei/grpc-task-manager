@@ -40,6 +40,10 @@ export interface User {
      * @generated from protobuf field: google.protobuf.Timestamp updated_at = 6;
      */
     updatedAt?: Timestamp;
+    /**
+     * @generated from protobuf field: user.v1alpha.UserRole role = 7;
+     */
+    role: UserRole;
 }
 /**
  * @generated from protobuf message user.v1alpha.RegisterRequest
@@ -206,6 +210,19 @@ export enum CheckPasswordResponse_STATUS {
      */
     INTERNAL = 3
 }
+/**
+ * @generated from protobuf enum user.v1alpha.UserRole
+ */
+export enum UserRole {
+    /**
+     * @generated from protobuf enum value: USER_ROLE_BASIC = 0;
+     */
+    BASIC = 0,
+    /**
+     * @generated from protobuf enum value: USER_ROLE_ADMIN = 1;
+     */
+    ADMIN = 1
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class User$Type extends MessageType<User> {
     constructor() {
@@ -215,11 +232,12 @@ class User$Type extends MessageType<User> {
             { no: 3, name: "last_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "created_at", kind: "message", T: () => Timestamp },
-            { no: 6, name: "updated_at", kind: "message", T: () => Timestamp }
+            { no: 6, name: "updated_at", kind: "message", T: () => Timestamp },
+            { no: 7, name: "role", kind: "enum", T: () => ["user.v1alpha.UserRole", UserRole, "USER_ROLE_"] }
         ]);
     }
     create(value?: PartialMessage<User>): User {
-        const message = { id: "", firstName: "", lastName: "", email: "" };
+        const message = { id: "", firstName: "", lastName: "", email: "", role: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<User>(this, message, value);
@@ -247,6 +265,9 @@ class User$Type extends MessageType<User> {
                     break;
                 case /* google.protobuf.Timestamp updated_at */ 6:
                     message.updatedAt = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.updatedAt);
+                    break;
+                case /* user.v1alpha.UserRole role */ 7:
+                    message.role = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -278,6 +299,9 @@ class User$Type extends MessageType<User> {
         /* google.protobuf.Timestamp updated_at = 6; */
         if (message.updatedAt)
             Timestamp.internalBinaryWrite(message.updatedAt, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* user.v1alpha.UserRole role = 7; */
+        if (message.role !== 0)
+            writer.tag(7, WireType.Varint).int32(message.role);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

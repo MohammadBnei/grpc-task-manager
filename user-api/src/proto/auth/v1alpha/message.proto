@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package auth.v1alpha;
 
+import "user/v1alpha/message.proto";
+
 message LoginRequest {
   string email = 1;
   string password = 2;
@@ -37,5 +39,8 @@ message ValidateRequest {
 
 message ValidateResponse {
   bool ok = 1;
+  string userId = 2;
+  string userEmail = 3;
+  user.v1alpha.UserRole userRole = 4;
   // Add role here
 }
