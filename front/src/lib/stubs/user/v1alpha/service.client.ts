@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { UserService } from "./service";
+import type { MakeAdminResponse } from "./message";
+import type { MakeAdminRequest } from "./message";
 import type { DeleteResponse } from "./message";
 import type { DeleteRequest } from "./message";
 import type { UpdatePasswordResponse } from "./message";
@@ -47,6 +49,10 @@ export interface IUserServiceClient {
      * @generated from protobuf rpc: Delete(user.v1alpha.DeleteRequest) returns (user.v1alpha.DeleteResponse);
      */
     delete(input: DeleteRequest, options?: RpcOptions): UnaryCall<DeleteRequest, DeleteResponse>;
+    /**
+     * @generated from protobuf rpc: MakeAdmin(user.v1alpha.MakeAdminRequest) returns (user.v1alpha.MakeAdminResponse);
+     */
+    makeAdmin(input: MakeAdminRequest, options?: RpcOptions): UnaryCall<MakeAdminRequest, MakeAdminResponse>;
 }
 /**
  * @generated from protobuf service user.v1alpha.UserService
@@ -98,5 +104,12 @@ export class UserServiceClient implements IUserServiceClient, ServiceInfo {
     delete(input: DeleteRequest, options?: RpcOptions): UnaryCall<DeleteRequest, DeleteResponse> {
         const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteRequest, DeleteResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: MakeAdmin(user.v1alpha.MakeAdminRequest) returns (user.v1alpha.MakeAdminResponse);
+     */
+    makeAdmin(input: MakeAdminRequest, options?: RpcOptions): UnaryCall<MakeAdminRequest, MakeAdminResponse> {
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        return stackIntercept<MakeAdminRequest, MakeAdminResponse>("unary", this._transport, method, opt, input);
     }
 }

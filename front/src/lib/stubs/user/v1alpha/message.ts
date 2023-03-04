@@ -211,6 +211,28 @@ export enum CheckPasswordResponse_STATUS {
     INTERNAL = 3
 }
 /**
+ * @generated from protobuf message user.v1alpha.MakeAdminRequest
+ */
+export interface MakeAdminRequest {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string email = 2;
+     */
+    email: string;
+}
+/**
+ * @generated from protobuf message user.v1alpha.MakeAdminResponse
+ */
+export interface MakeAdminResponse {
+    /**
+     * @generated from protobuf field: user.v1alpha.User user = 1;
+     */
+    user?: User;
+}
+/**
  * @generated from protobuf enum user.v1alpha.UserRole
  */
 export enum UserRole {
@@ -939,3 +961,104 @@ class CheckPasswordResponse$Type extends MessageType<CheckPasswordResponse> {
  * @generated MessageType for protobuf message user.v1alpha.CheckPasswordResponse
  */
 export const CheckPasswordResponse = new CheckPasswordResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MakeAdminRequest$Type extends MessageType<MakeAdminRequest> {
+    constructor() {
+        super("user.v1alpha.MakeAdminRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MakeAdminRequest>): MakeAdminRequest {
+        const message = { id: "", email: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<MakeAdminRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MakeAdminRequest): MakeAdminRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string email */ 2:
+                    message.email = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MakeAdminRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string email = 2; */
+        if (message.email !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.email);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.MakeAdminRequest
+ */
+export const MakeAdminRequest = new MakeAdminRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MakeAdminResponse$Type extends MessageType<MakeAdminResponse> {
+    constructor() {
+        super("user.v1alpha.MakeAdminResponse", [
+            { no: 1, name: "user", kind: "message", T: () => User }
+        ]);
+    }
+    create(value?: PartialMessage<MakeAdminResponse>): MakeAdminResponse {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<MakeAdminResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MakeAdminResponse): MakeAdminResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* user.v1alpha.User user */ 1:
+                    message.user = User.internalBinaryRead(reader, reader.uint32(), options, message.user);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MakeAdminResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* user.v1alpha.User user = 1; */
+        if (message.user)
+            User.internalBinaryWrite(message.user, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message user.v1alpha.MakeAdminResponse
+ */
+export const MakeAdminResponse = new MakeAdminResponse$Type();
