@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import {
   LoginRequest,
   LoginResponse,
+  LoginResponse_STATUS,
   RefreshTokenRequest,
   RefreshTokenResponse,
   ValidateRequest,
@@ -83,10 +84,11 @@ export class AppController {
             .update(`${req.ip}-${user.id}-${new Date().toISOString()}`)
             .digest('hex'),
         });
-        return LoginResponse.create({
+        return {
           jwt: this.jwtService.sign({ user }),
           refreshToken: rt.refreshToken,
-        });
+          status: LoginResponse_STATUS.OK,
+        };
       case CheckPasswordResponse_STATUS.WRONG_PASSWORD:
         throw new RpcException({
           code: RpcStatus.INVALID_ARGUMENT,
@@ -123,9 +125,13 @@ export class AppController {
       });
 
     const user = await this.appService.findUser(
-      FindRequest.create({
+      {
         id: rt.userId,
-      }),
+        firstName: undefined,
+        lastName: undefined,
+        email: undefined,
+      },
+      { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
     );
 
     if (!user)
@@ -155,6 +161,7 @@ export class AppController {
         userId: user.id,
         userEmail: user.email,
         userRole: user.role,
+        internal: (user as any)?.internal || false,
       };
     } catch (error) {
       throw new RpcException(error);

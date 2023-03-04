@@ -8,5 +8,8 @@ plugins:
     out: ../task-api/src/stubs
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../user-api/src/stubs
-  - plugin: buf.build/community/timostamm-protobuf-ts
+  - plugin: buf.build/community/stephenh-ts-proto
     out: ../auth-api/src/stubs
+    opt:
+      - addGrpcMetadata=true
+      - nestJs=true

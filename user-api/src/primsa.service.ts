@@ -1,7 +1,8 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { Timestamp } from './stubs/google/protobuf/timestamp';
+import { UserRole } from './stubs/user/v1alpha/message';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -24,7 +25,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       const result = await next(params);
       if (params.model !== 'User') return result;
 
-      const mapToTimestamp = (result) => {
+      const mapToProto = (result) => {
         if (
           params?.model === 'User' &&
           params?.args?.select?.password !== true
@@ -44,15 +45,28 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
           seconds: result.updatedAt.seconds + '',
         };
 
+        switch (result.role) {
+          case Role.BASIC:
+            result.role = UserRole.BASIC;
+            break;
+          case Role.ADMIN:
+            result.role = UserRole.ADMIN;
+            break;
+
+          default:
+            result.role = UserRole.BASIC;
+            break;
+        }
+
         return result;
       };
       if (!result) {
         return result;
       }
       if (result?.length > -1) {
-        return result.map(mapToTimestamp);
+        return result.map(mapToProto);
       }
-      return mapToTimestamp(result);
+      return mapToProto(result);
     });
   }
 

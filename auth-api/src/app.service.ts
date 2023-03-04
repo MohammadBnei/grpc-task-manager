@@ -7,8 +7,9 @@ import {
   FindResponse,
   User,
 } from './stubs/user/v1alpha/message';
-import { UserServiceClient } from './stubs/user/v1alpha/service.client';
+import { UserServiceClient } from './stubs/user/v1alpha/service';
 import { firstValueFrom } from 'rxjs';
+import { Metadata } from '@grpc/grpc-js';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -31,9 +32,11 @@ export class AppService implements OnModuleInit {
     return res;
   }
 
-  async findUser(req: FindRequest): Promise<User> {
+  async findUser(req: FindRequest, md: Record<string, any>): Promise<User> {
+    const meta = new Metadata();
+    Object.entries(md).map(([k, v]) => meta.add(k, v));
     const res: FindResponse = await firstValueFrom(
-      this.userService.find(req) as any,
+      this.userService.find(req, meta) as any,
     );
 
     return res.user?.[0];

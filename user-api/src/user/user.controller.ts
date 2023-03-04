@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import {
@@ -15,21 +15,23 @@ import {
   DeleteResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
+  UserRole,
 } from 'src/stubs/user/v1alpha/message';
+import { status as RpcStatus } from '@grpc/grpc-js';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { CreateUserDto } from './dto/create-user';
+import { GrpcAuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/auth/role.decorator';
 
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  handlePrismaErr(err: Error) {
-    console.error(err);
-    if (err instanceof RpcException) throw err;
-    else throw new RpcException(err);
-  }
-
   @GrpcMethod('UserService')
   async Register(req: RegisterRequest): Promise<RegisterResponse> {
     try {
+      await this.validateDto(req, CreateUserDto);
       const user = await this.userService.createUser(req);
       return { user: user as any };
     } catch (error) {
@@ -37,6 +39,8 @@ export class UserController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
+  @Roles(UserRole.ADMIN)
   @GrpcMethod('UserService')
   async Find(req: FindRequest): Promise<FindResponse> {
     try {
@@ -121,5 +125,30 @@ export class UserController {
     });
 
     return { user: user as any };
+  }
+
+  private handlePrismaErr(err: Error) {
+    console.error(err);
+    if (err instanceof RpcException) throw err;
+    else throw new RpcException(err);
+  }
+
+  private async validateDto(data: any, Dto: any) {
+    const dto = plainToInstance(Dto, data);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      throw new RpcException({
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: errors
+          .map(
+            ({ value, property, constraints }) =>
+              `${value} is not a valid ${property} value (${Object.values(
+                constraints,
+              ).join(', ')})`,
+          )
+          .join('\n'),
+      });
+    }
   }
 }

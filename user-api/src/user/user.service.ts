@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, Role, User } from '@prisma/client';
 import { PrismaService } from '../primsa.service';
 import * as bcrypt from 'bcrypt';
-import { RpcException } from '@nestjs/microservices';
-import { status } from '@grpc/grpc-js';
 
 @Injectable()
 export class UserService {
@@ -35,6 +33,10 @@ export class UserService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
+    // First User of the DB is the admin
+    if ((await this.users({})).length === 0) {
+      data.role = Role.ADMIN;
+    }
     return this.prisma.user.create({
       data,
     });
@@ -71,6 +73,7 @@ export class UserService {
         lastName: true,
         updatedAt: true,
         password: true,
+        role: true,
       },
     });
 
