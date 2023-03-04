@@ -34,27 +34,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         }
         result.id = result.id + '';
 
-        result.createdAt = Timestamp.fromDate(result.createdAt);
-        result.createdAt = {
-          nanos: result.createdAt.nanos,
-          seconds: result.createdAt.seconds + '',
-        };
-        result.updatedAt = Timestamp.fromDate(result.updatedAt);
-        result.updatedAt = {
-          nanos: result.updatedAt.nanos,
-          seconds: result.updatedAt.seconds + '',
-        };
+        result.createdAt = this.toTimestamp(result.createdAt);
+        result.updatedAt = this.toTimestamp(result.updatedAt);
 
         switch (result.role) {
           case Role.BASIC:
-            result.role = UserRole.BASIC;
+            result.role = UserRole.USER_ROLE_BASIC;
             break;
           case Role.ADMIN:
-            result.role = UserRole.ADMIN;
+            result.role = UserRole.USER_ROLE_ADMIN;
             break;
 
           default:
-            result.role = UserRole.BASIC;
+            result.role = UserRole.USER_ROLE_BASIC;
             break;
         }
 
@@ -78,5 +70,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     this.$on('beforeExit', async () => {
       await app.close();
     });
+  }
+
+  private toTimestamp(date: Date): Timestamp {
+    const timeMS = date.getTime();
+    return {
+      seconds: timeMS / 1000,
+      nanos: (timeMS % 1000) * 1e6,
+    };
   }
 }

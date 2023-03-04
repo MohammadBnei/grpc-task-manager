@@ -13,7 +13,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import {
   CheckPasswordResponse_STATUS,
-  FindRequest,
   User,
 } from './stubs/user/v1alpha/message';
 import { status as RpcStatus } from '@grpc/grpc-js';

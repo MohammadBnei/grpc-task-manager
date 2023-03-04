@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @UseGuards(GrpcAuthGuard)
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.USER_ROLE_ADMIN)
   @GrpcMethod('UserService')
   async Find(req: FindRequest): Promise<FindResponse> {
     try {
@@ -85,21 +85,23 @@ export class UserController {
       );
 
       if (!user) {
-        return CheckPasswordResponse.create({
+        return {
           status: CheckPasswordResponse_STATUS.NOT_FOUND,
-        });
+          user: undefined,
+        };
       }
 
       if (match) {
-        return CheckPasswordResponse.create({
+        return {
           user: user as any,
           status: CheckPasswordResponse_STATUS.OK,
-        });
+        };
       }
 
-      return CheckPasswordResponse.create({
+      return {
         status: CheckPasswordResponse_STATUS.WRONG_PASSWORD,
-      });
+        user: undefined,
+      };
     } catch (error) {
       this.handlePrismaErr(error);
     }

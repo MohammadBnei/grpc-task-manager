@@ -42,8 +42,6 @@ export class GrpcAuthGuard implements CanActivate {
         throw new RpcException({});
       }
 
-      console.log({ res });
-
       if (res.internal) {
         return true;
       }

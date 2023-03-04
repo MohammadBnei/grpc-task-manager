@@ -3,13 +3,13 @@ import { AppService } from './app.service';
 import { PrismaService } from './primsa.service';
 import { UserModule } from './user/user.module';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption, { authGrpcOptions } from './grpcOption';
+import grpcOption from './grpcOption';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
-import { ClientsModule } from '@nestjs/microservices';
+import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
+import { opentelemetryConfig } from './tracing';
 
 @Module({
   imports: [
@@ -36,6 +36,7 @@ import { ClientsModule } from '@nestjs/microservices';
         AUTH_API_URL: Joi.string().required(),
       }),
     }),
+    OpenTelemetryModule.forRoot(opentelemetryConfig()),
     GrpcReflectionModule.register(grpcOption()),
     AuthModule,
     UserModule,

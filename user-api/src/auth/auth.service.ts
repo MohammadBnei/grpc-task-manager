@@ -1,9 +1,9 @@
-import { ExecutionContext, OnModuleInit } from '@nestjs/common';
+import { OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Client, ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ValidateResponse } from 'src/stubs/auth/v1alpha/message';
-import { AuthServiceClient } from 'src/stubs/auth/v1alpha/service.client';
+import { AuthServiceClient } from 'src/stubs/auth/v1alpha/service';
 import { authGrpcOptions } from 'src/grpcOption';
 import { Reflector } from '@nestjs/core';
 

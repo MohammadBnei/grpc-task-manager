@@ -11,6 +11,8 @@ import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import * as Joi from 'joi';
+import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
+import { opentelemetryConfig } from './tracing';
 
 @Module({
   imports: [
@@ -35,8 +37,12 @@ import * as Joi from 'joi';
           then: Joi.required(),
         }),
         HEALTH_PORT: Joi.number(),
+        JAEGER_URL: Joi.string().required(),
+        METRICS_HOST: Joi.string().required(),
+        METRICS_PORT: Joi.number().required(),
       }),
     }),
+    OpenTelemetryModule.forRoot(opentelemetryConfig()),
     GrpcReflectionModule.register(grpcOption()),
     ClientsModule.register([userGrpcOptions()]),
     JwtModule.register({
