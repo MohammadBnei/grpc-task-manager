@@ -22,14 +22,6 @@ import * as Joi from 'joi';
         USER_API_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         insecure: Joi.boolean().required(),
-        USER_CERT: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        USER_KEY: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
         AUTH_CERT: Joi.string().when('insecure', {
           is: false,
           then: Joi.required(),

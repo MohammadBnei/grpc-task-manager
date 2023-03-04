@@ -143,8 +143,8 @@ export class AppController {
   @GrpcMethod('AuthService')
   async Validate(req: ValidateRequest): Promise<ValidateResponse> {
     try {
-      const valid = this.jwtService.verify<User>(req.jwt);
-      if (!valid)
+      const user = this.jwtService.verify<User>(req.jwt);
+      if (!user)
         throw new RpcException({
           code: RpcStatus.PERMISSION_DENIED,
           message: 'cannot verify jwt',
@@ -152,6 +152,9 @@ export class AppController {
 
       return {
         ok: true,
+        userId: user.id,
+        userEmail: user.email,
+        userRole: user.role,
       };
     } catch (error) {
       throw new RpcException(error);

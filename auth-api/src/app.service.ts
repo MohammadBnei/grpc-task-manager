@@ -9,7 +9,6 @@ import {
 } from './stubs/user/v1alpha/message';
 import { UserServiceClient } from './stubs/user/v1alpha/service.client';
 import { firstValueFrom } from 'rxjs';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class AppService implements OnModuleInit {
