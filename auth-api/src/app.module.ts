@@ -10,12 +10,14 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
 import { opentelemetryConfig } from './tracing';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    OpenTelemetryModule.forRoot(opentelemetryConfig()),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: Joi.object({
@@ -42,7 +44,16 @@ import { opentelemetryConfig } from './tracing';
         METRICS_PORT: Joi.number().required(),
       }),
     }),
-    OpenTelemetryModule.forRoot(opentelemetryConfig()),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        name: 'auth-api',
+        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? { target: 'pino-pretty' }
+            : undefined,
+      },
+    }),
     GrpcReflectionModule.register(grpcOption()),
     ClientsModule.register([userGrpcOptions()]),
     JwtModule.register({

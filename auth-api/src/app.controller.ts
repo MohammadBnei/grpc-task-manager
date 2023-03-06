@@ -21,6 +21,7 @@ import { createHash } from 'crypto';
 
 import { IsEmail, IsIP, validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+import { Logger } from 'nestjs-pino';
 
 class LoginDTO {
   @IsEmail()
@@ -38,6 +39,7 @@ export class AppController {
     private readonly appService: AppService,
     private jwtService: JwtService,
     private rtService: RefreshTokenService,
+    private logger: Logger,
   ) {}
 
   private async validateDto(data: any, Dto: any) {
@@ -61,88 +63,98 @@ export class AppController {
 
   @GrpcMethod('AuthService')
   async Login(req: LoginRequest): Promise<LoginResponse> {
-    await this.validateDto(req, LoginDTO);
-    const { user, status } = await this.appService.checkPassword(
-      req.email,
-      req.password,
-    );
+    try {
+      await this.validateDto(req, LoginDTO);
+      const { user, status } = await this.appService.checkPassword(
+        req.email,
+        req.password,
+      );
 
-    if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(req.ip)) {
-      throw new RpcException({
-        code: RpcStatus.INVALID_ARGUMENT,
-        message: `${req.ip} is not a valid ip address`,
-      });
-    }
-
-    switch (status) {
-      case CheckPasswordResponse_STATUS.OK:
-        const rt = await this.rtService.createRefreshToken({
-          userId: user.id,
-          ip: req.ip,
-          refreshToken: createHash('md5')
-            .update(`${req.ip}-${user.id}-${new Date().toISOString()}`)
-            .digest('hex'),
-        });
-        return {
-          jwt: this.jwtService.sign({ user }),
-          refreshToken: rt.refreshToken,
-          status: LoginResponse_STATUS.OK,
-        };
-      case CheckPasswordResponse_STATUS.WRONG_PASSWORD:
+      if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(req.ip)) {
         throw new RpcException({
           code: RpcStatus.INVALID_ARGUMENT,
-          message: 'wrong password',
+          message: `${req.ip} is not a valid ip address`,
         });
-      case CheckPasswordResponse_STATUS.INTERNAL:
-        throw new RpcException('Something went wrong');
-      case CheckPasswordResponse_STATUS.NOT_FOUND:
-        throw new RpcException({
-          code: RpcStatus.NOT_FOUND,
-          message: `user with email ${req.email} not found`,
-        });
-      default:
-        break;
+      }
+
+      switch (status) {
+        case CheckPasswordResponse_STATUS.OK:
+          const rt = await this.rtService.createRefreshToken({
+            userId: user.id,
+            ip: req.ip,
+            refreshToken: createHash('md5')
+              .update(`${req.ip}-${user.id}-${new Date().toISOString()}`)
+              .digest('hex'),
+          });
+          return {
+            jwt: this.jwtService.sign({ user }),
+            refreshToken: rt.refreshToken,
+            status: LoginResponse_STATUS.OK,
+          };
+        case CheckPasswordResponse_STATUS.WRONG_PASSWORD:
+          throw new RpcException({
+            code: RpcStatus.INVALID_ARGUMENT,
+            message: 'wrong password',
+          });
+        case CheckPasswordResponse_STATUS.INTERNAL:
+          throw new RpcException('Something went wrong');
+        case CheckPasswordResponse_STATUS.NOT_FOUND:
+          throw new RpcException({
+            code: RpcStatus.NOT_FOUND,
+            message: `user with email ${req.email} not found`,
+          });
+        default:
+          break;
+      }
+    } catch (error) {
+      this.logger.error(error);
+      throw new RpcException(error);
     }
   }
 
   @GrpcMethod('AuthService')
   async RefreshToken(req: RefreshTokenRequest): Promise<RefreshTokenResponse> {
-    const rt = await this.rtService.refreshToken({
-      refreshToken: req.refreshToken,
-    });
-
-    if (rt.revoked)
-      throw new RpcException({
-        code: RpcStatus.PERMISSION_DENIED,
-        message: 'refresh token revoked',
+    try {
+      const rt = await this.rtService.refreshToken({
+        refreshToken: req.refreshToken,
       });
 
-    if (rt.ip !== req.ip)
-      throw new RpcException({
-        code: RpcStatus.PERMISSION_DENIED,
-        message: 'different ip',
-      });
+      if (rt.revoked)
+        throw new RpcException({
+          code: RpcStatus.PERMISSION_DENIED,
+          message: 'refresh token revoked',
+        });
 
-    const user = await this.appService.findUser(
-      {
-        id: rt.userId,
-        firstName: undefined,
-        lastName: undefined,
-        email: undefined,
-      },
-      { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
-    );
+      if (rt.ip !== req.ip)
+        throw new RpcException({
+          code: RpcStatus.PERMISSION_DENIED,
+          message: 'different ip',
+        });
 
-    if (!user)
-      throw new RpcException({
-        code: RpcStatus.NOT_FOUND,
-        message: 'user not found',
-      });
+      const user = await this.appService.findUser(
+        {
+          id: rt.userId,
+          firstName: undefined,
+          lastName: undefined,
+          email: undefined,
+        },
+        { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
+      );
 
-    return {
-      refreshToken: undefined,
-      jwt: this.jwtService.sign({ user }),
-    };
+      if (!user)
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'user not found',
+        });
+
+      return {
+        refreshToken: undefined,
+        jwt: this.jwtService.sign({ user }),
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new RpcException(error);
+    }
   }
 
   @GrpcMethod('AuthService')
@@ -163,6 +175,7 @@ export class AppController {
         internal: (user as any)?.internal || false,
       };
     } catch (error) {
+      this.logger.error(error);
       throw new RpcException(error);
     }
   }

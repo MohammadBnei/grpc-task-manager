@@ -2,12 +2,11 @@ import {
   BatchSpanProcessor,
   SimpleSpanProcessor,
 } from '@opentelemetry/sdk-trace-base';
-import * as process from 'process';
+import process from 'process';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { OpenTelemetryModuleConfig } from '@metinseylan/nestjs-opentelemetry';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 
 export const opentelemetryConfig = () => {
   const traceExporter = new JaegerExporter({
@@ -27,10 +26,5 @@ export const opentelemetryConfig = () => {
         process.env.npm_package_version,
     }),
     spanProcessor: spanProcessor as any,
-    metricReader: new PrometheusExporter({
-      endpoint: 'metrics',
-      host: process.env.METRICS_HOST,
-      port: +process.env.METRICS_PORT,
-    }) as any,
   } as Partial<OpenTelemetryModuleConfig>;
 };

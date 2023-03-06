@@ -1,9 +1,12 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import grpcOption from './grpcOption';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const logger = app.get(Logger);
+  app.useLogger(logger);
   app.connectMicroservice(grpcOption());
 
   // Starts listening for shutdown hooks
@@ -15,15 +18,15 @@ async function bootstrap() {
 
   (async () => {
     if (process.env.NODE_ENV === 'production') return;
-    console.log(
+    logger.log(
       `${process.env.npm_package_name}:${
         process.env.npm_package_version
       } Listening ${
         process.env.insecure === 'false' ? 'securely' : 'insecurely'
       } on port ${process.env.PORT || 4002}`,
     );
-    console.log(`Health checks on port ${healthCheckPort}`);
-    console.log('Server started at ', new Date());
+    logger.log(`Health checks on port ${healthCheckPort}`);
+    logger.log('Server started at ', new Date());
   })();
 }
 bootstrap();
