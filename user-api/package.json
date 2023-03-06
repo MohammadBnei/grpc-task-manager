@@ -44,6 +44,7 @@
     "@opentelemetry/sdk-trace-base": "^1.9.1",
     "@opentelemetry/semantic-conventions": "^1.9.1",
     "@prisma/client": "^4.10.1",
+    "@prisma/instrumentation": "^4.11.0",
     "@protobuf-ts/runtime": "^2.8.2",
     "@protobuf-ts/runtime-rpc": "^2.8.2",
     "bcrypt": "^5.1.0",

@@ -13,6 +13,8 @@ services:
 
   tracing:
     image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     ports:
       - 6831:6831/udp
       - 6832:6832/udp
@@ -25,11 +27,6 @@ services:
       - 14269:14269
       - 9411:9411
 
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - 9090:9090
-      
   # auth-api:
   #   extends:
   #     file: ./compose/compose.local.yml

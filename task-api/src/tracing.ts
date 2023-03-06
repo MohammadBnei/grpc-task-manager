@@ -6,6 +6,7 @@ import * as process from 'process';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
+import { MongooseInstrumentation } from '@opentelemetry/instrumentation-mongoose';
 import { OpenTelemetryModuleConfig } from '@metinseylan/nestjs-opentelemetry';
 
 export const opentelemetryConfig = () => {
@@ -26,5 +27,6 @@ export const opentelemetryConfig = () => {
         process.env.npm_package_version,
     }),
     spanProcessor: spanProcessor as any,
+    instrumentations: [new MongooseInstrumentation()],
   } as Partial<OpenTelemetryModuleConfig>;
 };

@@ -21,6 +21,7 @@ specifiers:
   '@opentelemetry/exporter-jaeger': ^1.9.1
   '@opentelemetry/exporter-zipkin': ^1.9.1
   '@opentelemetry/instrumentation-grpc': ^0.35.1
+  '@opentelemetry/instrumentation-mongoose': ^0.32.1
   '@opentelemetry/instrumentation-nestjs-core': ^0.32.2
   '@opentelemetry/resources': ^1.9.1
   '@opentelemetry/sdk-node': ^0.35.1
@@ -82,6 +83,7 @@ dependencies:
   '@opentelemetry/exporter-jaeger': 1.9.1_@opentelemetry+api@1.4.0
   '@opentelemetry/exporter-zipkin': 1.9.1_@opentelemetry+api@1.4.0
   '@opentelemetry/instrumentation-grpc': 0.35.1_@opentelemetry+api@1.4.0
+  '@opentelemetry/instrumentation-mongoose': 0.32.1_@opentelemetry+api@1.4.0
   '@opentelemetry/instrumentation-nestjs-core': 0.32.2_@opentelemetry+api@1.4.0
   '@opentelemetry/resources': 1.9.1_@opentelemetry+api@1.4.0
   '@opentelemetry/sdk-node': 0.35.1_@opentelemetry+api@1.4.0

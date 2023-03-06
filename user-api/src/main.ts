@@ -26,7 +26,7 @@ async function bootstrap() {
       } on port ${process.env.PORT || 4002}`,
     );
     logger.log(`Health checks on port ${healthCheckPort}`);
-    logger.log('Server started at ', new Date());
+    logger.log('Server started at ' + new Date());
   })();
 }
 bootstrap();

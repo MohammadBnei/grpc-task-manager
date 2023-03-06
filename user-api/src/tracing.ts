@@ -7,6 +7,7 @@ import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { OpenTelemetryModuleConfig } from '@metinseylan/nestjs-opentelemetry';
+import { PrismaInstrumentation } from '@prisma/instrumentation';
 
 export const opentelemetryConfig = () => {
   const traceExporter = new JaegerExporter({
@@ -26,5 +27,6 @@ export const opentelemetryConfig = () => {
         process.env.npm_package_version,
     }),
     spanProcessor: spanProcessor as any,
+    instrumentations: [new PrismaInstrumentation()],
   } as Partial<OpenTelemetryModuleConfig>;
 };

@@ -26,6 +26,7 @@ specifiers:
   '@opentelemetry/sdk-trace-base': ^1.9.1
   '@opentelemetry/semantic-conventions': ^1.9.1
   '@prisma/client': ^4.10.1
+  '@prisma/instrumentation': ^4.11.0
   '@protobuf-ts/runtime': ^2.8.2
   '@protobuf-ts/runtime-rpc': ^2.8.2
   '@types/bcrypt': ^5.0.0
@@ -83,6 +84,7 @@ dependencies:
   '@opentelemetry/sdk-trace-base': 1.9.1_@opentelemetry+api@1.4.0
   '@opentelemetry/semantic-conventions': 1.9.1
   '@prisma/client': 4.10.1_prisma@4.10.1
+  '@prisma/instrumentation': 4.11.0
   '@protobuf-ts/runtime': 2.8.2
   '@protobuf-ts/runtime-rpc': 2.8.2
   bcrypt: 5.1.0
@@ -2990,6 +2992,15 @@ packages:
   /@prisma/engines/4.10.1:
     resolution: {integrity: sha512-B3tcTxjx196nuAu1GOTKO9cGPUgTFHYRdkPkTS4m5ptb2cejyBlH9X7GOfSt3xlI7p4zAJDshJP4JJivCg9ouA==}
     requiresBuild: true
+
+  /@prisma/instrumentation/4.11.0:
+    resolution: {integrity: sha512-Hp58SdueSePecH4sRINckVNUJ8cK7AdUZWKgcduynFAFhVAKNu9EMPBFJp6ML/dPoxGdebURKLgjNr4LnDrv6Q==}
+    dependencies:
+      '@opentelemetry/api': 1.4.0
+      '@opentelemetry/instrumentation': 0.35.1_@opentelemetry+api@1.4.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@protobuf-ts/runtime-rpc/2.8.2:
     resolution: {integrity: sha512-vum/Y7AXdUTWGFu7dke/jCSB9dV3Oo3iVPcce3j7KudpzzWarDkEGvXjKv3Y8zJPj5waToyxwBNSb7eo5Vw5WA==}
