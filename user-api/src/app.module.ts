@@ -10,6 +10,7 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
 import { opentelemetryConfig } from './tracing';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -37,6 +38,16 @@ import { opentelemetryConfig } from './tracing';
       }),
     }),
     OpenTelemetryModule.forRoot(opentelemetryConfig()),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        name: 'auth-api',
+        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? { target: 'pino-pretty' }
+            : undefined,
+      },
+    }),
     GrpcReflectionModule.register(grpcOption()),
     AuthModule,
     UserModule,

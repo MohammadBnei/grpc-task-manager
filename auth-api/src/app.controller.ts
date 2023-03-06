@@ -21,7 +21,7 @@ import { createHash } from 'crypto';
 
 import { IsEmail, IsIP, validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { Logger } from 'nestjs-pino';
+import { InjectPinoLogger, Logger } from 'nestjs-pino';
 
 class LoginDTO {
   @IsEmail()
@@ -39,7 +39,7 @@ export class AppController {
     private readonly appService: AppService,
     private jwtService: JwtService,
     private rtService: RefreshTokenService,
-    private logger: Logger,
+    @InjectPinoLogger(AppController.name) private logger: Logger,
   ) {}
 
   private async validateDto(data: any, Dto: any) {
