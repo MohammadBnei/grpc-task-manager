@@ -16,4 +16,5 @@ RUN nest build
 
 ENV NODE_ENV=production
 
-CMD pm2 start dist/main.js && pm2 logs
+ENTRYPOINT [ "node" ]
+CMD [ "dist/main.js" ]
