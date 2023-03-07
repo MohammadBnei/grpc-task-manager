@@ -12,5 +12,4 @@ RUN nest build
 
 ENV NODE_ENV=production
 
-ENTRYPOINT [ "node" ]
-CMD [ "dist/main.js" ]
+CMD pnpm start:prod
