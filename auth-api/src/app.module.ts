@@ -40,8 +40,6 @@ import { LoggerModule } from 'nestjs-pino';
         }),
         HEALTH_PORT: Joi.number(),
         JAEGER_URL: Joi.string().required(),
-        METRICS_HOST: Joi.string().required(),
-        METRICS_PORT: Joi.number().required(),
       }),
     }),
     LoggerModule.forRoot({
