@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-api
+
+spec:
+  ports:
+    - name: grpc
+      port: 4000
+      targetPort: 4000
+  selector:
+    app: auth-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api
+  labels:
+    app: api
+  annotations:
+    cert-manager.io/inject-ca-from-secret: my-ca-secret
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: auth-api
+      annotations:
+        autocert.step.sm/name: auth-api.grpc-tm
+    spec:
+      containers:
+        - image: mohammaddocker/tm-auth-api
+          name: auth-api
+          ports:
+            - containerPort: 4000
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: tls
+              mountPath: "/tls"
+              readOnly: true
+            - name: certs
+              mountPath: "/certs"
+              readOnly: true
+          env:
+            - name: MYSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: AUTH_DB_URL
+            - name: USER_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: USER_API_URL
+            - name: JWT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: SECRET
+      volumes:
+      - name: tls
+        csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/issuer-name: tm-selfsigned
+            csi.cert-manager.io/dns-names: ${POD_NAME}.${POD_NAMESPACE}
+      - name: certs
+        secret:
+          secretName: auth-api-cert-tls
+          items:
+            - key: tls.key
+              path: certificate.key
+            - key: tls.crt
+              path: certificate.crt 

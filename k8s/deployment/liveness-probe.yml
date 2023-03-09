@@ -1,0 +1,10 @@
+- op: add
+  path: /spec/template/spec/containers/0/livenessProbe
+  value:
+    exec:
+      command:
+        - curl
+        - -f
+        - http://localhost:3000/health
+    initialDelaySeconds: 20
+    periodSeconds: 5

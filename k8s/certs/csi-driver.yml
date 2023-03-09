@@ -1,0 +1,178 @@
+---
+# Source: cert-manager-csi-driver/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: cert-manager-csi-driver
+    helm.sh/chart: cert-manager-csi-driver-v0.5.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.5.0"
+    app.kubernetes.io/managed-by: Helm
+  name: cert-manager-csi-driver
+---
+# Source: cert-manager-csi-driver/templates/clusterrole.yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: cert-manager-csi-driver
+    helm.sh/chart: cert-manager-csi-driver-v0.5.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.5.0"
+    app.kubernetes.io/managed-by: Helm
+  name: cert-manager-csi-driver
+rules:
+  - apiGroups: ["cert-manager.io"]
+    resources: ["certificaterequests"]
+    verbs: ["watch", "create", "delete", "list"]
+---
+# Source: cert-manager-csi-driver/templates/clusterrolebinding.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: cert-manager-csi-driver
+    helm.sh/chart: cert-manager-csi-driver-v0.5.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.5.0"
+    app.kubernetes.io/managed-by: Helm
+  name: cert-manager-csi-driver
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cert-manager-csi-driver
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-csi-driver
+    namespace: cert-manager
+---
+# Source: cert-manager-csi-driver/templates/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cert-manager-csi-driver
+  labels:
+    app.kubernetes.io/name: cert-manager-csi-driver
+    helm.sh/chart: cert-manager-csi-driver-v0.5.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app: cert-manager-csi-driver
+  template:
+    metadata:
+      labels:
+        app: cert-manager-csi-driver
+    spec:
+      serviceAccountName: cert-manager-csi-driver
+      containers:
+        - name: node-driver-registrar
+          image: "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - -v=1
+            - --csi-address=/plugin/csi.sock
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/cert-manager-csi-driver/csi.sock
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /plugin
+            - name: registration-dir
+              mountPath: /registration
+
+        - name: liveness-probe
+          image: "k8s.gcr.io/sig-storage/livenessprobe:v2.6.0"
+          args:
+            - --csi-address=/plugin/csi.sock
+            - --probe-timeout=3s
+            - --health-port=9809
+            - -v=1
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /plugin
+
+        - name: cert-manager-csi-driver
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          image: "quay.io/jetstack/cert-manager-csi-driver:v0.5.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --log-level=1
+            - --driver-name=csi.cert-manager.io
+            - --node-id=$(NODE_ID)
+            - --endpoint=$(CSI_ENDPOINT)
+            - --data-root=csi-data-dir
+            - --use-token-request=false
+          env:
+            - name: NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: CSI_ENDPOINT
+              value: unix://plugin/csi.sock
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /plugin
+            - name: pods-mount-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: "Bidirectional"
+            - name: csi-data-dir
+              mountPath: /csi-data-dir
+              mountPropagation: "Bidirectional"
+          ports:
+            - containerPort: 9809
+              name: healthz
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: healthz
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+          resources: {}
+
+      tolerations: []
+
+      volumes:
+        - name: plugin-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins/cert-manager-csi-driver
+            type: DirectoryOrCreate
+        - name: pods-mount-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: Directory
+        - hostPath:
+            path: /var/lib/kubelet/plugins_registry
+            type: Directory
+          name: registration-dir
+        - hostPath:
+            path: /var/lib/kubelet/cert-manager-csi-driver
+            type: DirectoryOrCreate
+          name: csi-data-dir
+---
+# Source: cert-manager-csi-driver/templates/csidriver.yaml
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  name: csi.cert-manager.io
+  labels:
+    app.kubernetes.io/name: cert-manager-csi-driver
+    helm.sh/chart: cert-manager-csi-driver-v0.5.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  podInfoOnMount: true
+  volumeLifecycleModes:
+    - Ephemeral

@@ -1,0 +1,56 @@
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: PORT
+    valueFrom:
+      configMapKeyRef:
+        name: api-map
+        key: PORT
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: JAEGER_URL
+    valueFrom:
+      configMapKeyRef:
+        name: api-map
+        key: JAEGER_URL
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: insecure
+    value: "false"
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: USER_CERT
+    value: /certs/certificate.crt
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: USER_KEY
+    value: /certs/certificate.key
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: AUTH_CERT
+    value: /certs/certificate.crt
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: AUTH_KEY
+    value: /certs/certificate.key
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: TASK_CERT
+    value: /certs/certificate.crt
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: TASK_KEY
+    value: /certs/certificate.key
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: ROOT_CA
+    value: /tls/ca.crt

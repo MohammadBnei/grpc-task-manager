@@ -1,0 +1,11 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-secrets
+provisioner: kubernetes.io/csi
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  pluginName: secrets
+  accessMode: ReadWriteOnce
+  use-secret-ref-for-credentials: "true"
