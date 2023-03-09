@@ -7,4 +7,4 @@
         - -f
         - http://localhost:3000/health
     initialDelaySeconds: 20
-    periodSeconds: 5
+    periodSeconds: 60
