@@ -4,7 +4,7 @@ import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.usageClient.usingStream(UsageRequest.create());
+		const stream = locals.taskClients.usageClient.usingStream(UsageRequest.create());
 
 		return sse<any>(async ({ write }) => {
 			for await (const msg of stream.responses) {
@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 			eventType: data.eventType
 		});
 
-		await locals.usageClient.using(usageRequest);
+		await locals.taskClients.usageClient.using(usageRequest);
 
 		return new Response();
 	} catch (error: any) {

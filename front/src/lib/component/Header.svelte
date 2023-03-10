@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import modal from '$src/stores/modal';
 	import { relativeDate, searchTerm, taskStore } from '$src/stores/task';
 	import NewTask from './task/NewTask.svelte';
@@ -7,12 +7,18 @@
 	import { muteToast, username } from '$src/stores/user';
 	import { sendUsage } from '../service/usage';
 	import { EventType } from '../stubs/task/v1beta/task';
+	import Login from './auth/Login.svelte';
+	import Logout from './auth/Logout.svelte';
 
 	export let headerHeight;
 
 	const handleNewTask = () => {
 		sendUsage(EventType.CREATE, '');
-		modal.open(NewTask);
+		modal.open(NewTask as any);
+	};
+
+	const handleSession = () => {
+		modal.open(($username ? Logout : Login) as any);
 	};
 </script>
 
@@ -122,32 +128,13 @@
 			</ul>
 		</div>
 		<div class="navbar-end">
-			<div class="dropdown dropdown-end  mr-4">
-				<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-					<div class="w-10 rounded-full">
-						{#if $username}
-							<FaUserTie />
-						{:else}
-							<FaUserSecret />
-						{/if}
-					</div>
-				</label>
-				<ul
-					tabindex="0"
-					class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-				>
-					<li>
-						<div class="form-control">
-							<input
-								type="text"
-								placeholder="Username"
-								class="input input-bordered w-full"
-								bind:value={$username}
-							/>
-						</div>
-					</li>
-				</ul>
-			</div>
+			<button class="btn btn-ghost btn-circle avatar" on:click={handleSession}>
+				{#if $username}
+					<FaUserTie />
+				{:else}
+					<FaUserSecret />
+				{/if}
+			</button>
 			<button class="btn btn-primary btn-square" on:click={handleNewTask}>+</button>
 		</div>
 	</div>

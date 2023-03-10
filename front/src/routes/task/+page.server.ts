@@ -22,7 +22,7 @@ export const actions: Actions = {
 			const createTaskRequest = CreateTaskRequest.create({
 				task: toPb({ fields, name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
-			await locals.taskClient.createTask(createTaskRequest);
+			await locals.taskClients.crudClient.createTask(createTaskRequest);
 
 			return { success: 200 };
 		} catch (error: any) {
@@ -38,7 +38,7 @@ export const actions: Actions = {
 		const fieldValue = data.get('fieldValue') as string;
 
 		try {
-			await locals.fieldClient.addField({
+			await locals.taskClients.fieldClient.addField({
 				fieldName,
 				fieldValue,
 				fieldType: FieldType.STRING,
@@ -57,7 +57,7 @@ export const actions: Actions = {
 		const fieldName = data.get('fieldName') as string;
 
 		try {
-			await locals.fieldClient.removeField({
+			await locals.taskClients.fieldClient.removeField({
 				fieldName,
 				taskName
 			});
@@ -77,7 +77,7 @@ export const actions: Actions = {
 			const updateTaskRequest = UpdateTaskRequest.create({
 				task: toPb(JSON.parse(stringTask))
 			});
-			await locals.taskClient.updateTask(updateTaskRequest);
+			await locals.taskClients.crudClient.updateTask(updateTaskRequest);
 
 			return { success: true };
 		} catch (error: any) {
@@ -94,7 +94,7 @@ export const actions: Actions = {
 			const deleteTaskRequest = DeleteTaskRequest.create({
 				name
 			});
-			await locals.taskClient.deleteTask(deleteTaskRequest);
+			await locals.taskClients.crudClient.deleteTask(deleteTaskRequest);
 
 			return { success: true };
 		} catch (error: any) {

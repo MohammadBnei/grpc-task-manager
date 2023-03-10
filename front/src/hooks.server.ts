@@ -7,24 +7,44 @@ import {
 	UsageServiceClient
 } from '$lib/stubs/task/v1beta/task.client';
 import fs from 'fs';
+import dotenv from 'dotenv';
+import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
+import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
+dotenv.config();
 
-const transport = new GrpcTransport({
-	host: process.env.SERVER || 'localhost:4000',
-	channelCredentials: process.env.secure
-		? ChannelCredentials.createSsl(
-				fs.readFileSync(process.env.ROOT_CERT || ''),
-				fs.readFileSync(process.env.CERT_KEY || '')
-		  )
-		: ChannelCredentials.createInsecure()
+const credentials = process.env.secure
+	? ChannelCredentials.createSsl(
+			fs.readFileSync(process.env.ROOT_CERT || ''),
+			fs.readFileSync(process.env.FRONT_KEY || ''),
+			fs.readFileSync(process.env.FRONT_CERT || '')
+	  )
+	: ChannelCredentials.createInsecure();
+
+const taskTransport = new GrpcTransport({
+	host: process.env.TASK_API_URL || 'localhost:4000',
+	channelCredentials: credentials
 });
-const taskClient = new TaskServiceClient(transport);
-const fieldClient = new FieldServiceClient(transport);
-const usageClient = new UsageServiceClient(transport);
+const userTransport = new GrpcTransport({
+	host: process.env.USER_API_URL || 'localhost:4000',
+	channelCredentials: credentials
+});
+const authTransport = new GrpcTransport({
+	host: process.env.AUTH_API_URL || 'localhost:4000',
+	channelCredentials: credentials
+});
+const taskClients = {
+	crudClient: new TaskServiceClient(taskTransport),
+	fieldClient: new FieldServiceClient(taskTransport),
+	usageClient: new UsageServiceClient(taskTransport)
+};
+
+const userClient = new UserServiceClient(userTransport)
+const authClient = new AuthServiceClient(authTransport)
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.taskClient = taskClient;
-	event.locals.fieldClient = fieldClient;
-	event.locals.usageClient = usageClient;
+	event.locals.taskClients = taskClients;
+	event.locals.userClient = userClient;
+	event.locals.authClient = authClient;
 
 	const response = await resolve(event);
 

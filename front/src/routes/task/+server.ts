@@ -5,7 +5,7 @@ import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.taskClient.streamTasks({});
+		const stream = locals.taskClients.crudClient.streamTasks({});
 
 		return sse<any>(async ({ write }) => {
 			for await (const msg of stream.responses) {
@@ -26,7 +26,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		const updateTaskRequest = UpdateTaskRequest.create({
 			task: toPb(data)
 		});
-		await locals.taskClient.updateTask(updateTaskRequest);
+		await locals.taskClients.crudClient.updateTask(updateTaskRequest);
 
 		return new Response();
 	} catch (error: any) {

@@ -20,10 +20,11 @@ services:
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
       - 4002:4000
     stdin_open: true
-    command: bash -c "pnpm i && pnpm start:dev"
+    command: start:dev
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
@@ -39,13 +40,14 @@ services:
       - /app/node_modules
       - /app/.pnpm-store
     environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
+      - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
       - insecure=false
       - PORT=4000
       - AUTH_API_URL=auth-api:4000
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
       - 4001:4000
     stdin_open: true
@@ -72,8 +74,9 @@ services:
       - TASK_KEY=/certs/task-key.pem
       - AUTH_API_URL=auth-api:4000
       - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4001:4000
+      - 4000:4000
     stdin_open: true
     command: start:dev
     healthcheck:
