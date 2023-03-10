@@ -65,7 +65,7 @@ services:
       - /app/node_modules
       - /app/.pnpm-store
     environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
+      - MONGO_URL=mongodb://root:task@mongo
       - insecure=false
       - PORT=4000
       - TASK_CERT=/certs/task.pem
