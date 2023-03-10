@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:18-slim
+FROM node:18
 
 RUN npm install -g pnpm @nestjs/cli prisma
 
