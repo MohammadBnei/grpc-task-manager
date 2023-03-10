@@ -14,16 +14,15 @@ export default (cs: ConfigService) =>
     transport: Transport.GRPC,
     options: {
       package: 'task.v1beta',
-      url: `0.0.0.0:${cs.get('PORT') || 4002}`,
-      credentials:
-        !cs.get<boolean>('insecure')
-          ? ServerCredentials.createSsl(null, [
-              {
-                private_key: cs.get('TASK_KEY'),
-                cert_chain: cs.get('TASK_CERT'),
-              },
-            ])
-          : ServerCredentials.createInsecure(),
+      url: `0.0.0.0:${cs.get('PORT')}`,
+      credentials: !cs.get<boolean>('insecure')
+        ? ServerCredentials.createSsl(null, [
+            {
+              private_key: readFileSync(cs.get('TASK_KEY')),
+              cert_chain: readFileSync(cs.get('TASK_CERT')),
+            },
+          ])
+        : ServerCredentials.createInsecure(),
       loader: {
         includeDirs: [join(__dirname, 'proto')],
       },
