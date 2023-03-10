@@ -16,7 +16,7 @@ export default (cs: ConfigService) =>
       package: 'task.v1beta',
       url: `0.0.0.0:${cs.get('PORT') || 4002}`,
       credentials:
-        cs.get('insecure') === 'false'
+        !cs.get<boolean>('insecure')
           ? ServerCredentials.createSsl(null, [
               {
                 private_key: cs.get('TASK_KEY'),

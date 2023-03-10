@@ -23,7 +23,7 @@ async function bootstrap() {
       `${cs.get('npm_package_name')}:${cs.get(
         'npm_package_version',
       )} Listening ${
-        cs.get('insecure') === 'false' ? 'securely' : 'insecurely'
+        !cs.get<boolean>('insecure') ? 'securely' : 'insecurely'
       } on port ${cs.get('PORT')}`,
     );
     logger.log(`Health checks on port ${healthCheckPort}`);

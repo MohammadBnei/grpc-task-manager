@@ -16,7 +16,7 @@ export default (cs: ConfigService): GrpcOptions =>
       package: 'auth.v1alpha',
       url: `0.0.0.0:${cs.get('PORT') || 4003}`,
       credentials:
-        cs.get('insecure') === 'false'
+        !cs.get<boolean>('insecure')
           ? ServerCredentials.createSsl(null, [
               {
                 private_key: readFileSync(cs.get('AUTH_KEY')),
@@ -50,7 +50,7 @@ export const userGrpcOptions = (cs: ConfigService): ClientProviderOptions => ({
       keepalivePermitWithoutCalls: 1,
     },
     credentials:
-      cs.get('insecure') === 'false'
+      !cs.get<boolean>('insecure')
         ? ChannelCredentials.createSsl(
             readFileSync(cs.get('ROOT_CA')),
             readFileSync(cs.get('AUTH_KEY')),

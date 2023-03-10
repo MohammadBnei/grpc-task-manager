@@ -8,13 +8,16 @@ services:
       - insecure=false
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
+      - ROOT_CA=/certs/rootCA.pem
       - PORT=4000
+      - AUTH_API_URL=auth-api:4000
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
       - 4000:4000
     volumes:
       - ../local/certs:/certs
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
       timeout: 10s
       retries: 5
@@ -26,17 +29,19 @@ services:
       - insecure=false
       - TASK_CERT=/certs/task.pem
       - TASK_KEY=/certs/task-key.pem
+      - ROOT_CA=/certs/rootCA.pem
       - PORT=4000
+      - AUTH_API_URL=auth-api:4000
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
       - 4001:4000
     volumes:
       - ../local/certs:/certs
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
       timeout: 10s
       retries: 5
-    
 
   auth-api:
     image: mohammaddocker/tm-auth-api
@@ -51,12 +56,13 @@ services:
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
     ports:
       - 4002:4000
     volumes:
       - ../local/certs:/certs
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
       timeout: 10s
       retries: 5
