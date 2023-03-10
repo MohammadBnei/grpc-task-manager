@@ -8,20 +8,21 @@ import { readFileSync } from 'fs';
 import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
+import { ConfigService } from '@nestjs/config';
 dotenv.config();
 
-export default () =>
+export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({
     transport: Transport.GRPC,
     options: {
       package: 'task.v1beta',
-      url: `0.0.0.0:${process.env.PORT || 4000}`,
+      url: `0.0.0.0:${cs.get('PORT') || 4002}`,
       credentials:
-        process.env.insecure === 'false'
+        cs.get('insecure') === 'false'
           ? ServerCredentials.createSsl(null, [
               {
-                private_key: readFileSync(process.env.TASK_KEY),
-                cert_chain: readFileSync(process.env.TASK_CERT),
+                private_key: cs.get('TASK_KEY'),
+                cert_chain: cs.get('TASK_CERT'),
               },
             ])
           : ServerCredentials.createInsecure(),
@@ -32,13 +33,12 @@ export default () =>
     },
   } as GrpcOptions);
 
-export const authGrpcOptions = (): ClientProviderOptions => {
-  console.log({ api: process.env.AUTH_API_URL });
+export const authGrpcOptions = (cs: ConfigService): ClientProviderOptions => {
   return {
-    name: 'auth',
+    name: 'AUTH_SERVICE',
     transport: Transport.GRPC,
     options: {
-      url: process.env.AUTH_API_URL,
+      url: cs.get('AUTH_API_URL'),
       package: 'auth.v1alpha',
       loader: {
         includeDirs: [join(__dirname, 'proto')],
@@ -55,9 +55,9 @@ export const authGrpcOptions = (): ClientProviderOptions => {
       credentials:
         process.env.insecure === 'false'
           ? ChannelCredentials.createSsl(
-              readFileSync(process.env.ROOT_CA),
-              readFileSync(process.env.TASK_KEY),
-              readFileSync(process.env.TASK_CERT),
+              readFileSync(cs.get('ROOT_CA')),
+              readFileSync(cs.get('TASK_KEY')),
+              readFileSync(cs.get('TASK_CERT')),
             )
           : ChannelCredentials.createInsecure(),
     },

@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
@@ -6,8 +7,9 @@ import grpcOption from './grpcOption';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = app.get(Logger);
+  const cs = app.get(ConfigService);
   app.useLogger(logger);
-  app.connectMicroservice(grpcOption());
+  app.connectMicroservice(grpcOption(cs));
 
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();

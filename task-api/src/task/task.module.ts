@@ -6,22 +6,14 @@ import { TaskController } from './task.controller';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { FieldController } from './field.controller';
 import { StreamsService } from 'src/streams/streams.service';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Task.name, schema: TaskSchema }]),
+    AuthModule,
   ],
-  providers: [
-    TaskService,
-    ProfanityService,
-    StreamsService,
-    AuthService,
-    {
-      provide: 'IAuthService',
-      useClass: AuthService,
-    },
-  ],
+  providers: [TaskService, ProfanityService, StreamsService],
   controllers: [TaskController, FieldController],
 })
 export class TaskModule {}

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskModule } from './task/task.module';
 import { UserusageModule } from './userusage/userusage.module';
@@ -15,29 +15,32 @@ import { opentelemetryConfig } from './tracing';
 import { AuthModule } from './auth/auth.module';
 import { LoggerModule } from 'nestjs-pino';
 
+const envSchema = Joi.object({
+  MONGO_URL: Joi.string().required(),
+  PORT: Joi.string(),
+  insecure: Joi.boolean().required(),
+  TASK_CERT: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  TASK_KEY: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  ROOT_CA: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  JAEGER_URL: Joi.string().required(),
+  AUTH_API_URL: Joi.string().required(),
+});
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
-      validationSchema: Joi.object({
-        MONGO_URL: Joi.string().required(),
-        PORT: Joi.string(),
-        insecure: Joi.boolean().required(),
-        TASK_CERT: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        TASK_KEY: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        ROOT_CA: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        JAEGER_URL: Joi.string().required(),
-        AUTH_API_URL: Joi.string().required(),
-      }),
+      validationSchema: envSchema,
+      isGlobal: true,
     }),
     OpenTelemetryModule.forRoot(opentelemetryConfig()),
     LoggerModule.forRoot({
@@ -51,7 +54,11 @@ import { LoggerModule } from 'nestjs-pino';
       },
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
-    GrpcReflectionModule.register(grpcOption()),
+    GrpcReflectionModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (cs: ConfigService) => grpcOption(cs),
+    }),
     TaskModule,
     AuthModule,
     HealthModule,

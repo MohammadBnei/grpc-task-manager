@@ -8,17 +8,14 @@ import {
   GetTaskRequest,
   ListTasksRequest,
   ListTasksResponse,
-  Task,
   StreamTasksRequest,
   StreamTasksResponse,
   TaskResponse,
 } from '../stubs/task/v1beta/task';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
-import { Roles } from 'src/auth/role.decorator';
-import { UserRole } from 'src/stubs/user/v1alpha/message';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { CreateTaskDto } from './entity/task.dto';
