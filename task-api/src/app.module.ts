@@ -18,7 +18,7 @@ import { LoggerModule } from 'nestjs-pino';
 const envSchema = Joi.object({
   MONGO_URL: Joi.string().required(),
   PORT: Joi.string().default(4002),
-  HEALTH_PORT: Joi.number().default(3003),
+  HEALTH_PORT: Joi.number().default(3000),
   insecure: Joi.boolean().required(),
   TASK_CERT: Joi.string().when('insecure', {
     is: false,

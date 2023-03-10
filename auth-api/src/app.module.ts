@@ -18,7 +18,7 @@ import { LoggerModule } from 'nestjs-pino';
 const envSchema = Joi.object({
   MYSQL_URL: Joi.string().required(),
   PORT: Joi.number().default(4003),
-  HEALTH_PORT: Joi.number().default(3002),
+  HEALTH_PORT: Joi.number().default(3000),
   USER_API_URL: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   insecure: Joi.boolean().required(),
