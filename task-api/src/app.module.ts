@@ -43,7 +43,11 @@ const envSchema = Joi.object({
       validationSchema: envSchema,
       isGlobal: true,
     }),
-    OpenTelemetryModule.forRoot(opentelemetryConfig()),
+    OpenTelemetryModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (cs: ConfigService) => opentelemetryConfig(cs),
+    }),
     LoggerModule.forRoot({
       pinoHttp: {
         name: 'auth-api',

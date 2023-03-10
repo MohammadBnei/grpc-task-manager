@@ -15,14 +15,12 @@ import {
   DeleteResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
-  UserRole,
 } from 'src/stubs/user/v1alpha/message';
 import { status as RpcStatus } from '@grpc/grpc-js';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
-import { Roles } from 'src/auth/role.decorator';
 
 @Controller()
 export class UserController {

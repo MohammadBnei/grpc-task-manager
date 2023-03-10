@@ -1,20 +1,15 @@
-import { OnModuleInit } from '@nestjs/common';
+import { Inject, OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { Client, ClientGrpc } from '@nestjs/microservices';
+import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ValidateResponse } from 'src/stubs/auth/v1alpha/message';
 import { AuthServiceClient } from 'src/stubs/auth/v1alpha/service';
-import { authGrpcOptions } from 'src/grpcOption';
-import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  @Client(authGrpcOptions())
-  client: ClientGrpc;
-
   private authService: AuthServiceClient;
 
-  constructor(private reflector: Reflector) {}
+  constructor(@Inject('AUTH_SERVICE') private client: ClientGrpc) {}
 
   onModuleInit() {
     this.authService = this.client.getService<AuthServiceClient>('AuthService');

@@ -8,14 +8,15 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { MongooseInstrumentation } from '@opentelemetry/instrumentation-mongoose';
 import { OpenTelemetryModuleConfig } from '@metinseylan/nestjs-opentelemetry';
+import { ConfigService } from '@nestjs/config';
 
-export const opentelemetryConfig = () => {
+export const opentelemetryConfig = (cs: ConfigService) => {
   const traceExporter = new JaegerExporter({
-    endpoint: process.env.JAEGER_URL,
+    endpoint: cs.get('JAEGER_URL'),
   });
 
   const spanProcessor =
-    process.env.NODE_ENV === `production`
+    cs.get('NODE_ENV') === `production`
       ? new BatchSpanProcessor(traceExporter)
       : new SimpleSpanProcessor(traceExporter);
 

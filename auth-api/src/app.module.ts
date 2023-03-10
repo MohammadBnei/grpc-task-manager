@@ -38,10 +38,14 @@ const envSchema = Joi.object({
 });
 @Module({
   imports: [
-    OpenTelemetryModule.forRoot(opentelemetryConfig()),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: envSchema,
+    }),
+    OpenTelemetryModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (cs: ConfigService) => opentelemetryConfig(cs),
     }),
     LoggerModule.forRoot({
       pinoHttp: {

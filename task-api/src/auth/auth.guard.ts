@@ -1,17 +1,12 @@
 import { status } from '@grpc/grpc-js';
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  Scope,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RpcException } from '@nestjs/microservices';
 import { ValidateResponse } from 'src/stubs/auth/v1alpha/message';
 import { UserRole } from 'src/stubs/user/v1alpha/message';
 import { AuthService } from './auth.service';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class GrpcAuthGuard implements CanActivate {
   constructor(private authService: AuthService, private reflector: Reflector) {}
 
