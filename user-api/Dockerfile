@@ -1,4 +1,4 @@
-FROM mohammaddocker/pm2-nest-prisma
+FROM mohammaddocker/nest-prisma
 
 WORKDIR /app
 

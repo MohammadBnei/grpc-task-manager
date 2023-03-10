@@ -10,26 +10,27 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
-dotenv.config();
+
+process.env.NODE_ENV !== 'production' && dotenv.config();
 
 const credentials = process.env.secure
 	? ChannelCredentials.createSsl(
-			fs.readFileSync(process.env.ROOT_CERT || ''),
-			fs.readFileSync(process.env.FRONT_KEY || ''),
-			fs.readFileSync(process.env.FRONT_CERT || '')
+			fs.readFileSync(process.env.ROOT_CERT as string),
+			fs.readFileSync(process.env.FRONT_KEY as string),
+			fs.readFileSync(process.env.FRONT_CERT as string)
 	  )
 	: ChannelCredentials.createInsecure();
 
 const taskTransport = new GrpcTransport({
-	host: process.env.TASK_API_URL || 'localhost:4000',
+	host: process.env.TASK_API_URL as string,
 	channelCredentials: credentials
 });
 const userTransport = new GrpcTransport({
-	host: process.env.USER_API_URL || 'localhost:4000',
+	host: process.env.USER_API_URL as string,
 	channelCredentials: credentials
 });
 const authTransport = new GrpcTransport({
-	host: process.env.AUTH_API_URL || 'localhost:4000',
+	host: process.env.AUTH_API_URL as string,
 	channelCredentials: credentials
 });
 const taskClients = {
@@ -38,8 +39,8 @@ const taskClients = {
 	usageClient: new UsageServiceClient(taskTransport)
 };
 
-const userClient = new UserServiceClient(userTransport)
-const authClient = new AuthServiceClient(authTransport)
+const userClient = new UserServiceClient(userTransport);
+const authClient = new AuthServiceClient(authTransport);
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.taskClients = taskClients;
