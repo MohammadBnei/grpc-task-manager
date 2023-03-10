@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: front
+      annotations:
+        autocert.step.sm/name: front.grpc-tm
+    spec:
+      containers:
+        - image: mohammaddocker/tm-front
+          name: front
+          ports:
+            - containerPort: 4000
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: tls
+              mountPath: "/tls"
+              readOnly: true
+            - name: certs
+              mountPath: "/certs"
+              readOnly: true
+          env:
+            - name: AUTH_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: AUTH_API_URL
+            - name: USER_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: USER_API_URL
+            - name: TASK_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: TASK_API_URL
+            - name: TASK_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-map
+                  key: TASK_API_URL
+            - name: secure
+              value: "true"
+            - name: ROOT_CERT
+              value: "/tls/ca.crt"
+            - name: FRONT_KEY
+              value: "/certs/certificate.key"
+            - name: FRONT_CERT
+              value: "/certs/certificate.crt"
+      volumes:
+      - name: tls
+        csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/issuer-name: tm-selfsigned
+            csi.cert-manager.io/dns-names: ${POD_NAME}.${POD_NAMESPACE}
+      - name: certs
+        secret:
+          secretName: front-cert-tls
+          items:
+            - key: tls.key
+              path: certificate.key
+            - key: tls.crt
+              path: certificate.crt 
