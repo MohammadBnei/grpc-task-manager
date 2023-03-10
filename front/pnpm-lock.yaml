@@ -15,7 +15,6 @@ specifiers:
   autoprefixer: ^10.4.13
   daisyui: ^2.50.0
   dayjs: ^1.11.7
-  dotenv: ^16.0.3
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -38,7 +37,6 @@ specifiers:
 
 dependencies:
   dayjs: 1.11.7
-  dotenv: 16.0.3
 
 devDependencies:
   '@grpc/grpc-js': 1.8.12
@@ -1087,11 +1085,6 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
-
-  /dotenv/16.0.3:
-    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
-    engines: {node: '>=12'}
-    dev: false
 
   /electron-to-chromium/1.4.284:
     resolution: {integrity: sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==}
