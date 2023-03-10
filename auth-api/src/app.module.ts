@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, RequestMethod } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption, { userGrpcOptions } from './grpcOption';
@@ -56,6 +56,7 @@ const envSchema = Joi.object({
             ? { target: 'pino-pretty' }
             : undefined,
       },
+      exclude: [{ method: RequestMethod.ALL, path: 'health' }],
     }),
     GrpcReflectionModule.registerAsync({
       imports: [ConfigModule],

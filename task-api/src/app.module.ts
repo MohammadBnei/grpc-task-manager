@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskModule } from './task/task.module';
@@ -57,6 +57,7 @@ const envSchema = Joi.object({
             ? { target: 'pino-pretty' }
             : undefined,
       },
+      exclude: [{ method: RequestMethod.ALL, path: 'health' }],
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     GrpcReflectionModule.registerAsync({
