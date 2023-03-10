@@ -15,7 +15,7 @@ import { Metadata } from '@grpc/grpc-js';
 export class AppService implements OnModuleInit {
   private userService: UserServiceClient;
 
-  constructor(@Inject('user') private client: ClientGrpc) {}
+  constructor(@Inject('USER_SERVICE') private client: ClientGrpc) {}
 
   onModuleInit() {
     this.userService = this.client.getService<UserServiceClient>('UserService');

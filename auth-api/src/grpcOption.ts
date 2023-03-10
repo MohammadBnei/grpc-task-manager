@@ -1,4 +1,5 @@
 import { ChannelCredentials, ServerCredentials } from '@grpc/grpc-js';
+import { ConfigService } from '@nestjs/config';
 import {
   ClientProviderOptions,
   GrpcOptions,
@@ -8,18 +9,18 @@ import { readFileSync } from 'fs';
 import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 
-export default (): GrpcOptions =>
+export default (cs: ConfigService): GrpcOptions =>
   addReflectionToGrpcConfig({
     transport: Transport.GRPC,
     options: {
       package: 'auth.v1alpha',
-      url: `0.0.0.0:${process.env.PORT || 4003}`,
+      url: `0.0.0.0:${cs.get('PORT') || 4003}`,
       credentials:
-        process.env.insecure === 'false'
+        cs.get('insecure') === 'false'
           ? ServerCredentials.createSsl(null, [
               {
-                private_key: readFileSync(process.env.AUTH_KEY),
-                cert_chain: readFileSync(process.env.AUTH_CERT),
+                private_key: readFileSync(cs.get('AUTH_KEY')),
+                cert_chain: readFileSync(cs.get('AUTH_CERT')),
               },
             ])
           : ServerCredentials.createInsecure(),
@@ -30,11 +31,11 @@ export default (): GrpcOptions =>
     },
   });
 
-export const userGrpcOptions = (): ClientProviderOptions => ({
-  name: 'user',
+export const userGrpcOptions = (cs: ConfigService): ClientProviderOptions => ({
+  name: 'USER_SERVICE',
   transport: Transport.GRPC,
   options: {
-    url: process.env.USER_API_URL,
+    url: cs.get('USER_API_URL'),
     package: 'user.v1alpha',
     loader: {
       includeDirs: [join(__dirname, 'proto')],
@@ -49,11 +50,11 @@ export const userGrpcOptions = (): ClientProviderOptions => ({
       keepalivePermitWithoutCalls: 1,
     },
     credentials:
-      process.env.insecure === 'false'
+      cs.get('insecure') === 'false'
         ? ChannelCredentials.createSsl(
-            readFileSync(process.env.ROOT_CA),
-            readFileSync(process.env.AUTH_KEY),
-            readFileSync(process.env.AUTH_CERT),
+            readFileSync(cs.get('ROOT_CA')),
+            readFileSync(cs.get('AUTH_KEY')),
+            readFileSync(cs.get('AUTH_CERT')),
           )
         : ChannelCredentials.createInsecure(),
   },

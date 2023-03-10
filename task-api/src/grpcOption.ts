@@ -7,9 +7,7 @@ import {
 import { readFileSync } from 'fs';
 import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
-import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
-dotenv.config();
 
 export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({

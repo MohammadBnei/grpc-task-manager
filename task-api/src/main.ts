@@ -15,17 +15,17 @@ async function bootstrap() {
   app.enableShutdownHooks();
   await app.startAllMicroservices();
 
-  const healthCheckPort = process.env.HEALTH_PORT || 3000;
+  const healthCheckPort = cs.get('HEALTH_PORT');
   await app.listen(healthCheckPort);
 
   (async () => {
-    if (process.env.NODE_ENV === 'production') return;
+    if (cs.get('NODE_ENV') === 'production') return;
     logger.log(
-      `${process.env.npm_package_name}:${
-        process.env.npm_package_version
-      } Listening ${
-        process.env.insecure === 'false' ? 'securely' : 'insecurely'
-      } on port ${process.env.PORT || 4002}`,
+      `${cs.get('npm_package_name')}:${cs.get(
+        'npm_package_version',
+      )} Listening ${
+        cs.get('insecure') === 'false' ? 'securely' : 'insecurely'
+      } on port ${cs.get('PORT')}`,
     );
     logger.log(`Health checks on port ${healthCheckPort}`);
     logger.log('Server started at ' + new Date());

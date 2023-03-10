@@ -8,39 +8,40 @@ import { JwtModule } from '@nestjs/jwt';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { PrismaService } from './prisma.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import Joi from 'joi';
 import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
 import { opentelemetryConfig } from './tracing';
 import { LoggerModule } from 'nestjs-pino';
 
+const envSchema = Joi.object({
+  MYSQL_URL: Joi.string().required(),
+  PORT: Joi.number().default(4003),
+  HEALTH_PORT: Joi.number().default(3002),
+  USER_API_URL: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  insecure: Joi.boolean().required(),
+  AUTH_CERT: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  AUTH_KEY: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  ROOT_CA: Joi.string().when('insecure', {
+    is: false,
+    then: Joi.required(),
+  }),
+  JAEGER_URL: Joi.string().required(),
+});
 @Module({
   imports: [
     OpenTelemetryModule.forRoot(opentelemetryConfig()),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
-      validationSchema: Joi.object({
-        MYSQL_URL: Joi.string().required(),
-        PORT: Joi.number(),
-        USER_API_URL: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
-        insecure: Joi.boolean().required(),
-        AUTH_CERT: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        AUTH_KEY: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        ROOT_CA: Joi.string().when('insecure', {
-          is: false,
-          then: Joi.required(),
-        }),
-        HEALTH_PORT: Joi.number(),
-        JAEGER_URL: Joi.string().required(),
-      }),
+      validationSchema: envSchema,
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -52,8 +53,19 @@ import { LoggerModule } from 'nestjs-pino';
             : undefined,
       },
     }),
-    GrpcReflectionModule.register(grpcOption()),
-    ClientsModule.register([userGrpcOptions()]),
+    GrpcReflectionModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (cs: ConfigService) => grpcOption(cs),
+    }),
+    ClientsModule.registerAsync([
+      {
+        name: 'USER_SERVICE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (cs: ConfigService) => userGrpcOptions(cs),
+      },
+    ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '5m' },
