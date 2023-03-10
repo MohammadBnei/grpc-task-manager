@@ -4,7 +4,6 @@ resources:
 - user-api.yml
 - task-api.yml
 - auth-api.yml
-- front.yml
 
 patches:
 - target:
