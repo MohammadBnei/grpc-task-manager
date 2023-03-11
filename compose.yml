@@ -18,20 +18,6 @@ services:
     ports:
       - 16686:16686
 
-  front: 
-    image: front
-    volumes:
-      - ./local/certs:/certs
-    environment:
-      - ROOT_CERT=/certs/rootCA.pem
-      - FRONT_KEY=/certs/front-key.pem
-      - FRONT_CERT=/certs/front.pem
-      - secure=true
-      - TASK_API_URL=task-api:4000
-      - AUTH_API_URL=auth-api:4000
-      - USER_API_URL=user-api:4000
-    ports:
-      - 3000:3000
 
   auth-api:
     extends:
@@ -47,6 +33,11 @@ services:
     extends:
       file: ./compose/compose.published.yml
       service: task-api
+
+  # front:
+  #   extends:
+  #     file: ./compose/compose.published.yml
+  #     service: front
 
 networks:
   default:

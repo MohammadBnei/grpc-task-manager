@@ -8,7 +8,7 @@ import { toPb } from '$lib/helper/taskDto';
 import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	newTask: async ({ request, locals }) => {
+	newTask: async ({ request, locals, cookies }) => {
 		const data = await request.formData();
 		const name = data.get('name') as string;
 		const dueDate = data.get('dueDate') as string;
@@ -20,7 +20,11 @@ export const actions: Actions = {
 			const createTaskRequest = CreateTaskRequest.create({
 				task: toPb({ fields: [], name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
-			await locals.taskClients.crudClient.createTask(createTaskRequest);
+			await locals.taskClients.crudClient.createTask(createTaskRequest, {
+				meta: {
+					Authorization: `Bearer ${cookies.get('jwt')}`
+				}
+			});
 
 			return { success: 200 };
 		} catch (error: any) {
