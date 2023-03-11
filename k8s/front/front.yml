@@ -56,7 +56,7 @@ spec:
                   key: TASK_API_URL
             - name: secure
               value: "true"
-            - name: ROOT_CERT
+            - name: ROOT_CA
               value: "/tls/ca.crt"
             - name: FRONT_KEY
               value: "/certs/certificate.key"
