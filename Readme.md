@@ -76,3 +76,9 @@ TASK_API_URL=localhost:4001
 AUTH_API_URL=localhost:4002
 USER_API_URL=localhost:4000
 ```
+
+## Start the servers
+
+```bash
+docker compose up -d
+```
