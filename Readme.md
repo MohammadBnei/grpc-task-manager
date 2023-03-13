@@ -48,3 +48,15 @@ HEALTH_PORT=3002
 npx prisma migrate dev
 ```
 
+## SSL
+
+### Install mkcert 
+
+https://github.com/FiloSottile/mkcert
+
+### Certificates and rootCA
+
+```bash
+mkcert $API_DNS localhost
+cp $(mkcert -CAROOT)/rootCA.pem .
+```
