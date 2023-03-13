@@ -10,8 +10,6 @@ import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
 import { env } from '$env/dynamic/private';
 
-console.log({ secure: env.secure });
-
 const credentials = env.secure === 'true'
 	? ChannelCredentials.createSsl(
 			fs.readFileSync(env.ROOT_CA as string),
