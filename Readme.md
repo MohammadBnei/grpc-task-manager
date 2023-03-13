@@ -57,7 +57,10 @@ https://github.com/FiloSottile/mkcert
 ### Certificates and rootCA
 
 ```bash
-mkcert $API_DNS localhost
+mkcert user-api localhost
+mkcert auth-api localhost
+mkcert task-api localhost
+mkcert front localhost
 cp $(mkcert -CAROOT)/rootCA.pem .
 ```
 
