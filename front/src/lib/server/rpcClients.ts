@@ -12,7 +12,7 @@ import { env } from '$env/dynamic/private';
 
 const credentials = env.secure
 	? ChannelCredentials.createSsl(
-			fs.readFileSync(env.ROOT_CERT as string),
+			fs.readFileSync(env.ROOT_CA as string),
 			fs.readFileSync(env.FRONT_KEY as string),
 			fs.readFileSync(env.FRONT_CERT as string)
 	  )

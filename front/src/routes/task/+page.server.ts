@@ -4,15 +4,13 @@ import {
 	DeleteTaskRequest,
 	FieldType
 } from '$lib/stubs/task/v1beta/task';
-import { toPb } from '$src/lib/helper/taskDto';
-import { fail } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import { toPb } from '$lib/helper/taskDto';
+import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	newTask: async ({ request, locals }) => {
+	newTask: async ({ request, locals, cookies }) => {
 		const data = await request.formData();
 		const name = data.get('name') as string;
-		const fields = data.get('fields') as any;
 		const dueDate = data.get('dueDate') as string;
 
 		try {
@@ -20,9 +18,13 @@ export const actions: Actions = {
 			const [hour, minute] = time.split(':', 2);
 			const [year, month, day] = date.split('-', 3);
 			const createTaskRequest = CreateTaskRequest.create({
-				task: toPb({ fields, name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
+				task: toPb({ fields: [], name, dueDate: new Date(+year, +month - 1, +day, +hour, +minute) })
 			});
-			await locals.taskClients.crudClient.createTask(createTaskRequest);
+			await locals.taskClients.crudClient.createTask(createTaskRequest, {
+				meta: {
+					Authorization: `Bearer ${cookies.get('jwt')}`
+				}
+			});
 
 			return { success: 200 };
 		} catch (error: any) {
