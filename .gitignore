@@ -150,4 +150,4 @@ dist
 package
 
 # Removing certificates
-**.pem
+# **.pem
