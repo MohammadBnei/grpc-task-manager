@@ -62,3 +62,17 @@ cp $(mkcert -CAROOT)/rootCA.pem .
 ```
 
 Remove the +1 part of the name of the certificates 
+
+## Front
+
+### example .env
+
+```bash
+ROOT_CA=../local/certs/rootCA.pem
+FRONT_KEY=../local/certs/front-key.pem
+FRONT_CERT=../local/certs/front.pem
+secure=false
+TASK_API_URL=localhost:4001
+AUTH_API_URL=localhost:4002
+USER_API_URL=localhost:4000
+```
