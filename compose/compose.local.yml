@@ -49,9 +49,9 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4001:4000
+      - 4000:4000
     stdin_open: true
-    # command: start:dev
+    command: start:dev
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
@@ -76,7 +76,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4000:4000
+      - 4001:4000
     stdin_open: true
     command: start:dev
     healthcheck:
