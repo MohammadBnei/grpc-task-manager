@@ -26,7 +26,7 @@ services:
 
   user-api:
     extends:
-      file: ./compose/compose.published.yml
+      file: ./compose/compose.local.yml
       service: user-api
 
   task-api:

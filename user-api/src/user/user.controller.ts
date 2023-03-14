@@ -21,6 +21,7 @@ import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
+import { UpdateUserDto } from './dto/update-user';
 
 @Controller()
 export class UserController {
@@ -52,15 +53,24 @@ export class UserController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
   @GrpcMethod('UserService')
   async Update(req: UpdateRequest): Promise<UpdateResponse> {
     try {
       delete req.user.createdAt;
       delete req.user.updatedAt;
+      delete req.user.role;
+      console.log(req.user);
 
+      const idReq = req.user.id;
+      console.log(idReq)
+      delete req.user.id;
+      // delete req.user.email;
+
+      await this.validateDto(req.user, UpdateUserDto);
       const user = await this.userService.updateUser({
         where: {
-          id: +req.user.id,
+          id: +idReq,
         },
         data: req.user as any,
       });
