@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	import { showInfoToast } from '$src/lib/service/notification';
 	import modal from '$src/stores/modal';
-	import { toast } from '@zerodevx/svelte-toast';
 	import FormError from '../FormError.svelte';
 	import Register from './Register.svelte';
 

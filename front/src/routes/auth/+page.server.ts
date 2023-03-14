@@ -9,7 +9,7 @@ export const actions: Actions = {
 		const password = data.get('password');
 
 		if ([email, password].includes(null)) {
-			fail(400, { error: 'You must specify all the fields' });
+			return fail(400, { error: 'You must specify all the fields' });
 		}
 
 		try {
@@ -49,7 +49,7 @@ export const actions: Actions = {
 		const password = data.get('password');
 
 		if ([email, firstName, lastName, password].includes(null)) {
-			fail(400, { error: 'You must specify all the fields' });
+			return fail(400, { error: 'You must specify all the fields' });
 		}
 
 		try {
