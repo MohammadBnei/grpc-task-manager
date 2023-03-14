@@ -51,7 +51,7 @@ services:
     ports:
       - 4001:4000
     stdin_open: true
-    command: start:dev
+    # command: start:dev
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
