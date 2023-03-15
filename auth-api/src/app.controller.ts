@@ -65,6 +65,7 @@ export class AppController {
   async Login(req: LoginRequest): Promise<LoginResponse> {
     try {
       await this.validateDto(req, LoginDTO);
+
       const { user, status } = await this.appService.checkPassword(
         req.email,
         req.password,
@@ -160,8 +161,10 @@ export class AppController {
   @GrpcMethod('AuthService')
   async Validate(req: ValidateRequest): Promise<ValidateResponse> {
     try {
-      const user = this.jwtService.verify<User>(req.jwt);
-      if (!user)
+      const { user, internal }: { user: User; internal: boolean } =
+        this.jwtService.verify(req.jwt);
+
+      if (!internal && !user)
         throw new RpcException({
           code: RpcStatus.PERMISSION_DENIED,
           message: 'cannot verify jwt',
@@ -169,10 +172,10 @@ export class AppController {
 
       return {
         ok: true,
-        userId: user.id,
-        userEmail: user.email,
-        userRole: user.role,
-        internal: (user as any)?.internal || false,
+        userId: user?.id,
+        userEmail: user?.email,
+        userRole: user?.role,
+        internal: internal,
       };
     } catch (error) {
       this.logger.error(error);
