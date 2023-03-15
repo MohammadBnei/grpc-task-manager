@@ -1,6 +1,6 @@
 import { Controller, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
 import {
   CheckPasswordRequest,
   CheckPasswordResponse,
@@ -17,10 +17,12 @@ import {
   UpdatePasswordResponse,
 } from 'src/stubs/user/v1alpha/message';
 import { status as RpcStatus } from '@grpc/grpc-js';
-import { validate } from 'class-validator';
+import { validate, ValidatorOptions } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
+import { UpdateUserDto } from './dto/update-user';
+import { GRPCUser } from 'src/auth/user.decorator';
 
 @Controller()
 export class UserController {
@@ -29,8 +31,8 @@ export class UserController {
   @GrpcMethod('UserService')
   async Register(req: RegisterRequest): Promise<RegisterResponse> {
     try {
-      await this.validateDto(req, CreateUserDto);
-      const user = await this.userService.createUser(req);
+      const dto: CreateUserDto = await this.validateDto(req, CreateUserDto);
+      const user = await this.userService.createUser(dto);
       return { user: user as any };
     } catch (error) {
       this.handlePrismaErr(error);
@@ -39,7 +41,10 @@ export class UserController {
 
   @UseGuards(GrpcAuthGuard)
   @GrpcMethod('UserService')
-  async Find(req: FindRequest): Promise<FindResponse> {
+  async Find(
+    @Payload() req: FindRequest,
+    @GRPCUser() user,
+  ): Promise<FindResponse> {
     try {
       Object.keys(req).forEach((key) => req[key] === '' && delete req[key]);
       const where = {
@@ -52,17 +57,33 @@ export class UserController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
   @GrpcMethod('UserService')
-  async Update(req: UpdateRequest): Promise<UpdateResponse> {
+  async Update(
+    @Payload() req: UpdateRequest,
+    @GRPCUser() jwtUser,
+  ): Promise<UpdateResponse> {
     try {
-      delete req.user.createdAt;
-      delete req.user.updatedAt;
+      // if (req.user?.id !== jwtUser.id)
+      //   throw new RpcException({
+      //     code: RpcStatus.PERMISSION_DENIED,
+      //     message: 'you do not have acces to this resource',
+      //   });
+
+      const dto: UpdateUserDto = await this.validateDto(
+        req.user,
+        UpdateUserDto,
+        {
+          whitelist: true,
+          skipMissingProperties: true,
+        },
+      );
 
       const user = await this.userService.updateUser({
         where: {
           id: +req.user.id,
         },
-        data: req.user as any,
+        data: dto,
       });
 
       return { user: user as any };
@@ -132,9 +153,13 @@ export class UserController {
     else throw new RpcException(err);
   }
 
-  private async validateDto(data: any, Dto: any) {
+  private async validateDto(
+    data: any,
+    Dto: any,
+    validatorOptions?: ValidatorOptions,
+  ) {
     const dto = plainToInstance(Dto, data);
-    const errors = await validate(dto);
+    const errors = await validate(dto, validatorOptions);
 
     if (errors.length > 0) {
       throw new RpcException({
@@ -149,5 +174,6 @@ export class UserController {
           .join('\n'),
       });
     }
+    return dto as typeof Dto;
   }
 }

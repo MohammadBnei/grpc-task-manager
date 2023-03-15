@@ -23,16 +23,16 @@
 	});
 
 	let tasks: ITask[];
+	$: searcher = new FuzzySearch($taskStore, ['name', 'fields.name'], {
+		caseSensitive: false
+	});
 	$: if ($searchTerm) {
-		const searcher = new FuzzySearch(tasks, ['name', 'fields.name'], {
-			caseSensitive: false
-		});
 		tasks = searcher.search($searchTerm);
 	} else {
 		tasks = $taskStore;
 	}
 
-	const handleCreateTask = () => modal.open(NewTask as any)
+	const handleCreateTask = () => modal.open(NewTask as any);
 </script>
 
 <svelte:head>

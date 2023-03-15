@@ -1,7 +1,6 @@
 import { browser } from '$app/environment';
 import { username } from '$src/stores/user';
 import { get } from 'svelte/store';
-import { toast } from '@zerodevx/svelte-toast';
 import { EventType, type UsageResponse } from '../stubs/task/v1beta/task';
 import { showInfoToast } from './notification';
 
