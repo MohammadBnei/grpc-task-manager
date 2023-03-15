@@ -25,7 +25,6 @@ jobs:
 
       - run: |
           cd proto
-          buf push
           buf generate
 
       - name: Update server stubs and proto
