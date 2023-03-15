@@ -12,6 +12,13 @@
 
 	export let headerHeight;
 
+	let pages = [
+		{
+			name: 'User',
+			path: '/user'
+		}
+	];
+
 	const handleNewTask = () => {
 		sendUsage(EventType.CREATE, '');
 		modal.open(NewTask as any);
@@ -49,6 +56,11 @@
 					tabindex="0"
 					class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 z-20"
 				>
+					{#each pages as page}
+						<li>
+							<a href={page.path}>{page.name}</a>
+						</li>
+					{/each}
 					<li>
 						<div class="form-control">
 							<input
@@ -90,6 +102,11 @@
 		</div>
 		<div class="navbar-center hidden lg:flex">
 			<ul class="menu menu-horizontal px-1 z-20">
+				{#each pages as page}
+					<li>
+						<a href={page.path}>{page.name}</a>
+					</li>
+				{/each}
 				<li>
 					<div class="form-control">
 						<input
