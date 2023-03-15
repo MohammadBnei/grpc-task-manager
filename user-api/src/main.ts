@@ -19,6 +19,7 @@ async function bootstrap() {
   await app.listen(healthCheckPort);
 
   (async () => {
+    console.log('ayo')
     logger.log(
       `${cs.get('npm_package_name')}:${cs.get(
         'npm_package_version',
