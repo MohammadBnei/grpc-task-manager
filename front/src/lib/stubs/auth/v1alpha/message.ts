@@ -45,6 +45,10 @@ export interface LoginResponse {
      * @generated from protobuf field: auth.v1alpha.LoginResponse.STATUS status = 3;
      */
     status: LoginResponse_STATUS;
+    /**
+     * @generated from protobuf field: string test = 4;
+     */
+    test: string;
 }
 /**
  * @generated from protobuf enum auth.v1alpha.LoginResponse.STATUS
@@ -194,11 +198,12 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
         super("auth.v1alpha.LoginResponse", [
             { no: 1, name: "refresh_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "status", kind: "enum", T: () => ["auth.v1alpha.LoginResponse.STATUS", LoginResponse_STATUS] }
+            { no: 3, name: "status", kind: "enum", T: () => ["auth.v1alpha.LoginResponse.STATUS", LoginResponse_STATUS] },
+            { no: 4, name: "test", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<LoginResponse>): LoginResponse {
-        const message = { refreshToken: "", jwt: "", status: 0 };
+        const message = { refreshToken: "", jwt: "", status: 0, test: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<LoginResponse>(this, message, value);
@@ -217,6 +222,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
                     break;
                 case /* auth.v1alpha.LoginResponse.STATUS status */ 3:
                     message.status = reader.int32();
+                    break;
+                case /* string test */ 4:
+                    message.test = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -239,6 +247,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
         /* auth.v1alpha.LoginResponse.STATUS status = 3; */
         if (message.status !== 0)
             writer.tag(3, WireType.Varint).int32(message.status);
+        /* string test = 4; */
+        if (message.test !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.test);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

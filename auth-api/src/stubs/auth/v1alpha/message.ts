@@ -13,6 +13,7 @@ export interface LoginResponse {
   refreshToken: string;
   jwt: string;
   status: LoginResponse_STATUS;
+  test: string;
 }
 
 export enum LoginResponse_STATUS {
