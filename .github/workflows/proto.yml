@@ -22,9 +22,6 @@ jobs:
       # Installs latest
 
       - uses: bufbuild/buf-setup-action@v1.12.0
-        with:
-          buf_user: bneiconseil
-          buf_api_token: ${{ secrets.BUF_TOKEN }}
 
       - run: |
           cd proto
