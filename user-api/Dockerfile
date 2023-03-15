@@ -16,4 +16,6 @@ RUN nest build
 
 ENV NODE_ENV=production
 
+COPY src/proto dist/proto
+
 CMD pnpm start:prod
