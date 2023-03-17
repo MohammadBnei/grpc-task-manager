@@ -17,6 +17,7 @@ services:
       - COLLECTOR_OTLP_ENABLED=true
     ports:
       - 16686:16686
+      - 14268:14268
 
 
   auth-api:
