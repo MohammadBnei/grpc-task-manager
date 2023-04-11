@@ -31,6 +31,8 @@ const envSchema = Joi.object({
   }),
   JAEGER_URL: Joi.string(),
   AUTH_API_URL: Joi.string().required(),
+  RMQ_URL: Joi.string().required(),
+  RMQ_QUEUE: Joi.string().required(),
 });
 @Module({
   imports: [
@@ -56,7 +58,6 @@ const envSchema = Joi.object({
       exclude: [{ method: RequestMethod.ALL, path: 'health' }],
     }),
     GrpcReflectionModule.registerAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (cs: ConfigService) => grpcOption(cs),
     }),

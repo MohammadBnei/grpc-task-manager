@@ -14,6 +14,13 @@
 	},
 	"devDependencies": {
 		"@grpc/grpc-js": "^1.8.12",
+		"@opentelemetry/api": "^1.4.1",
+		"@opentelemetry/auto-instrumentations-node": "^0.36.4",
+		"@opentelemetry/exporter-jaeger": "^1.10.0",
+		"@opentelemetry/resources": "^1.10.0",
+		"@opentelemetry/sdk-node": "^0.36.0",
+		"@opentelemetry/sdk-trace-base": "^1.10.0",
+		"@opentelemetry/semantic-conventions": "^1.10.0",
 		"@protobuf-ts/grpc-transport": "^2.8.2",
 		"@protobuf-ts/runtime": "^2.8.2",
 		"@protobuf-ts/runtime-rpc": "^2.8.2",

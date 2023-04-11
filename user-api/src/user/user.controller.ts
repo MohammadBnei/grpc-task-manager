@@ -1,6 +1,11 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Inject, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
+import {
+  GrpcMethod,
+  Payload,
+  RpcException,
+  ClientProxy,
+} from '@nestjs/microservices';
 import {
   CheckPasswordRequest,
   CheckPasswordResponse,
@@ -26,13 +31,17 @@ import { GRPCUser } from 'src/auth/user.decorator';
 
 @Controller()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    @Inject('USER_QUEUE_SERVICE') private userQueue: ClientProxy,
+  ) {}
 
   @GrpcMethod('UserService')
   async Register(req: RegisterRequest): Promise<RegisterResponse> {
     try {
       const dto: CreateUserDto = await this.validateDto(req, CreateUserDto);
       const user = await this.userService.createUser(dto);
+      this.userQueue.emit('user-created', user);
       return { user: user as any };
     } catch (error) {
       this.handlePrismaErr(error);

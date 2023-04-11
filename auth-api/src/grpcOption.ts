@@ -15,15 +15,14 @@ export default (cs: ConfigService): GrpcOptions =>
     options: {
       package: 'auth.v1alpha',
       url: `0.0.0.0:${cs.get('PORT') || 4003}`,
-      credentials:
-        !cs.get<boolean>('insecure')
-          ? ServerCredentials.createSsl(null, [
-              {
-                private_key: readFileSync(cs.get('AUTH_KEY')),
-                cert_chain: readFileSync(cs.get('AUTH_CERT')),
-              },
-            ])
-          : ServerCredentials.createInsecure(),
+      credentials: !cs.get<boolean>('insecure')
+        ? ServerCredentials.createSsl(null, [
+            {
+              private_key: readFileSync(cs.get('AUTH_KEY')),
+              cert_chain: readFileSync(cs.get('AUTH_CERT')),
+            },
+          ])
+        : ServerCredentials.createInsecure(),
       loader: {
         includeDirs: [join(__dirname, 'proto')],
       },
@@ -49,13 +48,12 @@ export const userGrpcOptions = (cs: ConfigService): ClientProviderOptions => ({
       // Allow keepalive pings when there are no gRPC calls.
       keepalivePermitWithoutCalls: 1,
     },
-    credentials:
-      !cs.get<boolean>('insecure')
-        ? ChannelCredentials.createSsl(
-            readFileSync(cs.get('ROOT_CA')),
-            readFileSync(cs.get('AUTH_KEY')),
-            readFileSync(cs.get('AUTH_CERT')),
-          )
-        : ChannelCredentials.createInsecure(),
+    credentials: !cs.get<boolean>('insecure')
+      ? ChannelCredentials.createSsl(
+          readFileSync(cs.get('ROOT_CA')),
+          readFileSync(cs.get('AUTH_KEY')),
+          readFileSync(cs.get('AUTH_CERT')),
+        )
+      : ChannelCredentials.createInsecure(),
   },
 });

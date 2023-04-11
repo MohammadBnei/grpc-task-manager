@@ -22,7 +22,7 @@ spec:
   secretName: auth-api-cert-tls
   issuerRef:
     name: tm-selfsigned
-
+  
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate

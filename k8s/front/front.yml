@@ -1,4 +1,18 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front
+  labels:
+    app: api
+spec:
+  ports:
+    - name: front
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: front
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,7 +38,7 @@ spec:
         - image: mohammaddocker/tm-front
           name: front
           ports:
-            - containerPort: 4000
+            - containerPort: 3000
           imagePullPolicy: Always
           volumeMounts:
             - name: tls
@@ -49,11 +63,6 @@ spec:
                 configMapKeyRef:
                   name: api-map
                   key: TASK_API_URL
-            - name: TASK_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api-map
-                  key: TASK_API_URL
             - name: secure
               value: "true"
             - name: ROOT_CA
@@ -69,7 +78,7 @@ spec:
           readOnly: true
           volumeAttributes:
             csi.cert-manager.io/issuer-name: tm-selfsigned
-            csi.cert-manager.io/dns-names: ${POD_NAME}.${POD_NAMESPACE}
+            csi.cert-manager.io/dns-names: front.grpc-tm
       - name: certs
         secret:
           secretName: front-cert-tls

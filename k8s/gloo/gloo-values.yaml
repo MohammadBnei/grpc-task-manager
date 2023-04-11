@@ -1,0 +1,7 @@
+glooEdge:
+  enabled: true
+licenseKey:
+  secretRef:
+    name: license
+    namespace: gloo-system
+    key: license-key

@@ -3,13 +3,14 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import grpcOption from './grpcOption';
+import { GrpcOptions } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = app.get(Logger);
   app.useLogger(logger);
   const cs = app.get(ConfigService);
-  app.connectMicroservice(grpcOption(cs));
+  app.connectMicroservice<GrpcOptions>(grpcOption(cs));
 
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
@@ -30,4 +31,5 @@ async function bootstrap() {
     logger.log('Server started at ' + new Date());
   })();
 }
+
 bootstrap();

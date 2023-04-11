@@ -1,0 +1,11 @@
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: task-api-doc
+  namespace: grpc-tm
+spec:
+  grpc:
+    reflectionSource:
+      connectionTimeout: 5s
+      insecure: false
+      serviceAddress: task-api.grpc-tm:4000

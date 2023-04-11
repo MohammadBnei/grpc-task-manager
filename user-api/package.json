@@ -47,6 +47,8 @@
     "@prisma/instrumentation": "^4.11.0",
     "@protobuf-ts/runtime": "^2.8.2",
     "@protobuf-ts/runtime-rpc": "^2.8.2",
+    "amqp-connection-manager": "^4.1.12",
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

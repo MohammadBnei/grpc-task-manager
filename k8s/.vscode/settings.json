@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "kubernetes://schema/v1%40service": "file:///Users/moha/Code/grpc-task-manager/k8s/deployment/task-api.yml"
+  }
+}

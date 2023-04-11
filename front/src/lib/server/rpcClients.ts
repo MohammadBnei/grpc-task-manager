@@ -1,3 +1,4 @@
+import './tracing';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import {

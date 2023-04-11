@@ -19,6 +19,13 @@ services:
       - 16686:16686
       - 14268:14268
 
+  rabbit-manager:
+    image: rabbitmq:3-management
+    ports:
+      - 8080:15672
+      - 5672:5672
+
+
 
   auth-api:
     extends:
