@@ -1,10 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Hero, Prisma } from '@prisma/client';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject('AUTH_SERVICE') private authClient: ClientGrpc,
+  ) {}
 
   async hero(
     heroWhereUniqueInput: Prisma.HeroWhereUniqueInput,

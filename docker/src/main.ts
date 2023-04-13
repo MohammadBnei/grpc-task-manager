@@ -11,5 +11,6 @@ async function bootstrap() {
   app.connectMicroservice(grpcOption(configService));
 
   app.startAllMicroservices();
+  app.listen(6006);
 }
 bootstrap();

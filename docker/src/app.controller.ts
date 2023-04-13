@@ -10,7 +10,6 @@ import {
   FetchHeroResponse,
   HelloReply,
   HelloRequest,
-  Hero,
 } from './stub/hero/v1alpha/hero';
 import { status } from '@grpc/grpc-js';
 
