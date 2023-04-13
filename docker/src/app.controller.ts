@@ -11,7 +11,7 @@ import {
   HelloReply,
   HelloRequest,
 } from './stub/hero/v1alpha/hero';
-import { status } from '@grpc/grpc-js';
+import { Metadata, status } from '@grpc/grpc-js';
 
 @Controller()
 export class AppController {
@@ -44,8 +44,14 @@ export class AppController {
   }
 
   @GrpcMethod('HeroService')
-  async fetchHero(req: FetchHeroRequest): Promise<FetchHeroResponse> {
+  async fetchHero(
+    req: FetchHeroRequest,
+    metadata: Metadata,
+  ): Promise<FetchHeroResponse> {
     try {
+      const token = metadata.get('authorization')[0] as string;
+      const res = await this.appService.validateJwt(token);
+      console.log({ res });
       if (req.id) {
         const hero = await this.appService.hero({ id: req.id });
 

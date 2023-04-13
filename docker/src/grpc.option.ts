@@ -12,3 +12,15 @@ export default (cs: ConfigService): GrpcOptions =>
       protoPath: join(__dirname, 'hero/hero.proto'),
     },
   });
+
+export const authGrpcOption = (cs: ConfigService): GrpcOptions => ({
+  transport: Transport.GRPC,
+  options: {
+    url: cs.get('AUTH_URL'),
+    package: 'auth.v1alpha',
+    loader: {
+      includeDirs: [join(__dirname, 'proto')],
+    },
+    protoPath: join(__dirname, 'proto/auth/v1alpha/service.proto'),
+  },
+});

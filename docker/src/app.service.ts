@@ -2,13 +2,21 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Hero, Prisma } from '@prisma/client';
 import { ClientGrpc } from '@nestjs/microservices';
+import { AuthServiceClient } from './stubs/auth/v1alpha/service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
+  private authService: AuthServiceClient;
+
   constructor(
     private prisma: PrismaService,
-    @Inject('AUTH_SERVICE') private authClient: ClientGrpc,
+    @Inject('AUTH_SERVICE') private client: ClientGrpc,
   ) {}
+
+  onModuleInit() {
+    this.authService = this.client.getService<AuthServiceClient>('AuthService');
+  }
 
   async hero(
     heroWhereUniqueInput: Prisma.HeroWhereUniqueInput,
@@ -50,5 +58,13 @@ export class AppService {
       data,
       where,
     });
+  }
+
+  validateJwt(token: string) {
+    return firstValueFrom(
+      this.authService.validate({
+        jwt: token,
+      }),
+    );
   }
 }
