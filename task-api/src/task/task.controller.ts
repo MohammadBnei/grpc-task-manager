@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, HttpStatus, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { TaskService } from './task.service';
@@ -19,6 +19,8 @@ import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { CreateTaskDto } from './entity/task.dto';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Controller('task')
 export class TaskController {
@@ -26,6 +28,7 @@ export class TaskController {
     private taskService: TaskService,
     private profanityService: ProfanityService,
     private streams: StreamsService,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
   @GrpcMethod('TaskService')
@@ -39,7 +42,7 @@ export class TaskController {
 
       return { task: pbTask };
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new RpcException(error);
     }
   }
@@ -55,12 +58,12 @@ export class TaskController {
 
       return listTasksResponse;
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  @UseGuards(GrpcAuthGuard)
+  // @UseGuards(GrpcAuthGuard)
   @GrpcMethod('TaskService')
   async CreateTask(request: CreateTaskRequest): Promise<TaskResponse> {
     try {
@@ -88,7 +91,7 @@ export class TaskController {
 
       return { task: pbTask };
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new RpcException((error as RpcException).message || error);
     }
   }
@@ -120,7 +123,8 @@ export class TaskController {
 
   //     return { task: pbTask };
   //   } catch (error) {
-  //     console.error(error);
+  // this.logger.error(error);
+
   //     throw new RpcException(error);
   //   }
   // }
@@ -138,7 +142,8 @@ export class TaskController {
 
       return { task: pbTask };
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
+
       throw new RpcException(error);
     }
   }
@@ -148,7 +153,8 @@ export class TaskController {
     try {
       return this.streams.taskStream$.asObservable();
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
+
       throw new RpcException(error);
     }
   }

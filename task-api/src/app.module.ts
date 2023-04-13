@@ -6,14 +6,13 @@ import { UserusageModule } from './userusage/userusage.module';
 import { ProfanityService } from './profanity/profanity.service';
 import { ProfanityModule } from './profanity/profanity.module';
 import { StreamsModule } from './streams/streams.module';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption from './grpcOption';
+import grpcOption from './config/grpc.option';
 import { HealthModule } from './health/health.module';
-import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
-import { opentelemetryConfig } from './tracing';
 import { AuthModule } from './auth/auth.module';
-import { LoggerModule } from 'nestjs-pino';
+import { WinstonModule } from 'nest-winston';
+import winstonConfig from './config/winston.config';
 
 const envSchema = Joi.object({
   MONGO_URL: Joi.string().required(),
@@ -43,21 +42,10 @@ const envSchema = Joi.object({
       validationSchema: envSchema,
       isGlobal: true,
     }),
-    OpenTelemetryModule.forRootAsync({
+    WinstonModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (cs: ConfigService) => opentelemetryConfig(cs),
-    }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        name: 'auth-api',
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-        transport:
-          process.env.NODE_ENV !== 'production'
-            ? { target: 'pino-pretty' }
-            : undefined,
-      },
-      exclude: [{ method: RequestMethod.ALL, path: 'health' }],
+      useFactory: (cs: ConfigService) => winstonConfig(cs),
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     GrpcReflectionModule.registerAsync({
