@@ -28,7 +28,7 @@ const provider = new NodeTracerProvider({
 });
 
 const exporter = new OTLPTraceExporter({
-  url: 'http://localhost:4318/v1/traces',
+  url: process.env.JAEGER_URL || 'http://localhost:4318/v1/traces',
 });
 const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor as any);
