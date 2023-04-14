@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import {
@@ -10,6 +10,7 @@ import {
   ValidateRequest,
   ValidateResponse,
 } from './stubs/auth/v1alpha/message';
+import { AUTH_SERVICE_NAME } from './stubs/auth/v1alpha/service';
 import { JwtService } from '@nestjs/jwt';
 import {
   CheckPasswordResponse_STATUS,
@@ -21,7 +22,8 @@ import { createHash } from 'crypto';
 
 import { IsEmail, IsIP, validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { InjectPinoLogger, Logger } from 'nestjs-pino';
+import { Logger } from 'winston';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 class LoginDTO {
   @IsEmail()
@@ -39,7 +41,7 @@ export class AppController {
     private readonly appService: AppService,
     private jwtService: JwtService,
     private rtService: RefreshTokenService,
-    @InjectPinoLogger(AppController.name) private logger: Logger,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
   private async validateDto(data: any, Dto: any) {
@@ -61,8 +63,8 @@ export class AppController {
     }
   }
 
-  @GrpcMethod('AuthService')
-  async Login(req: LoginRequest): Promise<LoginResponse> {
+  @GrpcMethod(AUTH_SERVICE_NAME)
+  async login(req: LoginRequest): Promise<LoginResponse> {
     try {
       await this.validateDto(req, LoginDTO);
 
@@ -113,12 +115,18 @@ export class AppController {
     }
   }
 
-  @GrpcMethod('AuthService')
+  @GrpcMethod(AUTH_SERVICE_NAME)
   async RefreshToken(req: RefreshTokenRequest): Promise<RefreshTokenResponse> {
     try {
       const rt = await this.rtService.refreshToken({
         refreshToken: req.refreshToken,
       });
+
+      if (!rt)
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'refresh token not found',
+        });
 
       if (rt.revoked)
         throw new RpcException({
@@ -154,11 +162,15 @@ export class AppController {
       };
     } catch (error) {
       this.logger.error(error);
-      throw new RpcException(error);
+      if (error instanceof RpcException) throw error;
+      throw new RpcException({
+        code: error?.code || RpcStatus.INTERNAL,
+        message: error?.message || 'something went wrong',
+      });
     }
   }
 
-  @GrpcMethod('AuthService')
+  @GrpcMethod(AUTH_SERVICE_NAME)
   async Validate(req: ValidateRequest): Promise<ValidateResponse> {
     try {
       const { user, internal }: { user: User; internal: boolean } =

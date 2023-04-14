@@ -1,7 +1,7 @@
-import { Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption, { userGrpcOptions } from './grpcOption';
+import grpcOption, { userGrpcOptions } from './config/grpc.option';
 import { ClientsModule } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,9 +11,9 @@ import { PrismaService } from './prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import Joi from 'joi';
-import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
-import { opentelemetryConfig } from './tracing';
-import { LoggerModule } from 'nestjs-pino';
+import { USER_V1ALPHA_PACKAGE_NAME } from './stubs/user/v1alpha/service';
+import { WinstonModule } from 'nest-winston';
+import winstonConfig from './config/winston.config';
 
 const envSchema = Joi.object({
   MYSQL_URL: Joi.string().required(),
@@ -42,21 +42,10 @@ const envSchema = Joi.object({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: envSchema,
     }),
-    OpenTelemetryModule.forRootAsync({
+    WinstonModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (cs: ConfigService) => opentelemetryConfig(cs),
-    }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        name: 'auth-api',
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-        transport:
-          process.env.NODE_ENV !== 'production'
-            ? { target: 'pino-pretty' }
-            : undefined,
-      },
-      exclude: [{ method: RequestMethod.ALL, path: 'health' }],
+      useFactory: (cs: ConfigService) => winstonConfig(cs),
     }),
     GrpcReflectionModule.registerAsync({
       imports: [ConfigModule],
@@ -65,7 +54,7 @@ const envSchema = Joi.object({
     }),
     ClientsModule.registerAsync([
       {
-        name: 'USER_SERVICE',
+        name: USER_V1ALPHA_PACKAGE_NAME,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (cs: ConfigService) => userGrpcOptions(cs),
