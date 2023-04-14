@@ -19,62 +19,62 @@ export enum EventType {
 }
 
 export interface Task {
-  name: string;
-  fields: Field[];
-  dueDate: string;
-  done: boolean;
+  name?: string;
+  fields?: Field[];
+  dueDate?: string;
+  done?: boolean;
 }
 
 export interface Field {
-  name: string;
-  value: string;
-  type: FieldType;
+  name?: string;
+  value?: string;
+  type?: FieldType;
 }
 
 export interface AddFieldRequest {
-  taskName: string;
-  fieldName: string;
-  fieldValue: string;
-  fieldType: FieldType;
+  taskName?: string;
+  fieldName?: string;
+  fieldValue?: string;
+  fieldType?: FieldType;
 }
 
 export interface UpdateDateRequest {
-  taskName: string;
-  dueDate: string;
+  taskName?: string;
+  dueDate?: string;
 }
 
 export interface RemoveFieldRequest {
-  taskName: string;
-  fieldName: string;
+  taskName?: string;
+  fieldName?: string;
 }
 
 export interface UsageRequest {
-  username: string;
-  taskName: string;
-  eventType: EventType;
+  username?: string;
+  taskName?: string;
+  eventType?: EventType;
 }
 
 export interface UsageResponse {
-  username: string;
-  taskName: string;
-  eventType: EventType;
+  username?: string;
+  taskName?: string;
+  eventType?: EventType;
 }
 
 export interface StreamTasksRequest {
 }
 
 export interface StreamTasksResponse {
-  task: Task | undefined;
-  eventType: string;
+  task?: Task;
+  eventType?: string;
 }
 
 export interface ListTasksRequest {
   /** The parent resource name, for example, "shelves/shelf1" */
-  parent: string;
+  parent?: string;
   /** The maximum number of items to return. */
-  pageSize: number;
+  pageSize?: number;
   /** The next_page_token value returned from a previous List request, if any. */
-  pageToken: string;
+  pageToken?: string;
 }
 
 export interface ListTasksResponse {
@@ -82,40 +82,40 @@ export interface ListTasksResponse {
    * The field name should match the noun "Task" in the method name.
    * There will be a maximum number of items returned based on the page_size field in the request.
    */
-  tasks: Task[];
+  tasks?: Task[];
   /** Token to retrieve the next page of results, or empty if there are no more results in the list. */
-  nextPageToken: string;
+  nextPageToken?: string;
 }
 
 export interface GetTaskRequest {
   /** The field will contain name of the resource requested. */
-  name: string;
+  name?: string;
 }
 
 export interface TaskResponse {
-  task: Task | undefined;
+  task?: Task;
 }
 
 export interface CreateTaskRequest {
   /** The parent resource name where the Task is to be created. */
-  parent: string;
+  parent?: string;
   /** The Task id to use for this Task. */
-  taskId: string;
+  taskId?: string;
   /**
    * The Task resource to create.
    * The field name should match the Noun in the method name.
    */
-  task: Task | undefined;
+  task?: Task;
 }
 
 export interface UpdateTaskRequest {
   /** The Task resource which replaces the resource on the server. */
-  task: Task | undefined;
+  task?: Task;
 }
 
 export interface DeleteTaskRequest {
   /** The resource name of the Task to be deleted. */
-  name: string;
+  name?: string;
 }
 
 export const TASK_V1BETA_PACKAGE_NAME = "task.v1beta";

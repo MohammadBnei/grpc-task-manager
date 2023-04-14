@@ -1,6 +1,6 @@
 import { sse } from '$src/lib/helper/sse';
 import { toPb } from '$src/lib/helper/taskDto';
-import { UpdateTaskRequest, UsageRequest } from '$lib/stubs/task/v1beta/task';
+import { UpdateTaskRequest } from '$lib/stubs/task/v1beta/task';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {

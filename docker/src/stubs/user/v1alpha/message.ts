@@ -10,70 +10,70 @@ export enum UserRole {
 }
 
 export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  createdAt: Timestamp | undefined;
-  updatedAt: Timestamp | undefined;
-  role: UserRole;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+  role?: UserRole;
 }
 
 export interface RegisterRequest {
-  password: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
 
 export interface RegisterResponse {
-  user: User | undefined;
+  user?: User;
 }
 
 export interface UpdateRequest {
-  user: User | undefined;
+  user?: User;
 }
 
 export interface UpdateResponse {
-  user: User | undefined;
+  user?: User;
 }
 
 export interface DeleteRequest {
-  id: string;
+  id?: string;
 }
 
 export interface DeleteResponse {
-  user: User | undefined;
+  user?: User;
 }
 
 export interface UpdatePasswordRequest {
-  id: string;
-  password: string;
+  id?: string;
+  password?: string;
 }
 
 export interface UpdatePasswordResponse {
-  user: User | undefined;
+  user?: User;
 }
 
 export interface FindRequest {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
 
 export interface FindResponse {
-  user: User[];
+  user?: User[];
 }
 
 export interface CheckPasswordRequest {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 
 export interface CheckPasswordResponse {
-  status: CheckPasswordResponse_STATUS;
-  user: User | undefined;
+  status?: CheckPasswordResponse_STATUS;
+  user?: User;
 }
 
 export enum CheckPasswordResponse_STATUS {
@@ -85,12 +85,12 @@ export enum CheckPasswordResponse_STATUS {
 }
 
 export interface MakeAdminRequest {
-  id: string;
-  email: string;
+  id?: string;
+  email?: string;
 }
 
 export interface MakeAdminResponse {
-  user: User | undefined;
+  user?: User;
 }
 
 export const USER_V1ALPHA_PACKAGE_NAME = "user.v1alpha";

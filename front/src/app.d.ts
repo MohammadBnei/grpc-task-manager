@@ -1,13 +1,13 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import {
+import type { AuthServiceClient } from './lib/stubs/auth/v1alpha/service';
+import type {
+	FieldServiceClient,
 	TaskServiceClient,
-	UsageServiceClient,
-	FieldServiceClient
-} from '$lib/stubs/Field/v1beta/task.client';
-import type { AuthServiceClient } from './lib/stubs/auth/v1alpha/service.client';
-import type { UserServiceClient } from './lib/stubs/user/v1alpha/service.client';
+	UsageServiceClient
+} from './lib/stubs/task/v1beta/task';
+import type { UserServiceClient } from './lib/stubs/user/v1alpha/service';
 
 // and what to do when importing types
 declare global {

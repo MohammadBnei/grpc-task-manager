@@ -1,10 +1,11 @@
 import { toJson } from '$src/lib/helper/userDto';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ cookies, locals }) => {
+export const GET: RequestHandler = async ({ cookies, locals, url }) => {
+	const email = url.searchParams.get('email');
 	const res = await locals.userClient.find(
 		{
-			email: 'moha@med.com'
+			email
 		} as any,
 		{
 			meta: {
