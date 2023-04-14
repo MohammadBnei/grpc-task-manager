@@ -9,12 +9,12 @@ export class TaskService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
   toTaskPb(task: Task): TaskPb {
-    return TaskPb.create({
+    return {
       name: task.name,
       fields: task.fieldsArray,
       dueDate: task.dueDate.toISOString(),
       done: task.done,
-    });
+    };
   }
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {

@@ -52,18 +52,14 @@ export class TaskController {
     try {
       const tasks = await this.taskService.findAll();
 
-      const listTasksResponse = ListTasksResponse.create({
-        tasks: tasks.map(this.taskService.toTaskPb),
-      });
-
-      return listTasksResponse;
+      return { tasks: tasks.map(this.taskService.toTaskPb), nextPageToken: '' };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  // @UseGuards(GrpcAuthGuard)
+  @UseGuards(GrpcAuthGuard)
   @GrpcMethod('TaskService')
   async CreateTask(request: CreateTaskRequest): Promise<TaskResponse> {
     try {
@@ -92,7 +88,10 @@ export class TaskController {
       return { task: pbTask };
     } catch (error) {
       this.logger.error(error);
-      throw new RpcException((error as RpcException).message || error);
+      throw new RpcException({
+        code: status.PERMISSION_DENIED,
+        message: (error as RpcException).message || error,
+      });
     }
   }
 

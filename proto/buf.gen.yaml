@@ -4,20 +4,27 @@ managed:
 plugins:
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../front/src/lib/stubs
-  - plugin: buf.build/community/timostamm-protobuf-ts
+  - plugin: buf.build/community/stephenh-ts-proto
     out: ../task-api/src/stubs
+    opt:
+      - addGrpcMetadata=true
+      - nestJs=true
+      - useOptionals=all
   - plugin: buf.build/community/stephenh-ts-proto
     out: ../user-api/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
+      - useOptionals=all
   - plugin: buf.build/community/stephenh-ts-proto
     out: ../auth-api/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
+      - useOptionals=all
   - plugin: buf.build/community/stephenh-ts-proto
     out: ../docker/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
+      - useOptionals=all

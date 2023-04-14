@@ -18,6 +18,21 @@ import { MongooseInstrumentation } from '@opentelemetry/instrumentation-mongoose
 
 // import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 // diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+const resource = new Resource({
+  [SemanticResourceAttributes.SERVICE_NAME]: `${process.env.npm_package_name}-${process.env.NODE_ENV}`,
+  [SemanticResourceAttributes.SERVICE_VERSION]: process.env.npm_package_version,
+});
+
+const provider = new NodeTracerProvider({
+  resource,
+});
+
+const exporter = new OTLPTraceExporter({
+  url: 'http://localhost:4318/v1/traces',
+});
+const spanProcessor = new SimpleSpanProcessor(exporter);
+provider.addSpanProcessor(spanProcessor as any);
+provider.register();
 
 registerInstrumentations({
   instrumentations: [
@@ -25,11 +40,6 @@ registerInstrumentations({
     new GrpcInstrumentation(),
     new MongooseInstrumentation(),
   ],
-});
-
-const resource = new Resource({
-  [SemanticResourceAttributes.SERVICE_NAME]: `${process.env.npm_package_name}-${process.env.NODE_ENV}`,
-  [SemanticResourceAttributes.SERVICE_VERSION]: process.env.npm_package_version,
 });
 
 // const metricReader = new PeriodicExportingMetricReader({
@@ -48,17 +58,6 @@ const resource = new Resource({
 // meterProvider.addMetricReader(metricReader);
 
 // otel.metrics.setGlobalMeterProvider(meterProvider);
-
-const provider = new NodeTracerProvider({
-  resource,
-});
-
-const exporter = new OTLPTraceExporter({
-  url: 'http://localhost:4318/v1/traces',
-});
-const spanProcessor = new SimpleSpanProcessor(exporter);
-provider.addSpanProcessor(spanProcessor as any);
-provider.register();
 
 // // gracefully shut down the SDK on process exit
 process.on('SIGTERM', () => {
