@@ -17,6 +17,11 @@ plugins:
       - addGrpcMetadata=true
       - nestJs=true
   - plugin: buf.build/community/stephenh-ts-proto
+    out: ../media-api/src/stubs
+    opt:
+      - addGrpcMetadata=true
+      - nestJs=true
+  - plugin: buf.build/community/stephenh-ts-proto
     out: ../docker/src/stubs
     opt:
       - addGrpcMetadata=true
