@@ -1,4 +1,4 @@
-import { Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskModule } from './task/task.module';
@@ -60,6 +60,5 @@ const envSchema = Joi.object({
     ProfanityModule,
     StreamsModule,
   ],
-  providers: [ProfanityService],
 })
 export class AppModule {}

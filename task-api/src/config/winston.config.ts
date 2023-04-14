@@ -30,10 +30,6 @@ export default (cs: ConfigService) => {
   }
 
   return {
-    defaultMeta: {
-      'label.api-name': process.env.npm_package_name,
-      'label.api-version': process.env.npm_package_version,
-    },
     transports,
   };
 };

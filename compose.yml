@@ -18,7 +18,7 @@ services:
     ports:
       - 16686:16686
       - 14268:14268
-
+      - 4318:4318
 
   auth-api:
     extends:

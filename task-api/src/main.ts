@@ -1,13 +1,11 @@
+import './config/tracing';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import grpcOption from './config/grpc.option';
-import { otelSDK } from './config/tracing';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
-  await otelSDK.start();
-
   const app = await NestFactory.create(AppModule);
   const cs = app.get(ConfigService);
   const logger = app.get(WINSTON_MODULE_NEST_PROVIDER);

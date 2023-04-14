@@ -1,9 +1,5 @@
-import {
-  ConsoleSpanExporter,
-  SimpleSpanProcessor,
-  SpanProcessor,
-} from '@opentelemetry/sdk-trace-base';
-import { NodeSDK } from '@opentelemetry/sdk-node';
+// import otel from '@opentelemetry/api';
+import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import process from 'process';
 import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc';
@@ -12,43 +8,61 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 
-import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
+// import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
+// import {
+//   PeriodicExportingMetricReader,
+//   MeterProvider,
+// } from '@opentelemetry/sdk-metrics';
+import { MongooseInstrumentation } from '@opentelemetry/instrumentation-mongoose';
 
-const traceExporter = new ConsoleSpanExporter();
-const spanProcessor = new SimpleSpanProcessor(traceExporter);
-const provider = new NodeTracerProvider();
+// import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+
+registerInstrumentations({
+  instrumentations: [
+    new WinstonInstrumentation(),
+    new GrpcInstrumentation(),
+    new MongooseInstrumentation(),
+  ],
+});
+
+const resource = new Resource({
+  [SemanticResourceAttributes.SERVICE_NAME]: `${process.env.npm_package_name}-${process.env.NODE_ENV}`,
+  [SemanticResourceAttributes.SERVICE_VERSION]: process.env.npm_package_version,
+});
+
+// const metricReader = new PeriodicExportingMetricReader({
+//   exporter: new OTLPMetricExporter({
+//     url: 'http://localhost:4318/v1/metrics',
+//   }),
+
+//   // Default is 60000ms (60 seconds). Set to 3 seconds for demonstrative purposes only.
+//   exportIntervalMillis: 10000,
+// });
+
+// const meterProvider = new MeterProvider({
+//   resource: resource,
+// });
+
+// meterProvider.addMetricReader(metricReader);
+
+// otel.metrics.setGlobalMeterProvider(meterProvider);
+
+const provider = new NodeTracerProvider({
+  resource,
+});
+
+const exporter = new OTLPTraceExporter({
+  url: 'http://localhost:4318/v1/traces',
+});
+const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor as any);
 provider.register();
 
-export const otelSDK = new NodeSDK({
-  spanProcessor: spanProcessor,
-  serviceName: process.env.npm_package_name,
-  instrumentations: [
-    new WinstonInstrumentation({
-      enabled: true,
-      // Optional hook to insert additional context to log metadata.
-      // Called after trace context is injected to metadata.
-      logHook: (span, record) => {
-        record['resource.service.name'] =
-          provider.resource.attributes['service.name'];
-        record['resource.service.version'] =
-          provider.resource.attributes['service.version'];
-        span.setAttributes(record);
-      },
-    }),
-    new GrpcInstrumentation(),
-  ],
-  traceExporter: traceExporter,
-  resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: process.env.npm_package_name,
-    [SemanticResourceAttributes.SERVICE_VERSION]: process.env.version,
-  }),
-});
-
-// gracefully shut down the SDK on process exit
+// // gracefully shut down the SDK on process exit
 process.on('SIGTERM', () => {
-  otelSDK
+  provider
     .shutdown()
     .then(
       () => console.log('SDK shut down successfully'),
