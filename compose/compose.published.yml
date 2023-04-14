@@ -90,13 +90,14 @@ services:
   front:
     image: mohammaddocker/tm-front
     environment:
-      - secure=true
+      - insecure=true
       - FRONT_CERT=/certs/front.pem
       - FRONT_KEY=/certs/front-key.pem
       - PORT=3000
       - USER_API_URL=user-api:4000
       - AUTH_API_URL=auth-api:4000
       - TASK_API_URL=task-api:4000
+      - MEDIA_API_URL=media-api:4000
       - ROOT_CA=/certs/rootCA.pem
     ports:
       - 3000:3000
