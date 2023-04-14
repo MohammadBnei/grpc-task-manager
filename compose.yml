@@ -35,6 +35,11 @@ services:
       file: ./compose/compose.published.yml
       service: task-api
 
+  media-api:
+    extends:
+      file: ./compose/compose.published.yml
+      service: media-api
+
   front:
     extends:
       file: ./compose/compose.published.yml

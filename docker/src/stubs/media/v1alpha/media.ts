@@ -4,7 +4,7 @@ import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 import { Timestamp } from "../../google/protobuf/timestamp";
 
-export const protobufPackage = "kanban";
+export const protobufPackage = "media.v1alpha";
 
 /** Media message represents a media file associated with a Kanban card. */
 export interface Media {
@@ -32,7 +32,7 @@ export interface MediaResponse {
   createdAt: Timestamp | undefined;
 }
 
-export const KANBAN_PACKAGE_NAME = "kanban";
+export const MEDIA_V1ALPHA_PACKAGE_NAME = "media.v1alpha";
 
 /** MediaService is a microservice that manages media files associated with Kanban cards. */
 

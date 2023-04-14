@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package media.v1alpha;
+
+import "google/protobuf/timestamp.proto";
+
+// Media message represents a media file associated with a Kanban card.
+message Media {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  bytes content = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// MediaRequest represents a request to create or retrieve a media file.
+message MediaRequest {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  bytes content = 4;
+}
+
+// MediaResponse represents a response containing a media file.
+message MediaResponse {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  bytes content = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// MediaService is a microservice that manages media files associated with Kanban cards.
+service MediaService {
+  // CreateMedia creates a new media file.
+  rpc CreateMedia(MediaRequest) returns (MediaResponse);
+
+  // GetMedia retrieves a media file by its ID.
+  rpc GetMedia(MediaRequest) returns (MediaResponse);
+
+  // ListMedia retrieves all media files.
+  rpc ListMedia(MediaRequest) returns (stream MediaResponse);
+
+  // DeleteMedia deletes a media file by its ID.
+  rpc DeleteMedia(MediaRequest) returns (MediaResponse);
+}
