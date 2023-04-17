@@ -13,7 +13,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@grpc/grpc-js": "^1.8.12",
 		"@protobuf-ts/grpc-transport": "^2.8.2",
 		"@protobuf-ts/runtime": "^2.8.2",
 		"@protobuf-ts/runtime-rpc": "^2.8.2",
@@ -24,6 +23,15 @@
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"@zerodevx/svelte-toast": "1.0.0-rc.1",
+		"@grpc/grpc-js": "^1.8.14",
+		"@opentelemetry/api": "^1.4.1",
+		"@opentelemetry/exporter-trace-otlp-proto": "^0.38.0",
+		"@opentelemetry/instrumentation": "^0.38.0",
+		"@opentelemetry/instrumentation-winston": "^0.31.1",
+		"@opentelemetry/resources": "^1.12.0",
+		"@opentelemetry/sdk-trace-base": "^1.12.0",
+		"@opentelemetry/sdk-trace-node": "^1.12.0",
+		"@opentelemetry/semantic-conventions": "^1.12.0",
 		"autoprefixer": "^10.4.13",
 		"daisyui": "^2.50.0",
 		"eslint": "^8.28.0",

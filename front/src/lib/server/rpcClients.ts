@@ -9,26 +9,46 @@ import fs from 'fs';
 import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
 import { env } from '$env/dynamic/private';
+import { otelInterceptor } from './interceptor';
+import type { ServerStreamingCall, UnaryCall } from '@protobuf-ts/runtime-rpc';
 
-const credentials = env.secure === 'true'
-	? ChannelCredentials.createSsl(
-			fs.readFileSync(env.ROOT_CA as string),
-			fs.readFileSync(env.FRONT_KEY as string),
-			fs.readFileSync(env.FRONT_CERT as string)
-	  )
-	: ChannelCredentials.createInsecure();
+export const credentials =
+	env.secure === 'true'
+		? ChannelCredentials.createSsl(
+				fs.readFileSync(env.ROOT_CA as string),
+				fs.readFileSync(env.FRONT_KEY as string),
+				fs.readFileSync(env.FRONT_CERT as string)
+		  )
+		: ChannelCredentials.createInsecure();
 
-const taskTransport = new GrpcTransport({
-	host: env.TASK_API_URL as string,
-	channelCredentials: credentials
-});
 const userTransport = new GrpcTransport({
 	host: env.USER_API_URL as string,
-	channelCredentials: credentials
+	channelCredentials: credentials,
+	interceptors: [
+		{
+			interceptUnary: otelInterceptor<UnaryCall>(env.USER_API_URL)
+		}
+	]
 });
 const authTransport = new GrpcTransport({
 	host: env.AUTH_API_URL as string,
-	channelCredentials: credentials
+	channelCredentials: credentials,
+	interceptors: [
+		{
+			interceptUnary: otelInterceptor<UnaryCall>(env.AUTH_API_URL)
+		}
+	]
+});
+
+const taskTransport = new GrpcTransport({
+	host: env.TASK_API_URL as string,
+	channelCredentials: credentials,
+	interceptors: [
+		{
+			interceptUnary: otelInterceptor<UnaryCall>(env.TASK_API_URL),
+			interceptServerStreaming: otelInterceptor<ServerStreamingCall>(env.TASK_API_URL)
+		}
+	]
 });
 
 export const taskClients = {

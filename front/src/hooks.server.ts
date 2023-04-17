@@ -1,3 +1,4 @@
+import '$lib/server/tracing';
 import type { Handle } from '@sveltejs/kit';
 import { authClient, taskClients, userClient } from '$lib/server/rpcClients';
 
