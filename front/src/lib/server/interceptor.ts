@@ -11,8 +11,6 @@ import type {
 
 const tracer = opentelemetry.trace.getTracer('Sveltekit-Server');
 
-// (next: NextUnaryFn, method: MethodInfo, input: object, options: RpcOptions) => UnaryCall;
-
 export const otelInterceptor =
 	<T extends ServerStreamingCall | UnaryCall>(url: string) =>
 	(
