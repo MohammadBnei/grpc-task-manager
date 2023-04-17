@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { TaskService } from './task.service';
 import {
@@ -8,6 +8,8 @@ import {
 } from '../stubs/task/v1beta/task';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Controller('task')
 export class FieldController {
@@ -15,6 +17,7 @@ export class FieldController {
     private taskService: TaskService,
     private profanityService: ProfanityService,
     private streams: StreamsService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   @GrpcMethod('FieldService')
