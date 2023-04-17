@@ -1,8 +1,44 @@
 version: '3.8'
 
 services:
-  server-front:
-    restart: unless-stopped
-    build: .
+  mariadb:
+    extends:
+      file: ./compose/compose.db.yml
+      service: mariadb
+
+  mongo:
+    extends:
+      file: ./compose/compose.db.yml
+      service: mongo
+
+  tracing:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     ports:
-      - 4000:3000
+      - 16686:16686
+
+  auth-api:
+    extends:
+      file: ./compose/compose.published.yml
+      service: auth-api
+
+  user-api:
+    extends:
+      file: ./compose/compose.published.yml
+      service: user-api
+
+  task-api:
+    extends:
+      file: ./compose/compose.published.yml
+      service: task-api
+
+  front:
+    extends:
+      file: ./compose/compose.published.yml
+      service: front
+
+networks:
+  default:
+    external: true
+    name: grpc-task-manager_default

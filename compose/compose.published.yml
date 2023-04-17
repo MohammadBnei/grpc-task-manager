@@ -32,7 +32,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - PORT=4000
       - AUTH_API_URL=auth-api:4000
-      - JAEGER_URL=http://tracing:14268/api/traces
+      - JAEGER_URL=http://tracing:4318/v1/traces
     ports:
       - 4001:4000
     volumes:
@@ -56,7 +56,7 @@ services:
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
-      - JAEGER_URL=http://tracing:14268/api/traces
+      - JAEGER_URL=http://tracing:4318/v1/traces
     ports:
       - 4002:4000
     volumes:
@@ -78,8 +78,9 @@ services:
       - AUTH_API_URL=auth-api:4000
       - TASK_API_URL=task-api:4000
       - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:4318/v1/traces
     ports:
-      - 3000:3000
+      - 4000:3000
     volumes:
       - ../local/certs:/certs
 
