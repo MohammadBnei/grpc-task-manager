@@ -1,4 +1,3 @@
-import { trace, context } from '@opentelemetry/api';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import process from 'process';
@@ -8,6 +7,7 @@ import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
+import { env } from '$env/dynamic/private';
 // import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 // import {
 //   PeriodicExportingMetricReader,
@@ -27,7 +27,7 @@ const provider = new NodeTracerProvider({
 });
 
 const exporter = new OTLPTraceExporter({
-	url: process.env.JAEGER_URL || 'http://localhost:4318/v1/traces'
+	url: env.JAEGER_URL || 'http://localhost:4318/v1/traces'
 });
 const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor as any);
