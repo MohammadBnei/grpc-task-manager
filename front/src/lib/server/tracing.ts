@@ -34,7 +34,7 @@ provider.addSpanProcessor(spanProcessor as any);
 provider.register();
 
 registerInstrumentations({
-	// instrumentations: [new WinstonInstrumentation()]
+	instrumentations: [new WinstonInstrumentation()]
 });
 
 // const metricReader = new PeriodicExportingMetricReader({

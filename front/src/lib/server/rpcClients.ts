@@ -9,7 +9,7 @@ import fs from 'fs';
 import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
 import { env } from '$env/dynamic/private';
-import { otelInterceptor } from './interceptor';
+import { errorLoggerInterceptor, otelInterceptor } from './interceptor';
 import type { ServerStreamingCall, UnaryCall } from '@protobuf-ts/runtime-rpc';
 
 export const credentials =
@@ -21,12 +21,17 @@ export const credentials =
 		  )
 		: ChannelCredentials.createInsecure();
 
+const interceptors = [];
+
 const userTransport = new GrpcTransport({
 	host: env.USER_API_URL as string,
 	channelCredentials: credentials,
 	interceptors: [
 		{
 			interceptUnary: otelInterceptor<UnaryCall>(env.USER_API_URL)
+		},
+		{
+			interceptUnary: errorLoggerInterceptor
 		}
 	]
 });
@@ -36,6 +41,9 @@ const authTransport = new GrpcTransport({
 	interceptors: [
 		{
 			interceptUnary: otelInterceptor<UnaryCall>(env.AUTH_API_URL)
+		},
+		{
+			interceptUnary: errorLoggerInterceptor
 		}
 	]
 });
@@ -47,6 +55,9 @@ const taskTransport = new GrpcTransport({
 		{
 			interceptUnary: otelInterceptor<UnaryCall>(env.TASK_API_URL),
 			interceptServerStreaming: otelInterceptor<ServerStreamingCall>(env.TASK_API_URL)
+		},
+		{
+			interceptUnary: errorLoggerInterceptor
 		}
 	]
 });

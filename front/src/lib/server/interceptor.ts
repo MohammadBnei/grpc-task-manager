@@ -8,6 +8,7 @@ import type {
 	RpcOptions,
 	UnaryCall
 } from '@protobuf-ts/runtime-rpc';
+import winstonLogger from './winston.logger';
 
 const tracer = opentelemetry.trace.getTracer('Sveltekit-Server');
 
@@ -62,3 +63,17 @@ export const otelInterceptor =
 				return output as T;
 			}
 		);
+
+export const errorLoggerInterceptor = <T extends ServerStreamingCall | UnaryCall>(
+	next: T extends UnaryCall ? NextUnaryFn : NextServerStreamingFn,
+	method: MethodInfo,
+	input: object,
+	options: RpcOptions
+): T => {
+	const output = next(method, input, options);
+	output.then().catch((err) => {
+		winstonLogger.error(err);
+	});
+
+	return output as T;
+};
