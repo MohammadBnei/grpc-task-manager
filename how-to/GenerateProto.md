@@ -1,6 +1,6 @@
 # Generating Protobuf Stubs
 
-In this project, there is a dedicated folder named proto that contains all the protobuf definitions.
+In this project, there is a dedicated folder named proto that contains all the protobuf definitions. We are using [buf](https://buf.build/) to handle the IDL (Interface Definition Language) assets.
 
 ## buf.gen.yaml
 
