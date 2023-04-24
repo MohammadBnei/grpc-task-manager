@@ -22,7 +22,7 @@ Set the .env :
 MYSQL_URL="mysql://root:passwd@localhost:3306/user"
 insecure=true
 NODE_ENV=development
-JAEGER_URL="http://localhost:14268/api/traces"
+JAEGER_URL="http://localhost:4318/v1/traces"
 HEALTH_PORT=3001
 AUTH_API_URL="localhost:4003"
 ```
@@ -39,8 +39,7 @@ PORT=4003
 USER_API_URL="localhost:4002"
 JWT_SECRET="super-secret"
 insecure=true
-JAEGER_URL="http://localhost:14268/api/traces"
-ETCD_URL="http://localhost:8000"
+JAEGER_URL="http://localhost:4318/v1/traces"
 HEALTH_PORT=3002
 ```
 
