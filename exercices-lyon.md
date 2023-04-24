@@ -1,5 +1,13 @@
 # Exercice
 
+## GRPC
+
+ 1. Ajoutez un nouveau message correspondant à un hero dans votre fichier protobuf
+    - Ce hero devra avoir un nom(*string*), un id(*int*), un power(*int*) et des hp(*int*)
+ 2. Ajoutez des fonctions CRUD pour votre hero dans un nouveau service Hero
+ 3. Implémentez dans votre controlleur NestJS les fonctions CRUD du hero. Pour l'instant, enregistrez les hero dans un array local.
+ 4. Ajoutez des fonctions de "fight" entre les heros.
+
 ## Création d'une nouvelle API
 
 En binome, vous allez devoir créer une nouvelle API à connecter aux microservices existant.
