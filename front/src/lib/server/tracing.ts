@@ -18,7 +18,7 @@ import { env } from '$env/dynamic/private';
 // diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 const resource = new Resource({
-	[SemanticResourceAttributes.SERVICE_NAME]: `${process.env.npm_package_name}-${process.env.NODE_ENV}`,
+	[SemanticResourceAttributes.SERVICE_NAME]: `ssr-${process.env.NODE_ENV}`,
 	[SemanticResourceAttributes.SERVICE_VERSION]: process.env.npm_package_version
 });
 
