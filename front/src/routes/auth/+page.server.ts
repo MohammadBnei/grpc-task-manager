@@ -20,14 +20,23 @@ export const actions: Actions = {
 			});
 
 			switch (response.status) {
-				case LoginResponse_STATUS.OK:
+				case LoginResponse_STATUS.OK: {
 					cookies.set('jwt', response.jwt, {
 						path: '/'
 					});
 					cookies.set('refreshToken', response.refreshToken, {
 						path: '/'
 					});
+					const buffer = Buffer.from(
+						JSON.stringify(response.user, (_, v) => (typeof v === 'bigint' ? v.toString() : v)),
+						'utf-8'
+					);
+					const base64 = buffer.toString('base64');
+					cookies.set('user', base64, {
+						path: '/'
+					});
 					return { success: true };
+				}
 				case LoginResponse_STATUS.NOT_FOUND:
 					return fail(400, { error: email + ' not found' });
 				case LoginResponse_STATUS.WRONG_PASSWORD:
