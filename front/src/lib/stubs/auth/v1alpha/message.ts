@@ -12,6 +12,7 @@ import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MESSAGE_TYPE } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
 import { UserRole } from "../../user/v1alpha/message";
+import { User } from "../../user/v1alpha/message";
 /**
  * @generated from protobuf message auth.v1alpha.LoginRequest
  */
@@ -45,6 +46,10 @@ export interface LoginResponse {
      * @generated from protobuf field: auth.v1alpha.LoginResponse.STATUS status = 3;
      */
     status: LoginResponse_STATUS;
+    /**
+     * @generated from protobuf field: user.v1alpha.User user = 4;
+     */
+    user?: User;
 }
 /**
  * @generated from protobuf enum auth.v1alpha.LoginResponse.STATUS
@@ -194,7 +199,8 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
         super("auth.v1alpha.LoginResponse", [
             { no: 1, name: "refresh_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "status", kind: "enum", T: () => ["auth.v1alpha.LoginResponse.STATUS", LoginResponse_STATUS] }
+            { no: 3, name: "status", kind: "enum", T: () => ["auth.v1alpha.LoginResponse.STATUS", LoginResponse_STATUS] },
+            { no: 4, name: "user", kind: "message", T: () => User }
         ]);
     }
     create(value?: PartialMessage<LoginResponse>): LoginResponse {
@@ -218,6 +224,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
                 case /* auth.v1alpha.LoginResponse.STATUS status */ 3:
                     message.status = reader.int32();
                     break;
+                case /* user.v1alpha.User user */ 4:
+                    message.user = User.internalBinaryRead(reader, reader.uint32(), options, message.user);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -239,6 +248,9 @@ class LoginResponse$Type extends MessageType<LoginResponse> {
         /* auth.v1alpha.LoginResponse.STATUS status = 3; */
         if (message.status !== 0)
             writer.tag(3, WireType.Varint).int32(message.status);
+        /* user.v1alpha.User user = 4; */
+        if (message.user)
+            User.internalBinaryWrite(message.user, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
