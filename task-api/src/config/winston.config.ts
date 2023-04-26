@@ -21,10 +21,7 @@ export default (cs: ConfigService) => {
     transports.push(
       new winston.transports.File({
         format: ecsFormat(),
-        filename:
-          process.env.NODE_ENV === 'production'
-            ? '/api/log/word-api.log'
-            : './api/log',
+        filename: `/api/log/${process.env.npm_package_name}.log`,
       }),
     );
   }
