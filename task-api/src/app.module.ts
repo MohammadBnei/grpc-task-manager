@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskModule } from './task/task.module';
 import { UserusageModule } from './userusage/userusage.module';
-import { ProfanityService } from './profanity/profanity.service';
 import { ProfanityModule } from './profanity/profanity.module';
 import { StreamsModule } from './streams/streams.module';
 import Joi from 'joi';

@@ -84,3 +84,8 @@ USER_API_URL=localhost:4000
 ```bash
 docker compose up -d
 ```
+
+| **Name**         | **Url**                |
+|------------------|------------------------|
+| project          | http://localhost:4000  |
+| observability ui | http://localhost:16686 |
