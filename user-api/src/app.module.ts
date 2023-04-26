@@ -1,16 +1,14 @@
-import { Module, RequestMethod } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common';
 import { PrismaService } from './primsa.service';
 import { UserModule } from './user/user.module';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption from './grpcOption';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
-import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
-import { opentelemetryConfig } from './tracing';
-import { LoggerModule } from 'nestjs-pino';
+import grpcOption from './config/grpc.option';
+import { WinstonModule } from 'nest-winston';
+import winstonConfig from './config/winston.config';
 
 const envSchema = Joi.object({
   MYSQL_URL: Joi.string().required(),
@@ -39,21 +37,10 @@ const envSchema = Joi.object({
       validationSchema: envSchema,
       isGlobal: true,
     }),
-    OpenTelemetryModule.forRootAsync({
+    WinstonModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (cs: ConfigService) => opentelemetryConfig(cs),
-    }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        name: 'auth-api',
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-        transport:
-          process.env.NODE_ENV !== 'production'
-            ? { target: 'pino-pretty' }
-            : undefined,
-      },
-      exclude: [{ method: RequestMethod.ALL, path: 'health' }],
+      useFactory: (cs: ConfigService) => winstonConfig(cs),
     }),
     GrpcReflectionModule.registerAsync({
       imports: [ConfigModule],
@@ -64,6 +51,6 @@ const envSchema = Joi.object({
     AuthModule,
     HealthModule,
   ],
-  providers: [AppService, PrismaService],
+  providers: [PrismaService],
 })
 export class AppModule {}

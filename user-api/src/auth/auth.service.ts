@@ -3,13 +3,16 @@ import { Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ValidateResponse } from 'src/stubs/auth/v1alpha/message';
-import { AuthServiceClient } from 'src/stubs/auth/v1alpha/service';
+import {
+  AUTH_SERVICE_NAME,
+  AuthServiceClient,
+} from 'src/stubs/auth/v1alpha/service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
   private authService: AuthServiceClient;
 
-  constructor(@Inject('AUTH_SERVICE') private client: ClientGrpc) {}
+  constructor(@Inject(AUTH_SERVICE_NAME) private client: ClientGrpc) {}
 
   onModuleInit() {
     this.authService = this.client.getService<AuthServiceClient>('AuthService');
