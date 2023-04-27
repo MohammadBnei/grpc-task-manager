@@ -33,9 +33,7 @@ message RegisterResponse {
 }
 
 message UpdateRequest {
-  string id = 1;
-  string first_name = 2;
-  string last_name = 3;
+  User user = 1;
 }
 
 message UpdateResponse {
@@ -58,14 +56,12 @@ message UpdatePasswordRequest {
 message UpdatePasswordResponse {
   User user = 1;
 }
-
 message FindRequest {
   string id = 1;
   string first_name = 2;
   string last_name = 3;
   string email = 4;
 }
-
 message FindResponse {
   repeated User user = 1;
 }
