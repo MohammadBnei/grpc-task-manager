@@ -70,18 +70,14 @@ export class UserController {
       //     message: 'you do not have acces to this resource',
       //   });
 
-      const dto: UpdateUserDto = await this.validateDto(
-        req.user,
-        UpdateUserDto,
-        {
-          whitelist: true,
-          skipMissingProperties: true,
-        },
-      );
+      const dto: UpdateUserDto = await this.validateDto(req, UpdateUserDto, {
+        whitelist: true,
+        skipMissingProperties: true,
+      });
 
       const user = await this.userService.updateUser({
         where: {
-          id: +req.user.id,
+          id: +req.id,
         },
         data: dto,
       });

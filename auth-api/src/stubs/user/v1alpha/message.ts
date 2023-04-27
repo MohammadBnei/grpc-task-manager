@@ -31,7 +31,9 @@ export interface RegisterResponse {
 }
 
 export interface UpdateRequest {
-  user?: User;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface UpdateResponse {
