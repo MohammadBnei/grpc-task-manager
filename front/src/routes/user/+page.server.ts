@@ -1,4 +1,5 @@
 import { toJson, toPb } from '$lib/helper/userDto';
+import type { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions = {
@@ -9,13 +10,11 @@ export const actions = {
 			const lastName = formData.get('lastName') as string;
 			const userId = formData.get('userId') as string;
 
-			const res = await locals.userClient.update(
+			const res = await (locals.userClient as UserServiceClient).update(
 				{
-					user: toPb({
-						lastName,
-						firstName,
-						id: userId
-					})
+					lastName,
+					firstName,
+					id: userId
 				},
 				{
 					meta: {
@@ -31,4 +30,3 @@ export const actions = {
 		}
 	}
 } satisfies Actions;
-
