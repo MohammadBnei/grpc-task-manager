@@ -8,6 +8,14 @@
  3. Implémentez dans votre controlleur NestJS les fonctions CRUD du hero. Pour l'instant, enregistrez les hero dans un array local.
  4. Ajoutez des fonctions de "fight" entre les heros.
 
+## Service
+
+   1. Choisir un ORM qui vous plaît (conseil: [Prisma](https://docs.nestjs.com/recipes/prisma))
+   2. Effectuer les étapes d'initialisation de l'ORM
+   3. Créer l'entité qui sera enregistré en base, similaire au Hero définit dans le fichier protobuf.
+   4. Créer un [service](https://docs.nestjs.com/fundamentals/custom-providers), et implémenter les fonctions CRUD permettant la sauvegarde des héros.
+   5. Modifier le controlleur pour utiliser le service précedement crée. 
+
 ## Création d'une nouvelle API
 
 En binome, vous allez devoir créer une nouvelle API à connecter aux microservices existant.
