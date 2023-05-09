@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from 'src/stubs/task/v1beta/task';
+import { Task } from 'src/stubs/task/v1beta/message';
 import { profanity, changeMainLanguage } from 'super-profanity';
 
 interface ProfanityResult {

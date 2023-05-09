@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Subject } from 'rxjs';
-import { StreamTasksResponse, UsageResponse } from 'src/stubs/task/v1beta/task';
+import {
+  StreamTasksResponse,
+  UsingStreamResponse,
+} from 'src/stubs/task/v1beta/request';
 
 @Injectable()
 export class StreamsService {
   taskStream$: Subject<StreamTasksResponse>;
-  usageStream$: Subject<UsageResponse>;
+  usageStream$: Subject<UsingStreamResponse>;
   constructor() {
     this.taskStream$ = new Subject<StreamTasksResponse>();
-    this.usageStream$ = new Subject<UsageResponse>();
+    this.usageStream$ = new Subject<UsingStreamResponse>();
   }
 }

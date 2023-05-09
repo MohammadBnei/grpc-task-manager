@@ -3,9 +3,10 @@ import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { TaskService } from './task.service';
 import {
   AddFieldRequest,
-  TaskResponse,
+  AddFieldResponse,
   RemoveFieldRequest,
-} from '../stubs/task/v1beta/task';
+  RemoveFieldResponse,
+} from '../stubs/task/v1beta/request';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -21,7 +22,7 @@ export class FieldController {
   ) {}
 
   @GrpcMethod('FieldService')
-  async AddField(request: AddFieldRequest): Promise<TaskResponse> {
+  async AddField(request: AddFieldRequest): Promise<AddFieldResponse> {
     try {
       const { fieldName, fieldValue } = request;
       this.profanityService.checkStr(fieldName, fieldValue);
@@ -47,7 +48,7 @@ export class FieldController {
   }
 
   @GrpcMethod('FieldService')
-  async RemoveField(request: RemoveFieldRequest): Promise<TaskResponse> {
+  async RemoveField(request: RemoveFieldRequest): Promise<RemoveFieldResponse> {
     try {
       const { fieldName, taskName } = request;
 

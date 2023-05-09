@@ -1,11 +1,14 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Schema as schema, VirtualType } from 'mongoose';
-import { FieldType } from 'src/stubs/task/v1beta/task';
+import { HydratedDocument, ObjectId, Schema as schema, Types } from 'mongoose';
+import { FieldType } from 'src/stubs/task/v1beta/message';
 
 export type TaskDocument = HydratedDocument<Task>;
 
 @Schema()
 export class Task {
+  @Prop({ type: Types.ObjectId })
+  _id: ObjectId;
+
   @Prop({ unique: true, index: true })
   name: string;
 
