@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package task.v1beta;
+
+import "task/v1beta/request.proto";
+
+service TaskService {
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {}
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {}
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {}
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {}
+
+  rpc UpdateDate(UpdateDateRequest) returns (UpdateDateResponse) {}
+
+  rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
+}
+
+service FieldService {
+  rpc AddField(AddFieldRequest) returns (AddFieldResponse) {}
+  rpc RemoveField(RemoveFieldRequest) returns (RemoveFieldResponse) {}
+}
+
+service UsageService {
+  rpc Using(UsingRequest) returns (UsingResponse) {}
+  rpc UsingStream(UsingStreamRequest) returns (stream UsingStreamResponse) {}
+}
+
