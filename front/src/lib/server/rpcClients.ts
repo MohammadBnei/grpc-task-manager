@@ -4,7 +4,7 @@ import {
 	FieldServiceClient,
 	TaskServiceClient,
 	UsageServiceClient
-} from '$lib/stubs/task/v1beta/task.client';
+} from '$lib/stubs/task/v1beta/service.client';
 import fs from 'fs';
 import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';

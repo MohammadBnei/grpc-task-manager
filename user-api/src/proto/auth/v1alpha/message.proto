@@ -20,7 +20,7 @@ message LoginResponse {
     INTERNAL = 3;
   }
   STATUS status = 3;
-  string test = 4;
+  user.v1alpha.User user = 4;
 }
 
 message RefreshTokenRequest {

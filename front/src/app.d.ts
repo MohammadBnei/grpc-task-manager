@@ -6,7 +6,7 @@ import type {
 	FieldServiceClient,
 	TaskServiceClient,
 	UsageServiceClient
-} from './lib/stubs/task/v1beta/task';
+} from './lib/stubs/task/v1beta/service';
 import type { UserServiceClient } from './lib/stubs/user/v1alpha/service';
 
 // and what to do when importing types
