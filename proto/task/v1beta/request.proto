@@ -2,44 +2,7 @@ syntax = "proto3";
 
 package task.v1beta;
 
-message Task {
-  string name = 1;
-  repeated Field fields = 2;
-  string due_date = 3;
-  bool done = 4;
-}
-
-message Field {
-  string name = 1;
-  string value = 2;
-  FieldType type = 3;
-}
-
-service TaskService {
-  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
-  rpc GetTask(GetTaskRequest) returns (TaskResponse) {}
-  rpc CreateTask(CreateTaskRequest) returns (TaskResponse) {}
-  rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse) {}
-  rpc DeleteTask(DeleteTaskRequest) returns (TaskResponse) {}
-
-  rpc UpdateDate(UpdateDateRequest) returns (TaskResponse) {}
-
-  rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
-}
-
-service FieldService {
-  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
-  rpc RemoveField(RemoveFieldRequest) returns (TaskResponse) {}
-}
-
-service UsageService {
-  rpc Using(UsageRequest) returns (UsageResponse) {}
-  rpc UsingStream(UsageRequest) returns (stream UsageResponse) {}
-}
-
-enum FieldType {
-  FIELD_TYPE_STRING = 0;
-}
+import "task/v1beta/message.proto";
 
 message AddFieldRequest {
   string task_name = 1;
@@ -48,9 +11,17 @@ message AddFieldRequest {
   FieldType field_type = 4;
 }
 
+message AddFieldResponse {
+  Task task = 1;
+}
+
 message UpdateDateRequest {
   string task_name = 1;
   string due_date = 2;
+}
+
+message UpdateDateResponse {
+  Task task  = 1;
 }
 
 message RemoveFieldRequest {
@@ -58,20 +29,26 @@ message RemoveFieldRequest {
   string field_name = 2;
 }
 
-enum EventType {
-  EVENT_TYPE_CLICK = 0;
-  EVENT_TYPE_CREATE = 1;
-  EVENT_TYPE_UPDATE = 2;
-  EVENT_TYPE_DELETE = 3;
+message RemoveFieldResponse {
+  Task task = 1;
 }
 
-message UsageRequest {
+message UsingRequest {
   string username = 1;
   string task_name = 2;
   EventType event_type = 3;
 }
 
-message UsageResponse {
+message UsingResponse {
+  string username = 1;
+  string task_name = 2;
+  EventType event_type = 3;
+}
+
+message UsingStreamRequest {
+
+}
+message UsingStreamResponse {
   string username = 1;
   string task_name = 2;
   EventType event_type = 3;
@@ -108,7 +85,8 @@ message GetTaskRequest {
   // The field will contain name of the resource requested.
   string name = 1;
 }
-message TaskResponse {
+
+message GetTaskResponse {
   Task task = 1;
 }
 
@@ -124,12 +102,24 @@ message CreateTaskRequest {
   Task task = 3;
 }
 
+message CreateTaskResponse {
+  Task task  = 1;
+}
+
 message UpdateTaskRequest {
   // The Task resource which replaces the resource on the server.
   Task task = 1;
 }
 
+message UpdateTaskResponse {
+  Task task  = 1;
+}
+
 message DeleteTaskRequest {
   // The resource name of the Task to be deleted.
   string name = 1;
+}
+
+message DeleteTaskResponse {
+  Task task  = 1;
 }

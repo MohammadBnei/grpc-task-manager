@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { sendUsage } from '$src/lib/service/usage';
-	import { EventType, Field } from '$src/lib/stubs/task/v1beta/task';
+	import { EventType, Field } from '$src/lib/stubs/task/v1beta/message';
 	import modal from '$src/stores/modal';
 	import { relativeDate } from '$src/stores/task';
 	import Time from 'svelte-time';

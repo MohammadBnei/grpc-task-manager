@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package task.v1beta;
+
+import "task/v1beta/message.proto";
+
+message AddFieldRequest {
+  string task_name = 1;
+  string field_name = 2;
+  string field_value = 3;
+  FieldType field_type = 4;
+}
+
+message AddFieldResponse {
+  Task task = 1;
+}
+
+message UpdateDateRequest {
+  string task_name = 1;
+  string due_date = 2;
+}
+
+message UpdateDateResponse {
+  Task task  = 1;
+}
+
+message RemoveFieldRequest {
+  string task_name = 1;
+  string field_name = 2;
+}
+
+message RemoveFieldResponse {
+  Task task = 1;
+}
+
+message UsingRequest {
+  string username = 1;
+  string task_name = 2;
+  EventType event_type = 3;
+}
+
+message UsingResponse {
+  string username = 1;
+  string task_name = 2;
+  EventType event_type = 3;
+}
+
+message UsingStreamRequest {
+
+}
+message UsingStreamResponse {
+  string username = 1;
+  string task_name = 2;
+  EventType event_type = 3;
+}
+
+message StreamTasksRequest {}
+
+message StreamTasksResponse {
+  Task task = 1;
+  string event_type = 2;
+}
+
+message ListTasksRequest {
+  // The parent resource name, for example, "shelves/shelf1"
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message ListTasksResponse {
+  // The field name should match the noun "Task" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Task tasks = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetTaskRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message GetTaskResponse {
+  Task task = 1;
+}
+
+message CreateTaskRequest {
+  // The parent resource name where the Task is to be created.
+  string parent = 1;
+
+  // The Task id to use for this Task.
+  string task_id = 2;
+
+  // The Task resource to create.
+  // The field name should match the Noun in the method name.
+  Task task = 3;
+}
+
+message CreateTaskResponse {
+  Task task  = 1;
+}
+
+message UpdateTaskRequest {
+  // The Task resource which replaces the resource on the server.
+  Task task = 1;
+}
+
+message UpdateTaskResponse {
+  Task task  = 1;
+}
+
+message DeleteTaskRequest {
+  // The resource name of the Task to be deleted.
+  string name = 1;
+}
+
+message DeleteTaskResponse {
+  Task task  = 1;
+}

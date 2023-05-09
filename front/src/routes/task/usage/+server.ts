@@ -1,10 +1,10 @@
 import { sse } from '$src/lib/helper/sse';
-import { UsageRequest } from '$src/lib/stubs/task/v1beta/task';
+import { UsingRequest, UsingStreamRequest } from '$src/lib/stubs/task/v1beta/request';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.taskClients.usageClient.usingStream(UsageRequest.create());
+		const stream = locals.taskClients.usageClient.usingStream(UsingStreamRequest.create());
 
 		return sse<any>(async ({ write, close }) => {
 			try {
@@ -25,7 +25,7 @@ export const GET: RequestHandler = ({ locals }) => {
 export const POST: RequestHandler = async ({ locals, request }) => {
 	try {
 		const data = await request.json();
-		const usageRequest = UsageRequest.create({
+		const usageRequest = UsingRequest.create({
 			username: data.username,
 			taskName: data.taskName,
 			eventType: data.eventType

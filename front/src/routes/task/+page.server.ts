@@ -2,10 +2,10 @@ import {
 	CreateTaskRequest,
 	UpdateTaskRequest,
 	DeleteTaskRequest,
-	FieldType
-} from '$lib/stubs/task/v1beta/task';
+} from '$lib/stubs/task/v1beta/request';
 import { toPb } from '$lib/helper/taskDto';
 import { fail, type Actions } from '@sveltejs/kit';
+import { FieldType } from '$src/lib/stubs/task/v1beta/message';
 
 export const actions: Actions = {
 	newTask: async ({ request, locals, cookies }) => {

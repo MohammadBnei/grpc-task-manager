@@ -1,8 +1,9 @@
 import { browser } from '$app/environment';
 import { username } from '$src/stores/user';
 import { get } from 'svelte/store';
-import { EventType, type UsageResponse } from '../stubs/task/v1beta/task';
 import { showInfoToast } from './notification';
+import { EventType } from '../stubs/task/v1beta/message';
+import type { UsingStreamResponse } from '../stubs/task/v1beta/request';
 
 export enum UsageEvent {
 	hover = 'hover'
@@ -22,7 +23,7 @@ export const connectToUsageStream = () => {
 	const sse = new EventSource('/task/usage');
 	sse.onmessage = (msg) => {
 		try {
-			const data: UsageResponse = JSON.parse(msg.data);
+			const data: UsingStreamResponse = JSON.parse(msg.data);
 			if (browser && data.username !== get(username)) {
 				switch (data.eventType) {
 					case EventType.CLICK:

@@ -4,7 +4,7 @@ import {
 	StreamTasksRequest,
 	StreamTasksResponse,
 	UpdateTaskRequest
-} from '$lib/stubs/task/v1beta/task';
+} from '$lib/stubs/task/v1beta/request';
 import type { RequestHandler } from './$types';
 import type { ServerStreamingCall } from '@protobuf-ts/runtime-rpc';
 

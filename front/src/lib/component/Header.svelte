@@ -6,7 +6,7 @@
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
 	import { muteToast, username } from '$src/stores/user';
 	import { sendUsage } from '../service/usage';
-	import { EventType } from '../stubs/task/v1beta/task';
+	import { EventType } from '../stubs/task/v1beta/message';
 	import Login from './auth/Login.svelte';
 	import Logout from './auth/Logout.svelte';
 

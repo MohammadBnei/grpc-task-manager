@@ -1,13 +1,13 @@
 name: Update generated stubs
 
 on:
-  push:
-    branches:
-      - main
-      - feat/**
-    paths:
-      - "proto/**.proto"
-      - ".github/workflows/proto.yml"
+  # push:
+  #   branches:
+  #     - main
+  #     - feat/**
+  #   paths:
+  #     - "proto/**.proto"
+  #     - ".github/workflows/proto.yml"
   workflow_dispatch:
 
 jobs:
