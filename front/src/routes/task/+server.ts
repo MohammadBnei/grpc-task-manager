@@ -1,15 +1,25 @@
 import { sse } from '$src/lib/helper/sse';
 import { toPb } from '$src/lib/helper/taskDto';
-import { UpdateTaskRequest } from '$lib/stubs/task/v1beta/task';
+import {
+	StreamTasksRequest,
+	StreamTasksResponse,
+	UpdateTaskRequest
+} from '$lib/stubs/task/v1beta/task';
 import type { RequestHandler } from './$types';
+import type { ServerStreamingCall } from '@protobuf-ts/runtime-rpc';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.taskClients.crudClient.streamTasks({});
+		const stream: ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> =
+			locals.taskClients.crudClient.streamTasks({});
 
-		return sse<any>(async ({ write }) => {
-			for await (const msg of stream.responses) {
-				if (msg.task) write({ data: msg });
+		return sse<any>(async ({ write, close }) => {
+			try {
+				for await (const msg of stream.responses) {
+					if (msg.task) write({ data: msg });
+				}
+			} catch (error) {
+				close();
 			}
 		});
 	} catch (error) {
@@ -36,4 +46,3 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		});
 	}
 };
-

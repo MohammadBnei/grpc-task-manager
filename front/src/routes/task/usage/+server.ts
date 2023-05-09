@@ -6,9 +6,13 @@ export const GET: RequestHandler = ({ locals }) => {
 	try {
 		const stream = locals.taskClients.usageClient.usingStream(UsageRequest.create());
 
-		return sse<any>(async ({ write }) => {
-			for await (const msg of stream.responses) {
-				if (msg.username) write({ data: msg });
+		return sse<any>(async ({ write, close }) => {
+			try {
+				for await (const msg of stream.responses) {
+					if (msg.username) write({ data: msg });
+				}
+			} catch (error) {
+				close();
 			}
 		});
 	} catch (error) {
