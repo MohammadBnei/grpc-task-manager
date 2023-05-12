@@ -8,13 +8,13 @@ import { Task as TaskPb } from '../stubs/task/v1beta/message';
 export class TaskService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
-  toTaskPb(task: Task): TaskPb {
+  toTaskPb(task: Partial<TaskDocument>): TaskPb {
     return {
       name: task.name,
       fields: task.fieldsArray,
       dueDate: task.dueDate.toISOString(),
       done: task.done,
-      id: `${task._id}`,
+      id: task._id.toString(),
     };
   }
 

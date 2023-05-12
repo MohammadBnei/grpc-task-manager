@@ -61,7 +61,7 @@ export class TaskController {
     }
   }
 
-  // @UseGuards(GrpcAuthGuard)
+  @UseGuards(GrpcAuthGuard)
   @GrpcMethod('TaskService')
   async CreateTask(request: CreateTaskRequest): Promise<CreateTaskResponse> {
     try {
@@ -90,10 +90,7 @@ export class TaskController {
       return { task: pbTask };
     } catch (error) {
       this.logger.error(error);
-      throw new RpcException({
-        code: status.PERMISSION_DENIED,
-        message: (error as RpcException).message || error,
-      });
+      throw new RpcException(error);
     }
   }
 
@@ -161,6 +158,12 @@ export class TaskController {
   }
 
   private async validateDto(data: any, Dto: any) {
+    if (!data) {
+      throw new RpcException({
+        message: 'No data provided',
+        code: status.INVALID_ARGUMENT,
+      });
+    }
     const dto = plainToInstance(Dto, data);
     const errors = await validate(dto);
 

@@ -6,9 +6,6 @@ export type TaskDocument = HydratedDocument<Task>;
 
 @Schema()
 export class Task {
-  @Prop({ type: Types.ObjectId })
-  _id: ObjectId;
-
   @Prop({ unique: true, index: true })
   name: string;
 

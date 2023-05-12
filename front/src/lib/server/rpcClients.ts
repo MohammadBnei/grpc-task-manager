@@ -21,8 +21,6 @@ export const credentials =
 		  )
 		: ChannelCredentials.createInsecure();
 
-const interceptors = [];
-
 const userTransport = new GrpcTransport({
 	host: env.USER_API_URL as string,
 	channelCredentials: credentials,
