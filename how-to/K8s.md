@@ -20,3 +20,19 @@ kubectl create namespace grpc-tm
 ```sh
 kubectl apply -f certs/csi-driver.yml -n cert-manager
 ```
+
+## BDD
+
+### Mongo
+Install the mongo release with helm
+```sh
+helm install my-release oci://registry-1.docker.io/bitnamicharts/mongodb
+```
+
+### MariaDB
+Install the mariadb release
+```sh
+helm install my-release oci://registry-1.docker.io/bitnamicharts/mariadb
+```
+
+Then read the output to extract the root password
