@@ -10,7 +10,7 @@
   path: /spec/template/spec/containers/0/env/-
   value:
     name: JAEGER_URL
-    value: http://my-jaeger-collector.grpc-tm:14268/api/traces
+    value: http://my-jaeger-collector.grpc-tm:4318/v1/traces
 - op: add
   path: /spec/template/spec/containers/0/env/-
   value:
