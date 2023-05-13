@@ -62,6 +62,8 @@ spec:
               value: "/certs/certificate.key"
             - name: FRONT_CERT
               value: "/certs/certificate.crt"
+            - name: JAEGER_URL
+              value: "http://my-jaeger-collector.grpc-tm:4318/v1/traces"
       volumes:
       - name: tls
         csi:
