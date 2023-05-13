@@ -24,7 +24,7 @@ spec:
         - image: mohammaddocker/tm-front
           name: front
           ports:
-            - containerPort: 4000
+            - containerPort: 3000
           imagePullPolicy: Always
           volumeMounts:
             - name: tls
@@ -80,3 +80,17 @@ spec:
               path: certificate.key
             - key: tls.crt
               path: certificate.crt 
+---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: front
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
