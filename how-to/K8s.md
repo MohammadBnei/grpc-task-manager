@@ -18,5 +18,5 @@ kubectl create namespace grpc-tm
 ```
 - install the CSI driver CRD :
 ```sh
-kubectl apply -f certs/csi-driver.yml
+kubectl apply -f certs/csi-driver.yml -n cert-manager
 ```
