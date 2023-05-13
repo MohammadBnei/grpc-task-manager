@@ -68,12 +68,12 @@ services:
       retries: 5
 
   media-api:
-    image: mohammaddocker/tm-media-api
+    image: mohammaddocker/tm-task-api
     environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/media
+      - MONGO_URL=mongodb://root:task@mongo
       - insecure=true
-      - MEDIA_CERT=/certs/media.pem
-      - MEDIA_KEY=/certs/media-key.pem
+      - MEDIA_CERT=/certs/media-api.pem
+      - MEDIA_KEY=/certs/media-api-key.pem
       - PORT=4000
       - AUTH_API_URL=auth-api:4000
       - JAEGER_URL=http://tracing:14268/api/traces
