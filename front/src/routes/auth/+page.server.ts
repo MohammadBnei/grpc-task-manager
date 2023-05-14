@@ -22,10 +22,12 @@ export const actions: Actions = {
 			switch (response.status) {
 				case LoginResponse_STATUS.OK: {
 					cookies.set('jwt', response.jwt, {
-						path: '/'
+						path: '/',
+						httpOnly: true
 					});
 					cookies.set('refreshToken', response.refreshToken, {
-						path: '/'
+						path: '/',
+						httpOnly: true
 					});
 					const buffer = Buffer.from(
 						JSON.stringify(response.user, (_, v) => (typeof v === 'bigint' ? v.toString() : v)),
@@ -33,7 +35,8 @@ export const actions: Actions = {
 					);
 					const base64 = buffer.toString('base64');
 					cookies.set('user', base64, {
-						path: '/'
+						path: '/',
+						httpOnly: true
 					});
 					return { success: true };
 				}

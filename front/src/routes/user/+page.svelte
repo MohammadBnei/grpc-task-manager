@@ -21,10 +21,6 @@
 			data.set('userId', user.id);
 
 			return ({ result }) => {
-				if (result.type === 'success') {
-					console.log({ data: result.data });
-				}
-
 				error = result.data?.error;
 			};
 		}}

@@ -21,6 +21,8 @@ declare global {
 			};
 			authClient: AuthServiceClient;
 			userClient: UserServiceClient;
+
+			jwt?: string;
 		}
 
 		// interface PageData {}

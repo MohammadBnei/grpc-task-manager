@@ -22,7 +22,7 @@ export const toJson = (task: Task): ITask => {
 	};
 };
 
-export const toPb = (task: ITask) =>
+export const toPb = (task: Partial<ITask>) =>
 	Task.create({
 		...task,
 		dueDate: typeof task.dueDate === 'string' ? task.dueDate : task.dueDate?.toISOString()

@@ -18,7 +18,7 @@ export const actions = {
 				},
 				{
 					meta: {
-						Authorization: `Bearer ${cookies.get('jwt')}`
+						Authorization: `Bearer ${locals.jwt}`
 					}
 				}
 			);

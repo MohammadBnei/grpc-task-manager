@@ -97,6 +97,10 @@ export interface RefreshTokenResponse {
      * @generated from protobuf field: string jwt = 2;
      */
     jwt: string;
+    /**
+     * @generated from protobuf field: string user_id = 3;
+     */
+    userId: string;
 }
 /**
  * @generated from protobuf message auth.v1alpha.ValidateRequest
@@ -320,11 +324,12 @@ class RefreshTokenResponse$Type extends MessageType<RefreshTokenResponse> {
     constructor() {
         super("auth.v1alpha.RefreshTokenResponse", [
             { no: 1, name: "refresh_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "jwt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<RefreshTokenResponse>): RefreshTokenResponse {
-        const message = { refreshToken: "", jwt: "" };
+        const message = { refreshToken: "", jwt: "", userId: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<RefreshTokenResponse>(this, message, value);
@@ -340,6 +345,9 @@ class RefreshTokenResponse$Type extends MessageType<RefreshTokenResponse> {
                     break;
                 case /* string jwt */ 2:
                     message.jwt = reader.string();
+                    break;
+                case /* string user_id */ 3:
+                    message.userId = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -359,6 +367,9 @@ class RefreshTokenResponse$Type extends MessageType<RefreshTokenResponse> {
         /* string jwt = 2; */
         if (message.jwt !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.jwt);
+        /* string user_id = 3; */
+        if (message.userId !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.userId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

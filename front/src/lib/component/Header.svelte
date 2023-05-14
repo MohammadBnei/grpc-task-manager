@@ -4,11 +4,12 @@
 	import NewTask from './task/NewTask.svelte';
 	import FaUserSecret from 'svelte-icons/fa/FaUserSecret.svelte';
 	import FaUserTie from 'svelte-icons/fa/FaUserTie.svelte';
-	import { muteToast, username } from '$src/stores/user';
+	import { muteToast } from '$src/stores/user';
 	import { sendUsage } from '../service/usage';
 	import { EventType } from '../stubs/task/v1beta/message';
 	import Login from './auth/Login.svelte';
 	import Logout from './auth/Logout.svelte';
+	import { page } from '$app/stores';
 
 	export let headerHeight;
 
@@ -25,7 +26,7 @@
 	};
 
 	const handleSession = () => {
-		modal.open(($username ? Logout : Login) as any);
+		modal.open(($page.data.user ? Logout : Login) as any, { inModal: true });
 	};
 </script>
 
@@ -146,7 +147,7 @@
 		</div>
 		<div class="navbar-end">
 			<button class="btn btn-ghost btn-circle avatar" on:click={handleSession}>
-				{#if $username}
+				{#if $page.data.user}
 					<FaUserTie />
 				{:else}
 					<FaUserSecret />
