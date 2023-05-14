@@ -22,7 +22,7 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from-secret: my-ca-secret
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: auth-api
