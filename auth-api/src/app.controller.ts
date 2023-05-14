@@ -1,5 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
-import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { RpcException } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import {
   LoginRequest,
@@ -10,13 +10,16 @@ import {
   ValidateRequest,
   ValidateResponse,
 } from './stubs/auth/v1alpha/message';
-import { AUTH_SERVICE_NAME } from './stubs/auth/v1alpha/service';
+import {
+  AuthServiceController,
+  AuthServiceControllerMethods,
+} from './stubs/auth/v1alpha/service';
 import { JwtService } from '@nestjs/jwt';
 import {
   CheckPasswordResponse_STATUS,
   User,
 } from './stubs/user/v1alpha/message';
-import { status as RpcStatus } from '@grpc/grpc-js';
+import { Metadata, status as RpcStatus } from '@grpc/grpc-js';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { createHash } from 'crypto';
 
@@ -36,34 +39,98 @@ class LoginDTO {
 }
 
 @Controller()
-export class AppController {
+@AuthServiceControllerMethods()
+export class AppController implements AuthServiceController {
   constructor(
     private readonly appService: AppService,
     private jwtService: JwtService,
     private rtService: RefreshTokenService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
+  async refreshToken(
+    request: RefreshTokenRequest,
+    metadata?: Metadata,
+  ): Promise<RefreshTokenResponse> {
+    try {
+      const rt = await this.rtService.refreshToken({
+        refreshToken: request.refreshToken,
+      });
 
-  private async validateDto(data: any, Dto: any) {
-    const dto = plainToInstance(Dto, data);
-    const errors = await validate(dto);
+      if (!rt)
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'refresh token not found',
+        });
 
-    if (errors.length > 0) {
+      if (rt.revoked)
+        throw new RpcException({
+          code: RpcStatus.PERMISSION_DENIED,
+          message: 'refresh token revoked',
+        });
+
+      if (rt.ip !== request.ip)
+        throw new RpcException({
+          code: RpcStatus.PERMISSION_DENIED,
+          message: 'different ip',
+        });
+
+      const user = await this.appService.findUser(
+        {
+          id: rt.userId,
+          firstName: undefined,
+          lastName: undefined,
+          email: undefined,
+        },
+        { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
+      );
+
+      if (!user)
+        throw new RpcException({
+          code: RpcStatus.NOT_FOUND,
+          message: 'user not found',
+        });
+
+      return {
+        refreshToken: undefined,
+        jwt: this.jwtService.sign({ user }),
+        userId: user.id,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof RpcException) throw error;
       throw new RpcException({
-        code: RpcStatus.INVALID_ARGUMENT,
-        message: errors
-          .map(
-            ({ value, property, constraints }) =>
-              `${value} is not a valid ${property} value (${Object.values(
-                constraints,
-              ).join(', ')})`,
-          )
-          .join('\n'),
+        code: error?.code || RpcStatus.INTERNAL,
+        message: error?.message || 'something went wrong',
       });
     }
   }
+  async validate(
+    request: ValidateRequest,
+    metadata?: Metadata,
+  ): Promise<ValidateResponse> {
+    try {
+      const { user, internal }: { user: User; internal: boolean } =
+        this.jwtService.verify(request.jwt);
 
-  @GrpcMethod(AUTH_SERVICE_NAME)
+      if (!internal && !user)
+        throw new RpcException({
+          code: RpcStatus.PERMISSION_DENIED,
+          message: 'cannot verify jwt',
+        });
+
+      return {
+        ok: true,
+        userId: user?.id,
+        userEmail: user?.email,
+        userRole: user?.role,
+        internal: internal,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new RpcException(error);
+    }
+  }
+
   async login(req: LoginRequest): Promise<LoginResponse> {
     try {
       await this.validateDto(req, LoginDTO);
@@ -116,83 +183,22 @@ export class AppController {
     }
   }
 
-  @GrpcMethod(AUTH_SERVICE_NAME)
-  async RefreshToken(req: RefreshTokenRequest): Promise<RefreshTokenResponse> {
-    try {
-      const rt = await this.rtService.refreshToken({
-        refreshToken: req.refreshToken,
-      });
+  private async validateDto(data: any, Dto: any) {
+    const dto = plainToInstance(Dto, data);
+    const errors = await validate(dto);
 
-      if (!rt)
-        throw new RpcException({
-          code: RpcStatus.NOT_FOUND,
-          message: 'refresh token not found',
-        });
-
-      if (rt.revoked)
-        throw new RpcException({
-          code: RpcStatus.PERMISSION_DENIED,
-          message: 'refresh token revoked',
-        });
-
-      if (rt.ip !== req.ip)
-        throw new RpcException({
-          code: RpcStatus.PERMISSION_DENIED,
-          message: 'different ip',
-        });
-
-      const user = await this.appService.findUser(
-        {
-          id: rt.userId,
-          firstName: undefined,
-          lastName: undefined,
-          email: undefined,
-        },
-        { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
-      );
-
-      if (!user)
-        throw new RpcException({
-          code: RpcStatus.NOT_FOUND,
-          message: 'user not found',
-        });
-
-      return {
-        refreshToken: undefined,
-        jwt: this.jwtService.sign({ user }),
-      };
-    } catch (error) {
-      this.logger.error(error);
-      if (error instanceof RpcException) throw error;
+    if (errors.length > 0) {
       throw new RpcException({
-        code: error?.code || RpcStatus.INTERNAL,
-        message: error?.message || 'something went wrong',
+        code: RpcStatus.INVALID_ARGUMENT,
+        message: errors
+          .map(
+            ({ value, property, constraints }) =>
+              `${value} is not a valid ${property} value (${Object.values(
+                constraints,
+              ).join(', ')})`,
+          )
+          .join('\n'),
       });
-    }
-  }
-
-  @GrpcMethod(AUTH_SERVICE_NAME)
-  async Validate(req: ValidateRequest): Promise<ValidateResponse> {
-    try {
-      const { user, internal }: { user: User; internal: boolean } =
-        this.jwtService.verify(req.jwt);
-
-      if (!internal && !user)
-        throw new RpcException({
-          code: RpcStatus.PERMISSION_DENIED,
-          message: 'cannot verify jwt',
-        });
-
-      return {
-        ok: true,
-        userId: user?.id,
-        userEmail: user?.email,
-        userRole: user?.role,
-        internal: internal,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      throw new RpcException(error);
     }
   }
 }

@@ -31,6 +31,7 @@ message RefreshTokenRequest {
 message RefreshTokenResponse {
   string refresh_token = 1;
   string jwt = 2;
+  string user_id = 3;
 }
 
 message ValidateRequest {

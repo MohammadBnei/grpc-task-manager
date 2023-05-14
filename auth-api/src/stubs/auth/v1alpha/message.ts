@@ -32,6 +32,7 @@ export interface RefreshTokenRequest {
 export interface RefreshTokenResponse {
   refreshToken?: string;
   jwt?: string;
+  userId?: string;
 }
 
 export interface ValidateRequest {
