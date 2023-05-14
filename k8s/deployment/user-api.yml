@@ -8,10 +8,11 @@ metadata:
 spec:
   ports:
     - name: grpc
-      port: 4000
+      port: 4001
       targetPort: 4000
   selector:
     app: user-api
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment

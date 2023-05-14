@@ -49,11 +49,6 @@ spec:
                 configMapKeyRef:
                   name: api-map
                   key: TASK_API_URL
-            - name: TASK_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api-map
-                  key: TASK_API_URL
             - name: secure
               value: "true"
             - name: ROOT_CA

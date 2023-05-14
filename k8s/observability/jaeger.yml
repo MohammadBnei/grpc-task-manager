@@ -5,3 +5,18 @@ metadata:
 spec:
   agent:
     strategy: DaemonSet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-ui
+  labels:
+    app: observability
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 16686
+      targetPort: 16686
+  selector:
+    app: my-jaeger-collector
+  type: LoadBalancer

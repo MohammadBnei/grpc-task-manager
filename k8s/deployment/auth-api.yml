@@ -7,10 +7,11 @@ metadata:
 spec:
   ports:
     - name: grpc
-      port: 4000
+      port: 4002
       targetPort: 4000
   selector:
     app: auth-api
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
