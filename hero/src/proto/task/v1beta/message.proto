@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package task.v1beta;
+
+message Task {
+  string name = 1;
+  repeated Field fields = 2;
+  string due_date = 3;
+  bool done = 4;
+  string id = 5;
+}
+
+message Field {
+  string name = 1;
+  string value = 2;
+  FieldType type = 3;
+}
+
+enum FieldType {
+  FIELD_TYPE_STRING = 0;
+}
+
+enum EventType {
+  EVENT_TYPE_CLICK = 0;
+  EVENT_TYPE_CREATE = 1;
+  EVENT_TYPE_UPDATE = 2;
+  EVENT_TYPE_DELETE = 3;
+}
