@@ -1,58 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { Hero } from './stubs/hero/v1alpha/hero';
+import { PrismaService } from './prisma.service';
+import { Prisma } from '@prisma/client';
 
 const heroes: Hero[] = [];
 
 @Injectable()
 export class AppService {
-  create(data: any): Hero {
-    const hero = {
-      ...data,
-      id: heroes.length + 1,
-      hp: 100,
-    };
-
-    heroes.push(hero);
-
-    return hero;
+  constructor(private prisma: PrismaService) {}
+  create(data: Prisma.HeroCreateInput): Promise<Hero> {
+    return this.prisma.hero.create({ data });
   }
 
-  findAll(): Hero[] {
-    return heroes;
+  findAll(): Promise<Hero[]> {
+    return this.prisma.hero.findMany();
   }
 
-  findById(id: number): Hero {
-    return heroes.find((hero) => hero.id === id);
+  findById(id: number): Promise<Hero> {
+    return this.prisma.hero.findUnique({
+      where: { id },
+    });
   }
 
-  findByName(name: string): Hero {
-    return heroes.find((hero) => hero.name === name);
+  findByName(name: string): Promise<Hero> {
+    return this.prisma.hero.findUnique({
+      where: { name },
+    });
   }
 
-  update(id: number, data: any): Hero {
-    const index = heroes.findIndex((hero) => hero.id === id);
-
-    if (index === -1) {
-      throw new Error(`Hero ${id} not found`);
-    }
-
-    heroes[index] = {
-      ...heroes[index],
-      ...data,
-    };
-
-    return heroes[index];
+  async update(id: number, data: Prisma.HeroUpdateInput): Promise<Hero> {
+    return this.prisma.hero.update({
+      where: { id },
+      data,
+    });
   }
 
-  delete(id: number): Hero {
-    const index = heroes.findIndex((hero) => hero.id === id);
-
-    if (index === -1) {
-      throw new Error(`Hero ${id} not found`);
-    }
-
-    const deletedHero = heroes.splice(index, 1)[0];
-
-    return deletedHero;
+  delete(id: number): Promise<Hero> {
+    return this.prisma.hero.delete({
+      where: { id },
+    });
   }
 }
