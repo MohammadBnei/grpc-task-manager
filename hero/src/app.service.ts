@@ -3,8 +3,6 @@ import { Hero } from './stubs/hero/v1alpha/hero';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
 
-const heroes: Hero[] = [];
-
 @Injectable()
 export class AppService {
   constructor(private prisma: PrismaService) {}

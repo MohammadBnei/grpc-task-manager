@@ -13,6 +13,6 @@ datasource db {
 model Hero {
   id    Int    @id @default(autoincrement())
   name  String @unique
-  hp    Int
+  hp    Int    @default(100)
   power Int
 }

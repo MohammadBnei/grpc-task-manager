@@ -22,28 +22,25 @@ import { Observable } from 'rxjs';
 @HeroCRUDServiceControllerMethods()
 export class AppController implements HeroCRUDServiceController {
   constructor(private readonly appService: AppService) {}
-  get(
-    request: GetRequest,
-    metadata?: Metadata,
-  ): GetResponse | Observable<GetResponse> | Promise<GetResponse> {
+  async get(request: GetRequest, metadata?: Metadata): Promise<GetResponse> {
     let hero: Hero;
     let heroes: Hero[] = [];
 
     if (request.id) {
-      hero = this.appService.findById(request.id);
+      hero = await this.appService.findById(request.id);
       return { heroes: [hero] };
     } else if (request.name) {
-      hero = this.appService.findByName(request.name);
+      hero = await this.appService.findByName(request.name);
       return { heroes: [hero] };
     } else {
-      heroes = this.appService.findAll();
+      heroes = await this.appService.findAll();
       return { heroes };
     }
   }
-  update(
+  async update(
     request: UpdateRequest,
     metadata?: Metadata,
-  ): UpdateResponse | Observable<UpdateResponse> | Promise<UpdateResponse> {
+  ): Promise<UpdateResponse> {
     const id = request.id;
 
     Object.keys(request).forEach(
@@ -52,22 +49,22 @@ export class AppController implements HeroCRUDServiceController {
 
     delete request.id;
 
-    const hero = this.appService.update(id, request);
+    const hero = await this.appService.update(id, request);
 
     return { hero };
   }
-  delete(
+  async delete(
     request: DeleteRequest,
     metadata?: Metadata,
-  ): DeleteResponse | Observable<DeleteResponse> | Promise<DeleteResponse> {
-    const hero = this.appService.delete(request.id);
+  ): Promise<DeleteResponse> {
+    const hero = await this.appService.delete(request.id);
 
     return { hero };
   }
 
   @GrpcMethod(HERO_CR_UD_SERVICE_NAME)
   async add(request: AddRequest): Promise<AddResponse> {
-    const hero = this.appService.create(request);
+    const hero = await this.appService.create(request as any);
 
     return { hero };
   }
