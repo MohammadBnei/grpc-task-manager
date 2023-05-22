@@ -18,8 +18,6 @@ import { GrpcMethod } from '@nestjs/microservices';
 import { Metadata } from '@grpc/grpc-js';
 import { Observable } from 'rxjs';
 
-const heroes: Hero[] = [];
-
 @Controller()
 @HeroCRUDServiceControllerMethods()
 export class AppController implements HeroCRUDServiceController {
@@ -28,33 +26,49 @@ export class AppController implements HeroCRUDServiceController {
     request: GetRequest,
     metadata?: Metadata,
   ): GetResponse | Observable<GetResponse> | Promise<GetResponse> {
-    throw new Error('Method not implemented.');
+    let hero: Hero;
+    let heroes: Hero[] = [];
+
+    if (request.id) {
+      hero = this.appService.findById(request.id);
+      return { heroes: [hero] };
+    } else if (request.name) {
+      hero = this.appService.findByName(request.name);
+      return { heroes: [hero] };
+    } else {
+      heroes = this.appService.findAll();
+      return { heroes };
+    }
   }
   update(
     request: UpdateRequest,
     metadata?: Metadata,
   ): UpdateResponse | Observable<UpdateResponse> | Promise<UpdateResponse> {
-    throw new Error('Method not implemented.');
+    const id = request.id;
+
+    Object.keys(request).forEach(
+      (key) => request[key] === undefined && delete request[key],
+    );
+
+    delete request.id;
+
+    const hero = this.appService.update(id, request);
+
+    return { hero };
   }
   delete(
     request: DeleteRequest,
     metadata?: Metadata,
   ): DeleteResponse | Observable<DeleteResponse> | Promise<DeleteResponse> {
-    throw new Error('Method not implemented.');
+    const hero = this.appService.delete(request.id);
+
+    return { hero };
   }
 
   @GrpcMethod(HERO_CR_UD_SERVICE_NAME)
   async add(request: AddRequest): Promise<AddResponse> {
-    const hero = {
-      ...request,
-      id: heroes.length + 1,
-      hp: 100,
-    };
+    const hero = this.appService.create(request);
 
-    heroes.push(hero);
-
-    return {
-      hero,
-    };
+    return { hero };
   }
 }
