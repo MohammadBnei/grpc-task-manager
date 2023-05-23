@@ -19,7 +19,7 @@ export const showInfoToast = (text: string) => {
 			'--toastItemWidth': '0',
 			'--toastItemHeight': '0',
 			'--toastBtnContent': '',
-            '--toastBackground': 'rgba(0,0,0,0);'
+			'--toastBackground': 'rgba(0,0,0,0);'
 		}
 	});
 };

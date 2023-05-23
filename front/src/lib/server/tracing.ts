@@ -64,4 +64,3 @@ process.on('SIGTERM', () => {
 		)
 		.finally(() => process.exit(0));
 });
-

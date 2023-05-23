@@ -1,7 +1,6 @@
+import { authClient, userClient } from '$src/lib/server/rpcClients';
 import winstonLogger from '$src/lib/server/winston.logger';
-import type { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
 import { FindRequest, User } from '$src/lib/stubs/user/v1alpha/message';
-import type { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals, cookies }) => {
@@ -9,7 +8,7 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
 	if (!rt) return new Response(null);
 
 	try {
-		const { response } = await (locals.authClient as AuthServiceClient).refreshToken({
+		const { response } = await authClient.refreshToken({
 			ip: '10.10.10.10',
 			refreshToken: rt
 		});
@@ -19,7 +18,7 @@ export const GET: RequestHandler = async ({ locals, cookies }) => {
 			httpOnly: true
 		});
 
-		const { response: userResponse } = await (locals.userClient as UserServiceClient).find(
+		const { response: userResponse } = await userClient.find(
 			FindRequest.create({
 				id: response.userId
 			}),

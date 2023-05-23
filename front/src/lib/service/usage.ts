@@ -33,10 +33,14 @@ export const connectToUsageStream = () => {
 						showInfoToast(`<strong>${data.username}</strong> is creating a task.`);
 						break;
 					case EventType.UPDATE:
-						showInfoToast(`<strong>${data.username}</strong> is updating the ${data.taskName} task.`);
+						showInfoToast(
+							`<strong>${data.username}</strong> is updating the ${data.taskName} task.`
+						);
 						break;
 					case EventType.DELETE:
-						showInfoToast(`<strong>${data.username}</strong> is deleting the ${data.taskName} task.`);
+						showInfoToast(
+							`<strong>${data.username}</strong> is deleting the ${data.taskName} task.`
+						);
 						break;
 				}
 			}

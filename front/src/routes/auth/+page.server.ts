@@ -1,6 +1,7 @@
 import { LoginResponse_STATUS } from '$src/lib/stubs/auth/v1alpha/message';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from '../$types';
+import { authClient, userClient } from '$src/lib/server/rpcClients';
 
 export const actions: Actions = {
 	login: async ({ request, locals, cookies }) => {
@@ -13,7 +14,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			const { response } = await locals.authClient.login({
+			const { response } = await authClient.login({
 				email: email as string,
 				password: password as string,
 				ip: '10.10.10.10'
@@ -65,7 +66,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await locals.userClient.register({
+			await userClient.register({
 				email: email as string,
 				firstName: firstName as string,
 				lastName: lastName as string,

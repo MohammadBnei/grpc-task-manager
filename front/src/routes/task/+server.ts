@@ -7,11 +7,12 @@ import {
 } from '$lib/stubs/task/v1beta/request';
 import type { RequestHandler } from './$types';
 import type { ServerStreamingCall } from '@protobuf-ts/runtime-rpc';
+import { taskClients } from '$src/lib/server/rpcClients';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
 		const stream: ServerStreamingCall<StreamTasksRequest, StreamTasksResponse> =
-			locals.taskClients.crudClient.streamTasks({});
+			taskClients.crudClient.streamTasks({});
 
 		return sse<any>(async ({ write, close }) => {
 			try {
@@ -36,7 +37,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		const updateTaskRequest = UpdateTaskRequest.create({
 			task: toPb(data)
 		});
-		await locals.taskClients.crudClient.updateTask(updateTaskRequest);
+		await taskClients.crudClient.updateTask(updateTaskRequest);
 
 		return new Response();
 	} catch (error: any) {
