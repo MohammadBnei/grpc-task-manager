@@ -4,7 +4,7 @@ import type { Actions } from '../$types';
 import { authClient, userClient } from '$src/lib/server/rpcClients';
 
 export const actions: Actions = {
-	login: async ({ request, locals, cookies }) => {
+	login: async ({ request, cookies }) => {
 		const data = await request.formData();
 		const email = data.get('email');
 		const password = data.get('password');
@@ -54,7 +54,7 @@ export const actions: Actions = {
 			return fail(400, { error: error?.message || 'something went wrong' });
 		}
 	},
-	register: async ({ request, locals }) => {
+	register: async ({ request }) => {
 		const data = await request.formData();
 		const email = data.get('email');
 		const firstName = data.get('firstName');
