@@ -16,7 +16,6 @@ import {
 } from './stubs/hero/v1alpha/hero';
 import { GrpcMethod } from '@nestjs/microservices';
 import { Metadata } from '@grpc/grpc-js';
-import { Observable } from 'rxjs';
 
 @Controller()
 @HeroCRUDServiceControllerMethods()
