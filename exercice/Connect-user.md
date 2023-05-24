@@ -6,7 +6,7 @@
 2. Add a `user_id` to the create Hero function.
 
 The hero is now assigned to a user. 
-Regenerate the stubs with `export.sh`
+3. Regenerate the stubs with `export.sh`
 
 ## 2. Hero Api
 
@@ -15,3 +15,16 @@ Regenerate the stubs with `export.sh`
 3. Inject the grpc user service inside your hero controller ([help](https://docs.nestjs.com/microservices/grpc#client)).
 4. Add a request to the user api, using find, to verify that the user exists before creating the hero.
 
+## 3. Protobuf Definition
+
+1. Add a `user_id` to the Find Hero Request message
+2. Add a service called UserHeroService
+3. Add a rpc function inside this service to fetch all user's hero 
+4. Regenerate with `export.sh`
+
+## 4. User Api
+
+1. Add a hero api grpc config to the user-api grpc configuration
+2. Implement the UserHeroService function : 
+   1. It will call the hero find rpc function
+   2. And return all the user's hero
