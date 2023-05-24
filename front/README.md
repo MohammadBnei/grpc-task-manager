@@ -1,4 +1,4 @@
-# SvelteKit gRPC 
+# SvelteKit gRPC
 
 ## Goal
 
@@ -9,4 +9,3 @@ This is the front-end part of the grpc task manager application. Its aim is to p
 For unary gRPC calls, we use a combination of sveltekit's endpoint and form action.
 
 For server side streaming, we use a translator from gRPC stream to SSE.
-

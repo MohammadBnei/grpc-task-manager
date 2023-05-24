@@ -1,16 +1,16 @@
-import { toJson, toPb } from '$lib/helper/userDto';
-import type { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
+import { toJson } from '$lib/helper/userDto';
+import { userClient } from '$src/lib/server/rpcClients';
 import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions = {
-	update: async ({ locals, cookies, request }) => {
+	update: async ({ locals, request }) => {
 		try {
 			const formData = await request.formData();
 			const firstName = formData.get('firstName') as string;
 			const lastName = formData.get('lastName') as string;
 			const userId = formData.get('userId') as string;
 
-			const res = await (locals.userClient as UserServiceClient).update(
+			const res = await userClient.update(
 				{
 					lastName,
 					firstName,

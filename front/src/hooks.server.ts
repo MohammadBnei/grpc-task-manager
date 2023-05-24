@@ -1,13 +1,9 @@
 import '$lib/server/tracing';
 import type { Handle } from '@sveltejs/kit';
-import { authClient, taskClients, userClient } from '$lib/server/rpcClients';
+import { authClient } from '$lib/server/rpcClients';
 import winstonLogger from './lib/server/winston.logger';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.taskClients = taskClients;
-	event.locals.userClient = userClient;
-	event.locals.authClient = authClient;
-
 	event.locals.jwt = event.cookies.get('jwt');
 
 	const requestClone = event.request.clone();

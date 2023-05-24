@@ -1,7 +1,8 @@
 import { toJson } from '$src/lib/helper/userDto';
+import { userClient } from '$src/lib/server/rpcClients';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ cookies, locals, url }) => {
+export const GET: RequestHandler = async ({ cookies, locals }) => {
 	const user = cookies.get('user');
 	if (!user) {
 		return new Response(JSON.stringify({ user: null }), { status: 401 });
@@ -10,7 +11,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 	const str = buffer.toString('utf-8');
 	const { email } = JSON.parse(str);
 
-	const res = await locals.userClient.find(
+	const res = await userClient.find(
 		{
 			email
 		} as any,

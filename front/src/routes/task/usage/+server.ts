@@ -1,10 +1,11 @@
 import { sse } from '$src/lib/helper/sse';
+import { taskClients } from '$src/lib/server/rpcClients';
 import { UsingRequest, UsingStreamRequest } from '$src/lib/stubs/task/v1beta/request';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ locals }) => {
 	try {
-		const stream = locals.taskClients.usageClient.usingStream(UsingStreamRequest.create());
+		const stream = taskClients.usageClient.usingStream(UsingStreamRequest.create());
 
 		return sse<any>(async ({ write, close }) => {
 			try {
@@ -31,7 +32,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 			eventType: data.eventType
 		});
 
-		await locals.taskClients.usageClient.using(usageRequest);
+		await taskClients.usageClient.using(usageRequest);
 
 		return new Response();
 	} catch (error: any) {

@@ -54,8 +54,9 @@
 		<div class="card-actions justify-end">
 			<form action="/task?/deleteTask" method="POST" use:enhance>
 				<input value={task.name} name="name" hidden />
-				<button class="btn btn-warning text-base" on:click={() => sendUsage(EventType.DELETE, task.name)}
-					>Remove</button
+				<button
+					class="btn btn-warning text-base"
+					on:click={() => sendUsage(EventType.DELETE, task.name)}>Remove</button
 				>
 			</form>
 		</div>
