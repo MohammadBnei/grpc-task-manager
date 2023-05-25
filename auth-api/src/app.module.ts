@@ -11,7 +11,7 @@ import { PrismaService } from './prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import Joi from 'joi';
-import { USER_V1ALPHA_PACKAGE_NAME } from './stubs/user/v1alpha/service';
+import { USER_SERVICE_NAME } from './stubs/user/v1alpha/service';
 import { WinstonModule } from 'nest-winston';
 import winstonConfig from './config/winston.config';
 
@@ -54,7 +54,7 @@ const envSchema = Joi.object({
     }),
     ClientsModule.registerAsync([
       {
-        name: USER_V1ALPHA_PACKAGE_NAME,
+        name: USER_SERVICE_NAME,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (cs: ConfigService) => userGrpcOptions(cs),
