@@ -73,7 +73,7 @@ Add the rest of the messages (`UpdateRequest`, `UpdateResponse`, `DeleteRequest`
 
 ----
 
-Then, follow the steps [here](../how-to/GenerateProto.md) to generate the stubs and export the proto file in your api.
+Then, follow the steps [here](../../how-to/GenerateProto.md) to generate the stubs and export the proto file in your api.
 
 You should see a `stubs` and `proto` folder inside your `src` folder.
 
