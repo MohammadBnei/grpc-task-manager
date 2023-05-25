@@ -9,7 +9,6 @@ import {
 } from './stubs/user/v1alpha/message';
 import {
   USER_SERVICE_NAME,
-  USER_V1ALPHA_PACKAGE_NAME,
   UserServiceClient,
 } from './stubs/user/v1alpha/service';
 import { firstValueFrom } from 'rxjs';
@@ -19,7 +18,7 @@ import { Metadata } from '@grpc/grpc-js';
 export class AppService implements OnModuleInit {
   private userService: UserServiceClient;
 
-  constructor(@Inject(USER_V1ALPHA_PACKAGE_NAME) private client: ClientGrpc) {}
+  constructor(@Inject(USER_SERVICE_NAME) private client: ClientGrpc) {}
 
   onModuleInit() {
     this.userService =
