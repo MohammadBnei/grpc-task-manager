@@ -17,16 +17,20 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "nest": "nest"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.8.14",
     "@grpc/proto-loader": "^0.7.7",
     "@nestjs/common": "^9.4.1",
+    "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.4.1",
     "@nestjs/microservices": "^9.4.1",
     "@nestjs/platform-express": "^9.4.1",
+    "@nestjs/terminus": "^9.2.2",
     "@prisma/client": "4.14.1",
+    "joi": "^17.9.2",
     "nestjs-grpc-reflection": "^0.0.21",
     "prisma": "^4.14.1",
     "reflect-metadata": "^0.1.13",

@@ -11,15 +11,17 @@ import {
   USER_V1ALPHA_PACKAGE_NAME,
 } from './stubs/user/v1alpha/service';
 import { ChannelCredentials } from '@grpc/grpc-js';
+import { ConfigService } from '@nestjs/config';
 
-export const grpcConfig = addReflectionToGrpcConfig({
-  transport: Transport.GRPC,
-  options: {
-    url: '0.0.0.0:6000',
-    package: HERO_V1ALPHA_PACKAGE_NAME,
-    protoPath: join(__dirname, 'proto/hero/v1alpha/hero.proto'),
-  },
-}) as GrpcOptions;
+export const grpcConfig = (cs: ConfigService): GrpcOptions =>
+  addReflectionToGrpcConfig({
+    transport: Transport.GRPC,
+    options: {
+      url: `0.0.0.0:${cs.get<number>('PORT')}`,
+      package: HERO_V1ALPHA_PACKAGE_NAME,
+      protoPath: join(__dirname, 'proto/hero/v1alpha/hero.proto'),
+    },
+  });
 
 export const userGrpcOptions: ClientProviderOptions = {
   name: USER_SERVICE_NAME,
