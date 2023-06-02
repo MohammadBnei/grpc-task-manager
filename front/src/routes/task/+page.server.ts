@@ -6,6 +6,9 @@ import {
 } from '$lib/stubs/task/v1beta/task';
 import { toPb } from '$lib/helper/taskDto';
 import { fail, type Actions } from '@sveltejs/kit';
+import {getStorage, ref, uploadBytes, listAll, deleteObject} from "firebase/storage";
+import {MediaRequest} from "../../lib/stubs/media/v1alpha/media";
+import slugify from "slugify";
 
 export const actions: Actions = {
 	newTask: async ({ request, locals, cookies }) => {
@@ -38,6 +41,7 @@ export const actions: Actions = {
 		const taskName = data.get('taskName') as string;
 		const fieldName = data.get('fieldName') as string;
 		const fieldValue = data.get('fieldValue') as string;
+		const media = data.get('fileMedia') as File;
 
 		try {
 			await locals.taskClients.fieldClient.addField({
@@ -46,17 +50,66 @@ export const actions: Actions = {
 				fieldType: FieldType.STRING,
 				taskName
 			});
-
-			return { success: true };
 		} catch (error: any) {
 			console.error(error);
 			return fail(400, { error: error?.message || 'something went wront' });
+		}
+
+		if (!media) return { success: true };
+		const mediaPath = `/media/${slugify(taskName)}/${slugify(fieldName)}/${media.name}`;
+
+		// try {
+		// 	const createMediaRequest = MediaRequest.create({
+		// 		link: mediaPath,
+		// 		name: media.name,
+		// 		taskId: taskName,
+		// 		type: media.type
+		// 	});
+		//
+		// 	await locals.mediaClient.createMedia(createMediaRequest);
+		// } catch (error: any) {
+		// 	console.error(error);
+		// 	return fail(400, { error: error?.message || 'something went wront' });
+		// }
+
+		const storage = getStorage();
+		const storageRef = ref(storage, mediaPath);
+
+		try {
+			await uploadBytes(storageRef, await media.arrayBuffer());
+			return { success: true };
+		} catch (error: any) {
+			console.error(error);
+			return fail(500, { error: error?.message || 'something went wront' });
 		}
 	},
 	removeTask: async ({ request, locals }) => {
 		const data = await request.formData();
 		const taskName = data.get('taskName') as string;
 		const fieldName = data.get('fieldName') as string;
+
+		const mediaPath = `/media/${slugify(taskName)}/${slugify(fieldName)}`;
+		const listRef = ref(getStorage(), mediaPath);
+		const listResult = await listAll(listRef);
+
+		for (const item of listResult.items) {
+			const itemRef = ref(getStorage(), item.fullPath);
+			deleteObject(itemRef).then(() => {
+				// File deleted successfully
+			}).catch((error) => {
+				console.error(error);
+			});
+
+			// try {
+			// 	const deleteMediaRequest = MediaRequest.create({
+			// 		link: item.fullPath
+			// 	})
+			// 	await locals.mediaClient.deleteMedia(deleteMediaRequest);
+			// } catch (error: any) {
+			// 	console.error(error);
+			// 	return fail(500, { error: error?.message || 'something went wront' });
+			// }
+		}
 
 		try {
 			await locals.taskClients.fieldClient.removeField({
@@ -91,6 +144,50 @@ export const actions: Actions = {
 	deleteTask: async ({ request, locals }) => {
 		const data = await request.formData();
 		const name = data.get('name') as any;
+		const mediaPath = `/media/${slugify(name)}`;
+		const listRef = ref(getStorage(), mediaPath);
+		const listResult = await listAll(listRef);
+
+		for (const item of listResult.items) {
+			const itemRef = ref(getStorage(), item.fullPath);
+			deleteObject(itemRef).then(() => {
+				// File deleted successfully
+			}).catch((error) => {
+				console.error(error);
+			});
+
+			// try {
+			// 	const deleteMediaRequest = MediaRequest.create({
+			// 		link: item.fullPath
+			// 	})
+			// 	await locals.mediaClient.deleteMedia(deleteMediaRequest);
+			// } catch (error: any) {
+			// 	console.error(error);
+			// 	return fail(500, { error: error?.message || 'something went wront' });
+			// }
+		}
+		for (const folder of listResult.prefixes) {
+			const folderRef = ref(getStorage(), folder.fullPath);
+			const folderResult = await listAll(folderRef);
+			for (const item of folderResult.items) {
+				const itemRef = ref(getStorage(), item.fullPath);
+				deleteObject(itemRef).then(() => {
+					// File deleted successfully
+				}).catch((error) => {
+					console.error(error);
+				});
+
+				// try {
+				// 	const deleteMediaRequest = MediaRequest.create({
+				// 		link: item.fullPath
+				// 	})
+				// 	await locals.mediaClient.deleteMedia(deleteMediaRequest);
+				// } catch (error: any) {
+				// 	console.error(error);
+				// 	return fail(500, { error: error?.message || 'something went wront' });
+				// }
+			}
+		}
 
 		try {
 			const deleteTaskRequest = DeleteTaskRequest.create({

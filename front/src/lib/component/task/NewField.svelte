@@ -34,6 +34,11 @@
 			<span class="w-24 p-2">Content</span>
 			<input type="text" class="input input-bordered" name="fieldValue" required />
 		</label>
+		<label class="input-group input-group-sm my-2">
+			<span class="w-24 p-2">Content</span>
+			<input type="file" class="input input-bordered" name="fileMedia" required
+				   formenctype="multipart/form-data"/>
+		</label>
 	</div>
 	<button class="btn btn-xs btn-info">Create Field</button>
 </form>

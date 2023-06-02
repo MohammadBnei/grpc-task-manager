@@ -32,7 +32,7 @@ const authTransport = new GrpcTransport({
 	channelCredentials: credentials
 });
 const mediaTransport = new GrpcTransport({
-	host: env.AUTH_API_URL as string,
+	host: env.MEDIA_API_URL as string,
 	channelCredentials: credentials
 });
 
@@ -41,8 +41,6 @@ export const taskClients = {
 	fieldClient: new FieldServiceClient(taskTransport),
 	usageClient: new UsageServiceClient(taskTransport)
 };
-
 export const userClient = new UserServiceClient(userTransport);
 export const authClient = new AuthServiceClient(authTransport);
-
 export const mediaClient = new MediaServiceClient(mediaTransport);

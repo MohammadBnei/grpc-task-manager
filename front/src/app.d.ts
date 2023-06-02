@@ -13,7 +13,6 @@ import type {MediaServiceClient} from "./lib/stubs/media/v1alpha/media.client";
 // and what to do when importing types
 declare global {
     namespace App {
-        // interface Error {}
         interface Locals {
             taskClients: {
                 crudClient: TaskServiceClient;
@@ -24,9 +23,6 @@ declare global {
             authClient: AuthServiceClient;
             userClient: UserServiceClient;
         }
-
-        // interface PageData {}
-        // interface Platform {}
     }
 }
 

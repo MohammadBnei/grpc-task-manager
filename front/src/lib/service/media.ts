@@ -1,5 +1,6 @@
 import { showInfoToast } from './notification';
 import {mediaStore} from "../../stores/media";
+import {MediaRequest} from "../stubs/media/v1alpha/media";
 
 export const connectToMediaStream = () => {
 	const sse = new EventSource('/media');
