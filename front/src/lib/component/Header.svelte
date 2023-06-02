@@ -16,6 +16,10 @@
 		{
 			name: 'User',
 			path: '/user'
+		},
+		{
+			name: 'Medias',
+			path: '/media'
 		}
 	];
 

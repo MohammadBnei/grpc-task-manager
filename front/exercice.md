@@ -3,7 +3,7 @@
 ## User Update
 
 Create a user update page for changing the first name and last name
-1. Create the routes/user/+page.server.ts 
+1. Create the routes/user/+page.ts 
 2. Create an action to update the user
    1. You will have to 
       1. extract the data from the fromData

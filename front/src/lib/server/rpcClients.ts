@@ -8,6 +8,7 @@ import {
 import fs from 'fs';
 import { UserServiceClient } from '$src/lib/stubs/user/v1alpha/service.client';
 import { AuthServiceClient } from '$src/lib/stubs/auth/v1alpha/service.client';
+import { MediaServiceClient } from '$src/lib/stubs/media/v1alpha/media.client';
 import { env } from '$env/dynamic/private';
 
 const credentials = env.secure === 'true'
@@ -44,4 +45,4 @@ export const taskClients = {
 export const userClient = new UserServiceClient(userTransport);
 export const authClient = new AuthServiceClient(authTransport);
 
-export const mediaClient = new UsageServiceClient(mediaTransport);
+export const mediaClient = new MediaServiceClient(mediaTransport);
