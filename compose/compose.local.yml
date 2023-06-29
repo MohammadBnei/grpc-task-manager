@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   auth-api:
-    image: gplane/pnpm:node18
+    image: node:18
     working_dir: /app
     volumes:
       - ../auth-api:/app/
@@ -22,9 +22,8 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4002:4000
-    stdin_open: true
-    command: start:dev
+      - "4002:4000"
+    command: bash -c "npm i && npx prisma generate && npm run start:dev"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
@@ -32,7 +31,7 @@ services:
       retries: 5
 
   user-api:
-    image: gplane/pnpm:node18
+    image: node:18
     working_dir: /app
     volumes:
       - ../user-api:/app/
@@ -49,9 +48,9 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4001:4000
+      - "4001:4000"
     stdin_open: true
-    command: start:dev
+    command: bash -c "npm i && npx prisma generate && npm run start:dev"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
@@ -59,7 +58,7 @@ services:
       retries: 5
 
   task-api:
-    image: gplane/pnpm:node18
+    image: node:18
     working_dir: /app
     volumes:
       - ../task-api:/app/
@@ -76,9 +75,55 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4000:4000
-    stdin_open: true
-    command: start:dev
+      - "4000:4000"
+    command: bash -c "npm i && npm run start:dev"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  front:
+    image: node:18
+    working_dir: /app
+    environment:
+      - secure=true
+      - FRONT_CERT=/certs/front.pem
+      - FRONT_KEY=/certs/front-key.pem
+      - ROOT_CA=/certs/rootCA.pem
+      - PORT=3000
+      - USER_API_URL=user-api:4000
+      - AUTH_API_URL=auth-api:4000
+      - TASK_API_URL=task-api:4000
+      - JAEGER_URL=http://tracing:4318/v1/traces
+    ports:
+      - "3000:5173"
+    command: bash -c "npm i && npm run dev"
+    volumes:
+      - ../front:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+
+  media-api:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ../media-api:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    environment:
+      - MYSQL_URL=mysql://root:passwd@mariadb:3306/media
+      - insecure=false
+      - PORT=4000
+      - AUTH_API_URL=auth-api:4000
+      - MEDIA_CERT=/certs/media.pem
+      - MEDIA_KEY=/certs/media-key.pem
+      - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
+    ports:
+      - "4003:4000"
+    command: bash -c "npm i && npm run start:dev"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
