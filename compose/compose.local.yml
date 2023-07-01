@@ -1,14 +1,50 @@
 version: '3.8'
 
 services:
-  auth-api:
-    image: node:18
-    working_dir: /app
+  user-api:
+    image: mohammaddocker/tm-user-api
+    environment:
+      - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
+      - insecure=false
+      - USER_CERT=/certs/user.pem
+      - USER_KEY=/certs/user-key.pem
+      - ROOT_CA=/certs/rootCA.pem
+      - PORT=4000
+      - AUTH_API_URL=auth-api:4000
+      - JAEGER_URL=http://tracing:4318/v1/traces
+    # ports:
+    #   - 4000:4000
     volumes:
-      - ../auth-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  task-api:
+    image: mohammaddocker/tm-task-api
+    environment:
+      - MONGO_URL=mongodb://root:task@mongo
+      - insecure=false
+      - TASK_CERT=/certs/task.pem
+      - TASK_KEY=/certs/task-key.pem
+      - ROOT_CA=/certs/rootCA.pem
+      - PORT=4000
+      - AUTH_API_URL=auth-api:4000
+      - JAEGER_URL=http://tracing:4318/v1/traces
+    # ports:
+    #   - 4001:4000
+    volumes:
+      - ../local/certs:/certs
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  auth-api:
+    image: mohammaddocker/tm-auth-api
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
       - insecure=false
@@ -20,63 +56,11 @@ services:
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
-      - JAEGER_URL=http://tracing:14268/api/traces
-    ports:
-      - "4002:4000"
-    command: bash -c "npm i && npx prisma generate && npm run start:dev"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
-  user-api:
-    image: node:18
-    working_dir: /app
+      - JAEGER_URL=http://tracing:4318/v1/traces
+    # ports:
+    #   - 4002:4000
     volumes:
-      - ../user-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
-    environment:
-      - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
-      - insecure=false
-      - PORT=4000
-      - AUTH_API_URL=auth-api:4000
-      - USER_CERT=/certs/user.pem
-      - USER_KEY=/certs/user-key.pem
-      - ROOT_CA=/certs/rootCA.pem
-      - JAEGER_URL=http://tracing:14268/api/traces
-    ports:
-      - "4001:4000"
-    stdin_open: true
-    command: bash -c "npm i && npx prisma generate && npm run start:dev"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
-  task-api:
-    image: node:18
-    working_dir: /app
-    volumes:
-      - ../task-api:/app/
-      - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
-    environment:
-      - MONGO_URL=mongodb://root:task@mongo
-      - insecure=false
-      - PORT=4000
-      - TASK_CERT=/certs/task.pem
-      - TASK_KEY=/certs/task-key.pem
-      - AUTH_API_URL=auth-api:4000
-      - ROOT_CA=/certs/rootCA.pem
-      - JAEGER_URL=http://tracing:14268/api/traces
-    ports:
-      - "4000:4000"
-    command: bash -c "npm i && npm run start:dev"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
