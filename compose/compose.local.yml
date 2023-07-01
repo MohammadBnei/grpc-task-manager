@@ -44,7 +44,8 @@ services:
       retries: 5
 
   auth-api:
-    image: mohammaddocker/tm-auth-api
+    image: node:18
+    working_dir: /app
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
       - insecure=false
@@ -57,10 +58,14 @@ services:
       - USER_KEY=/certs/user-key.pem
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:4318/v1/traces
-    # ports:
-    #   - 4002:4000
+    ports:
+      - "4002:4000"
     volumes:
+      - ../auth-api:/app
       - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    command: bash -c "npm i && npm run start:dev"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s
