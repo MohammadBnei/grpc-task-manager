@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package auth.v1alpha;
+
+import "user/v1alpha/message.proto";
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+  string ip = 3;
+}
+
+message LoginResponse {
+  string refresh_token = 1;
+  string jwt = 2;
+  enum STATUS {
+    OK = 0;
+    WRONG_PASSWORD = 1;
+    NOT_FOUND = 2;
+    INTERNAL = 3;
+  }
+  STATUS status = 3;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+  string ip = 2;
+}
+
+message RefreshTokenResponse {
+  string refresh_token = 1;
+  string jwt = 2;
+}
+
+message ValidateRequest {
+  string jwt = 1;
+  // Add role here
+}
+
+message ValidateResponse {
+  bool ok = 1;
+  string userId = 2;
+  string userEmail = 3;
+  user.v1alpha.UserRole userRole = 4;
+  bool internal = 5;
+}

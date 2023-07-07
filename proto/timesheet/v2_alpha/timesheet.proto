@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package timesheet.v1alpha;
+
+message Timesheet {
+  int32 id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  string title = 4;
+  string description = 5;
+  string location = 6;
+}
+
+service TimesheetCRUDService {
+  rpc Get (GetRequest) returns (GetResponse);
+  rpc Add (AddRequest) returns (AddResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+}
+
+message GetRequest {
+  string title = 1;
+  string id = 2;
+}
+
+message GetResponse {
+  repeated Timesheet times = 1;
+}
+
+message AddRequest {
+  string title = 1;
+  string description = 2;
+  string start_date = 3;
+  string end_date = 4;
+  string location = 5;
+}
+
+message AddResponse {
+  Timesheet time = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+  Timesheet time = 2;
+}
+
+message UpdateResponse {
+  Timesheet time = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {
+  Timesheet time = 1;
+}

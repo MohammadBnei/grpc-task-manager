@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package media.v1alpha;
+
+import "google/protobuf/timestamp.proto";
+
+// Media message represents a media file associated with a Kanban card.
+message Media {
+  string name = 2;
+  string type = 3;
+  string link = 4;
+  string task_id = 5;
+}
+
+// MediaRequest represents a request to create or retrieve a media file.
+message MediaRequest {
+  string name = 2;
+  string type = 3;
+  string link = 4;
+  string task_id = 5;
+}
+
+// MediaResponse represents a response containing a media file.
+message MediaResponse {
+  string name = 2;
+  string type = 3;
+  string link = 4;
+  string task_id = 5;
+}
+
+message ListMediasRequest {
+  string task_id = 1;
+}
+
+message ListMediasResponse {
+  // The field name should match the noun "Task" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Media medias = 1;
+}
+
+message DeleteMediaRequest {
+  string name = 1;
+}
+
+message DeleteMediaResponse {
+  bool isDeleted = 1;
+}
+
+message GetMediaRequest {
+  string name = 1;
+}
+
+message GetMediaResponse {
+  Media media = 1;
+}
+
+// MediaService is a microservice that manages media files associated with Kanban cards.
+service MediaService {
+  // CreateMedia creates a new media file.
+  rpc CreateMedia(MediaRequest) returns (MediaResponse);
+
+  // GetMedia retrieves a media file by its ID.
+  rpc GetMedia(GetMediaRequest) returns (GetMediaResponse);
+
+  // ListMedia retrieves all media files.
+  rpc ListMediaForTask(ListMediasRequest) returns (ListMediasResponse);
+
+  // DeleteMedia deletes a media file by its ID.
+  rpc DeleteMedia(DeleteMediaRequest) returns (DeleteMediaResponse);
+}

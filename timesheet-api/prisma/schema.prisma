@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["tracing"]
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("MYSQL_URL")
+}
+
+model Timesheet {
+  id Int @id @default(autoincrement())
+  start_date String
+  end_date String
+  title String
+  description String
+  locatioon String
+}
