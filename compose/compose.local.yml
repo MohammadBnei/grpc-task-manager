@@ -85,6 +85,60 @@ services:
       timeout: 10s
       retries: 5
 
+  car-api:
+    image: gplane/pnpm:node18
+    working_dir: /app
+    volumes:
+      - ../api/car-api:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    environment:
+      - MONGO_URL=mongodb://root:car@mongo
+      - insecure=false
+      - PORT=4000
+      - CAR_CERT=/certs/car.pem
+      - CAR_KEY=/certs/car-key.pem
+      - AUTH_API_URL=auth-api:4000
+      - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
+    ports:
+      - 4000:4000
+    stdin_open: true
+    command: start:dev
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  race-api:
+    image: gplane/pnpm:node18
+    working_dir: /app
+    volumes:
+      - ../api/race-api:/app/
+      - ../local/certs:/certs
+      - /app/node_modules
+      - /app/.pnpm-store
+    environment:
+      - MONGO_URL=mongodb://root:race@mongo
+      - insecure=false
+      - PORT=4000
+      - RACE_CERT=/certs/race.pem
+      - RACE_KEY=/certs/race-key.pem
+      - AUTH_API_URL=auth-api:4000
+      - ROOT_CA=/certs/rootCA.pem
+      - JAEGER_URL=http://tracing:14268/api/traces
+    ports:
+      - 4000:4000
+    stdin_open: true
+    command: start:dev
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
 networks:
   default:
     external: true
