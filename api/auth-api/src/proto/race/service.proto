@@ -10,5 +10,7 @@ service RaceService {
   rpc CreateRace(CreateRaceRequest) returns (CreateRaceResponse) {}
   rpc UpdateRace(UpdateRaceRequest) returns (UpdateRaceResponse) {}
   rpc DeleteRace(DeleteRaceRequest) returns (DeleteRaceResponse) {}
+  rpc SubscribeRaceParticipation(SubscribeRaceParticipationRequest) returns (SubscribeRaceParticipationResponse) {}
+  rpc UnSubscribeRaceParticipation(UnSubscribeRaceParticipationRequest) returns (UnSubscribeRaceParticipationResponse) {}
 }
 

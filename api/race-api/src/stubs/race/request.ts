@@ -60,4 +60,23 @@ export interface DeleteRaceResponse {
   race?: Race | undefined;
 }
 
+export interface SubscribeRaceParticipationRequest {
+  id?: string | undefined;
+  userId?: string | undefined;
+  carId?: string | undefined;
+}
+
+export interface SubscribeRaceParticipationResponse {
+  race?: Race | undefined;
+}
+
+export interface UnSubscribeRaceParticipationRequest {
+  id?: string | undefined;
+  userId?: string | undefined;
+}
+
+export interface UnSubscribeRaceParticipationResponse {
+  race?: Race | undefined;
+}
+
 export const RACE_PACKAGE_NAME = "race";

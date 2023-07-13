@@ -56,3 +56,22 @@ message DeleteRaceRequest {
 message DeleteRaceResponse {
   Race race  = 1;
 }
+
+message SubscribeRaceParticipationRequest {
+  string id = 1;
+  string user_id = 2;
+  string car_id = 3;
+}
+
+message SubscribeRaceParticipationResponse {
+  Race race  = 1;
+}
+
+message UnSubscribeRaceParticipationRequest {
+  string id = 1;
+  string user_id = 2;
+}
+
+message UnSubscribeRaceParticipationResponse {
+  Race race  = 1;
+}

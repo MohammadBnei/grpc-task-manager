@@ -129,6 +129,54 @@ export interface DeleteRaceResponse {
      */
     race?: Race;
 }
+/**
+ * @generated from protobuf message race.SubscribeRaceParticipationRequest
+ */
+export interface SubscribeRaceParticipationRequest {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string user_id = 2;
+     */
+    userId: string;
+    /**
+     * @generated from protobuf field: string car_id = 3;
+     */
+    carId: string;
+}
+/**
+ * @generated from protobuf message race.SubscribeRaceParticipationResponse
+ */
+export interface SubscribeRaceParticipationResponse {
+    /**
+     * @generated from protobuf field: race.Race race = 1;
+     */
+    race?: Race;
+}
+/**
+ * @generated from protobuf message race.UnSubscribeRaceParticipationRequest
+ */
+export interface UnSubscribeRaceParticipationRequest {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: string user_id = 2;
+     */
+    userId: string;
+}
+/**
+ * @generated from protobuf message race.UnSubscribeRaceParticipationResponse
+ */
+export interface UnSubscribeRaceParticipationResponse {
+    /**
+     * @generated from protobuf field: race.Race race = 1;
+     */
+    race?: Race;
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class ListRacesRequest$Type extends MessageType<ListRacesRequest> {
     constructor() {
@@ -620,3 +668,212 @@ class DeleteRaceResponse$Type extends MessageType<DeleteRaceResponse> {
  * @generated MessageType for protobuf message race.DeleteRaceResponse
  */
 export const DeleteRaceResponse = new DeleteRaceResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SubscribeRaceParticipationRequest$Type extends MessageType<SubscribeRaceParticipationRequest> {
+    constructor() {
+        super("race.SubscribeRaceParticipationRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "car_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SubscribeRaceParticipationRequest>): SubscribeRaceParticipationRequest {
+        const message = { id: "", userId: "", carId: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<SubscribeRaceParticipationRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SubscribeRaceParticipationRequest): SubscribeRaceParticipationRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string user_id */ 2:
+                    message.userId = reader.string();
+                    break;
+                case /* string car_id */ 3:
+                    message.carId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SubscribeRaceParticipationRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string user_id = 2; */
+        if (message.userId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.userId);
+        /* string car_id = 3; */
+        if (message.carId !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.carId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message race.SubscribeRaceParticipationRequest
+ */
+export const SubscribeRaceParticipationRequest = new SubscribeRaceParticipationRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SubscribeRaceParticipationResponse$Type extends MessageType<SubscribeRaceParticipationResponse> {
+    constructor() {
+        super("race.SubscribeRaceParticipationResponse", [
+            { no: 1, name: "race", kind: "message", T: () => Race }
+        ]);
+    }
+    create(value?: PartialMessage<SubscribeRaceParticipationResponse>): SubscribeRaceParticipationResponse {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<SubscribeRaceParticipationResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SubscribeRaceParticipationResponse): SubscribeRaceParticipationResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* race.Race race */ 1:
+                    message.race = Race.internalBinaryRead(reader, reader.uint32(), options, message.race);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SubscribeRaceParticipationResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* race.Race race = 1; */
+        if (message.race)
+            Race.internalBinaryWrite(message.race, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message race.SubscribeRaceParticipationResponse
+ */
+export const SubscribeRaceParticipationResponse = new SubscribeRaceParticipationResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UnSubscribeRaceParticipationRequest$Type extends MessageType<UnSubscribeRaceParticipationRequest> {
+    constructor() {
+        super("race.UnSubscribeRaceParticipationRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "user_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UnSubscribeRaceParticipationRequest>): UnSubscribeRaceParticipationRequest {
+        const message = { id: "", userId: "" };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<UnSubscribeRaceParticipationRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UnSubscribeRaceParticipationRequest): UnSubscribeRaceParticipationRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string user_id */ 2:
+                    message.userId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UnSubscribeRaceParticipationRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string user_id = 2; */
+        if (message.userId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.userId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message race.UnSubscribeRaceParticipationRequest
+ */
+export const UnSubscribeRaceParticipationRequest = new UnSubscribeRaceParticipationRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UnSubscribeRaceParticipationResponse$Type extends MessageType<UnSubscribeRaceParticipationResponse> {
+    constructor() {
+        super("race.UnSubscribeRaceParticipationResponse", [
+            { no: 1, name: "race", kind: "message", T: () => Race }
+        ]);
+    }
+    create(value?: PartialMessage<UnSubscribeRaceParticipationResponse>): UnSubscribeRaceParticipationResponse {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<UnSubscribeRaceParticipationResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UnSubscribeRaceParticipationResponse): UnSubscribeRaceParticipationResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* race.Race race */ 1:
+                    message.race = Race.internalBinaryRead(reader, reader.uint32(), options, message.race);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UnSubscribeRaceParticipationResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* race.Race race = 1; */
+        if (message.race)
+            Race.internalBinaryWrite(message.race, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message race.UnSubscribeRaceParticipationResponse
+ */
+export const UnSubscribeRaceParticipationResponse = new UnSubscribeRaceParticipationResponse$Type();

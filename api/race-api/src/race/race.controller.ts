@@ -6,7 +6,6 @@ import {
   DeleteRaceRequest,
   CreateRaceRequest,
   GetRaceRequest,
-  ListRacesRequest,
   ListRacesResponse,
   GetRaceResponse,
   CreateRaceResponse,

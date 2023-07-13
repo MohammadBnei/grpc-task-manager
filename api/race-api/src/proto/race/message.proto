@@ -5,7 +5,8 @@ package race;
 message Race {
   string race_id = 1;
   string name = 2;
-  repeated Participant participants = 3;
+  string date = 3;
+  repeated Participant participants = 4;
 }
 
 message Participant {

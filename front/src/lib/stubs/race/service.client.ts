@@ -4,6 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { RaceService } from "./service";
+import type { UnSubscribeRaceParticipationResponse } from "./request";
+import type { UnSubscribeRaceParticipationRequest } from "./request";
+import type { SubscribeRaceParticipationResponse } from "./request";
+import type { SubscribeRaceParticipationRequest } from "./request";
 import type { DeleteRaceResponse } from "./request";
 import type { DeleteRaceRequest } from "./request";
 import type { UpdateRaceResponse } from "./request";
@@ -41,6 +45,14 @@ export interface IRaceServiceClient {
      * @generated from protobuf rpc: DeleteRace(race.DeleteRaceRequest) returns (race.DeleteRaceResponse);
      */
     deleteRace(input: DeleteRaceRequest, options?: RpcOptions): UnaryCall<DeleteRaceRequest, DeleteRaceResponse>;
+    /**
+     * @generated from protobuf rpc: SubscribeRaceParticipation(race.SubscribeRaceParticipationRequest) returns (race.SubscribeRaceParticipationResponse);
+     */
+    subscribeRaceParticipation(input: SubscribeRaceParticipationRequest, options?: RpcOptions): UnaryCall<SubscribeRaceParticipationRequest, SubscribeRaceParticipationResponse>;
+    /**
+     * @generated from protobuf rpc: UnSubscribeRaceParticipation(race.UnSubscribeRaceParticipationRequest) returns (race.UnSubscribeRaceParticipationResponse);
+     */
+    unSubscribeRaceParticipation(input: UnSubscribeRaceParticipationRequest, options?: RpcOptions): UnaryCall<UnSubscribeRaceParticipationRequest, UnSubscribeRaceParticipationResponse>;
 }
 /**
  * @generated from protobuf service race.RaceService
@@ -85,5 +97,19 @@ export class RaceServiceClient implements IRaceServiceClient, ServiceInfo {
     deleteRace(input: DeleteRaceRequest, options?: RpcOptions): UnaryCall<DeleteRaceRequest, DeleteRaceResponse> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteRaceRequest, DeleteRaceResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: SubscribeRaceParticipation(race.SubscribeRaceParticipationRequest) returns (race.SubscribeRaceParticipationResponse);
+     */
+    subscribeRaceParticipation(input: SubscribeRaceParticipationRequest, options?: RpcOptions): UnaryCall<SubscribeRaceParticipationRequest, SubscribeRaceParticipationResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<SubscribeRaceParticipationRequest, SubscribeRaceParticipationResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: UnSubscribeRaceParticipation(race.UnSubscribeRaceParticipationRequest) returns (race.UnSubscribeRaceParticipationResponse);
+     */
+    unSubscribeRaceParticipation(input: UnSubscribeRaceParticipationRequest, options?: RpcOptions): UnaryCall<UnSubscribeRaceParticipationRequest, UnSubscribeRaceParticipationResponse> {
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UnSubscribeRaceParticipationRequest, UnSubscribeRaceParticipationResponse>("unary", this._transport, method, opt, input);
     }
 }

@@ -2,9 +2,7 @@ import {
   Length,
   IsDefined,
   MinDate,
-  IsObject,
   IsNotEmpty,
-  IsDate,
   IsDateString,
 } from 'class-validator';
 
@@ -13,16 +11,16 @@ export class CreateRaceDto {
   name: string;
 
   @IsDateString()
-  dueDate: Date;
+  date: Date;
 }
 
 export class CreateFieldsDto {
   @IsDefined()
   fields: any;
 }
-export class AddFieldDto {
+export class RegisterParticipationDto {
   @IsNotEmpty()
-  raceName: string;
+  raceId: string;
 
   @IsNotEmpty()
   fieldName: string;
@@ -32,9 +30,9 @@ export class AddFieldDto {
 }
 
 export class UpdateRaceDto {
-  @IsObject()
-  fields!: any;
+  @Length(3, 50)
+  name: string;
 
-  @MinDate(() => new Date())
-  dueDate: Date;
+  @IsDateString()
+  date: Date;
 }

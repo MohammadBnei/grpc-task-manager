@@ -11,6 +11,10 @@ import {
   GetRaceResponse,
   ListRacesRequest,
   ListRacesResponse,
+  SubscribeRaceParticipationRequest,
+  SubscribeRaceParticipationResponse,
+  UnSubscribeRaceParticipationRequest,
+  UnSubscribeRaceParticipationResponse,
   UpdateRaceRequest,
   UpdateRaceResponse,
 } from "./request";
@@ -29,6 +33,16 @@ export interface RaceServiceClient {
   updateRace(request: UpdateRaceRequest, metadata?: Metadata): Observable<UpdateRaceResponse>;
 
   deleteRace(request: DeleteRaceRequest, metadata?: Metadata): Observable<DeleteRaceResponse>;
+
+  subscribeRaceParticipation(
+    request: SubscribeRaceParticipationRequest,
+    metadata?: Metadata,
+  ): Observable<SubscribeRaceParticipationResponse>;
+
+  unSubscribeRaceParticipation(
+    request: UnSubscribeRaceParticipationRequest,
+    metadata?: Metadata,
+  ): Observable<UnSubscribeRaceParticipationResponse>;
 }
 
 export interface RaceServiceController {
@@ -56,11 +70,35 @@ export interface RaceServiceController {
     request: DeleteRaceRequest,
     metadata?: Metadata,
   ): Promise<DeleteRaceResponse> | Observable<DeleteRaceResponse> | DeleteRaceResponse;
+
+  subscribeRaceParticipation(
+    request: SubscribeRaceParticipationRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<SubscribeRaceParticipationResponse>
+    | Observable<SubscribeRaceParticipationResponse>
+    | SubscribeRaceParticipationResponse;
+
+  unSubscribeRaceParticipation(
+    request: UnSubscribeRaceParticipationRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<UnSubscribeRaceParticipationResponse>
+    | Observable<UnSubscribeRaceParticipationResponse>
+    | UnSubscribeRaceParticipationResponse;
 }
 
 export function RaceServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["listRaces", "getRace", "createRace", "updateRace", "deleteRace"];
+    const grpcMethods: string[] = [
+      "listRaces",
+      "getRace",
+      "createRace",
+      "updateRace",
+      "deleteRace",
+      "subscribeRaceParticipation",
+      "unSubscribeRaceParticipation",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("RaceService", method)(constructor.prototype[method], method, descriptor);

@@ -24,7 +24,11 @@ export interface Race {
      */
     name: string;
     /**
-     * @generated from protobuf field: repeated race.Participant participants = 3;
+     * @generated from protobuf field: string date = 3;
+     */
+    date: string;
+    /**
+     * @generated from protobuf field: repeated race.Participant participants = 4;
      */
     participants: Participant[];
 }
@@ -47,11 +51,12 @@ class Race$Type extends MessageType<Race> {
         super("race.Race", [
             { no: 1, name: "race_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "participants", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Participant }
+            { no: 3, name: "date", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "participants", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Participant }
         ]);
     }
     create(value?: PartialMessage<Race>): Race {
-        const message = { raceId: "", name: "", participants: [] };
+        const message = { raceId: "", name: "", date: "", participants: [] };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Race>(this, message, value);
@@ -68,7 +73,10 @@ class Race$Type extends MessageType<Race> {
                 case /* string name */ 2:
                     message.name = reader.string();
                     break;
-                case /* repeated race.Participant participants */ 3:
+                case /* string date */ 3:
+                    message.date = reader.string();
+                    break;
+                case /* repeated race.Participant participants */ 4:
                     message.participants.push(Participant.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
@@ -89,9 +97,12 @@ class Race$Type extends MessageType<Race> {
         /* string name = 2; */
         if (message.name !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.name);
-        /* repeated race.Participant participants = 3; */
+        /* string date = 3; */
+        if (message.date !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.date);
+        /* repeated race.Participant participants = 4; */
         for (let i = 0; i < message.participants.length; i++)
-            Participant.internalBinaryWrite(message.participants[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+            Participant.internalBinaryWrite(message.participants[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
