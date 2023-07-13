@@ -33,11 +33,6 @@ services:
       file: ./compose/compose.published.yml
       service: task-api
 
-  front:
-    extends:
-      file: ./compose/compose.published.yml
-      service: front
-
 networks:
   default:
     external: true

@@ -5,7 +5,7 @@ services:
     image: gplane/pnpm:node18
     working_dir: /app
     volumes:
-      - ../auth-api:/app/
+      - ../api/auth-api:/app/
       - ../local/certs:/certs
       - /app/node_modules
       - /app/.pnpm-store
@@ -35,7 +35,7 @@ services:
     image: gplane/pnpm:node18
     working_dir: /app
     volumes:
-      - ../user-api:/app/
+      - ../api/user-api:/app/
       - ../local/certs:/certs
       - /app/node_modules
       - /app/.pnpm-store
@@ -62,7 +62,7 @@ services:
     image: gplane/pnpm:node18
     working_dir: /app
     volumes:
-      - ../task-api:/app/
+      - ../api/task-api:/app/
       - ../local/certs:/certs
       - /app/node_modules
       - /app/.pnpm-store
