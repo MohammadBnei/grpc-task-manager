@@ -1,10 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RaceModule } from './race/race.module';
-import { UserusageModule } from './userusage/userusage.module';
-import { ProfanityModule } from './profanity/profanity.module';
-import { StreamsModule } from './streams/streams.module';
 import Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption from './config/grpc.option';
@@ -52,12 +48,8 @@ const envSchema = Joi.object({
       inject: [ConfigService],
       useFactory: (cs: ConfigService) => grpcOption(cs),
     }),
-    RaceModule,
     AuthModule,
     HealthModule,
-    UserusageModule,
-    ProfanityModule,
-    StreamsModule,
   ],
 })
 export class AppModule {}
