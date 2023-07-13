@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Inject, UseGuards } from '@nestjs/common';
+import { Controller, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CarService } from './car.service';
@@ -6,39 +6,32 @@ import {
   DeleteCarRequest,
   CreateCarRequest,
   GetCarRequest,
-  ListCarsRequest,
   ListCarsResponse,
-  StreamCarsRequest,
-  StreamCarsResponse,
   GetCarResponse,
   CreateCarResponse,
   DeleteCarResponse,
-} from '../stubs/car/v1beta/request';
-import { Observable } from 'rxjs';
-import { ProfanityService } from 'src/profanity/profanity.service';
-import { StreamsService } from 'src/streams/streams.service';
+  UpdateCarRequest,
+  UpdateCarResponse,
+} from '../stubs/car/request';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { CreateCarDto } from './entity/car.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+import { CreateCarDto, UpdateCarDto } from './entity/car.dto';
+import { GRPCUser } from 'src/auth/user.decorator';
 
 @Controller('car')
 export class CarController {
   constructor(
     private carService: CarService,
-    private profanityService: ProfanityService,
-    private streams: StreamsService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
   @GrpcMethod('CarService')
   async GetCar(request: GetCarRequest): Promise<GetCarResponse> {
-    const name = request.name;
-
     try {
-      const car = await this.carService.find('', name);
+      const car = await this.carService.find(request.id);
 
       const pbCar = this.carService.toCarPb(car);
 
@@ -50,7 +43,7 @@ export class CarController {
   }
 
   @GrpcMethod('CarService')
-  async ListCars(request: ListCarsRequest): Promise<ListCarsResponse> {
+  async ListCars(): Promise<ListCarsResponse> {
     try {
       const cars = await this.carService.findAll();
 
@@ -63,30 +56,22 @@ export class CarController {
 
   @UseGuards(GrpcAuthGuard)
   @GrpcMethod('CarService')
-  async CreateCar(request: CreateCarRequest): Promise<CreateCarResponse> {
+  async CreateCar(
+    request: CreateCarRequest,
+    @GRPCUser() user,
+  ): Promise<CreateCarResponse> {
     try {
       await this.validateDto(request.car, CreateCarDto);
-      const nCar = {
-        name: request.car.name,
-        dueDate: new Date(request.car.dueDate),
-      };
-      if (!nCar.name)
-        throw new RpcException({
-          message: 'No name provided',
-          code: HttpStatus.BAD_REQUEST,
-          status: status.INVALID_ARGUMENT,
-        });
 
-      this.profanityService.checkCar(request.car);
+      const nCar = {
+        driverId: user.id,
+        brand: request.car.brand,
+        model: request.car.model,
+      };
 
       const car = await this.carService.create(nCar);
       const pbCar = this.carService.toCarPb(car);
 
-      this.streams.carStream$.next({
-        eventType: 'create',
-        car: pbCar,
-      });
-
       return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
@@ -94,50 +79,22 @@ export class CarController {
     }
   }
 
-  // @GrpcMethod('CarService')
-  // async UpdateCar(request: UpdateCarRequest): Promise<CarResponse> {
-  //   try {
-  //     const nCar = {
-  //       fields: request.car.fields,
-  //       dueDate: new Date(request.car.dueDate),
-  //     };
-
-  //     this.profanityService.checkCar(request.car);
-
-  //     const car = await this.carService.updateCar(
-  //       { name: request.car.name },
-  //       nCar,
-  //     );
-  //     const pbCar = Car.create({
-  //       name: car.name,
-  //       fields: car.fieldsArray,
-  //       dueDate: car.dueDate.toISOString(),
-  //     });
-
-  //     this.streams.carStream$.next({
-  //       eventType: 'update',
-  //       car: pbCar,
-  //     });
-
-  //     return { car: pbCar };
-  //   } catch (error) {
-  // this.logger.error(error);
-
-  //     throw new RpcException(error);
-  //   }
-  // }
-
   @GrpcMethod('CarService')
-  async DeleteCar(request: DeleteCarRequest): Promise<DeleteCarResponse> {
+  async UpdateCar(
+    request: UpdateCarRequest,
+    @GRPCUser() user,
+  ): Promise<UpdateCarResponse> {
     try {
-      const car = await this.carService.deleteCar(request.name);
+      await this.validateDto(request.car, UpdateCarDto);
+
+      const nCar = {
+        brand: request.car.brand,
+        model: request.car.model,
+      };
+
+      const car = await this.carService.updateCar(request.carId, user.id, nCar);
       const pbCar = this.carService.toCarPb(car);
 
-      this.streams.carStream$.next({
-        eventType: 'delete',
-        car: pbCar,
-      });
-
       return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
@@ -147,9 +104,15 @@ export class CarController {
   }
 
   @GrpcMethod('CarService')
-  StreamCars(request: StreamCarsRequest): Observable<StreamCarsResponse> {
+  async DeleteCar(
+    request: DeleteCarRequest,
+    @GRPCUser() user,
+  ): Promise<DeleteCarResponse> {
     try {
-      return this.streams.carStream$.asObservable();
+      const car = await this.carService.deleteCar(request.id, user.id);
+      const pbCar = this.carService.toCarPb(car);
+
+      return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
 

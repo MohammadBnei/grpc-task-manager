@@ -5,9 +5,6 @@ package car;
 import "car/message.proto";
 
 message ListCarsRequest {
-  // The parent resource name, for example, "shelves/shelf1"
-  string parent = 1;
-
   // The maximum number of items to return.
   int32 page_size = 2;
 
@@ -26,7 +23,7 @@ message ListCarsResponse {
 
 message GetCarRequest {
   // The field will contain name of the resource requested.
-  string name = 1;
+  int32 id = 1;
 }
 
 message GetCarResponse {
@@ -34,15 +31,8 @@ message GetCarResponse {
 }
 
 message CreateCarRequest {
-  // The parent resource name where the Car is to be created.
-  string parent = 1;
-
-  // The Car id to use for this Car.
-  string car_id = 2;
-
   // The Car resource to create.
-  // The field name should match the Noun in the method name.
-  Car car = 3;
+  Car car = 1;
 }
 
 message CreateCarResponse {
@@ -50,8 +40,9 @@ message CreateCarResponse {
 }
 
 message UpdateCarRequest {
+  int32 carId = 1;
   // The Car resource which replaces the resource on the server.
-  Car car = 1;
+  Car car = 2;
 }
 
 message UpdateCarResponse {
@@ -59,8 +50,7 @@ message UpdateCarResponse {
 }
 
 message DeleteCarRequest {
-  // The resource name of the Car to be deleted.
-  string name = 1;
+  int32 id = 1;
 }
 
 message DeleteCarResponse {

@@ -4,10 +4,6 @@ import { Car } from "./message";
 export const protobufPackage = "car";
 
 export interface ListCarsRequest {
-  /** The parent resource name, for example, "shelves/shelf1" */
-  parent?:
-    | string
-    | undefined;
   /** The maximum number of items to return. */
   pageSize?:
     | number
@@ -30,7 +26,7 @@ export interface ListCarsResponse {
 
 export interface GetCarRequest {
   /** The field will contain name of the resource requested. */
-  name?: string | undefined;
+  id?: number | undefined;
 }
 
 export interface GetCarResponse {
@@ -38,18 +34,7 @@ export interface GetCarResponse {
 }
 
 export interface CreateCarRequest {
-  /** The parent resource name where the Car is to be created. */
-  parent?:
-    | string
-    | undefined;
-  /** The Car id to use for this Car. */
-  carId?:
-    | string
-    | undefined;
-  /**
-   * The Car resource to create.
-   * The field name should match the Noun in the method name.
-   */
+  /** The Car resource to create. */
   car?: Car | undefined;
 }
 
@@ -58,6 +43,9 @@ export interface CreateCarResponse {
 }
 
 export interface UpdateCarRequest {
+  carId?:
+    | number
+    | undefined;
   /** The Car resource which replaces the resource on the server. */
   car?: Car | undefined;
 }
@@ -67,8 +55,7 @@ export interface UpdateCarResponse {
 }
 
 export interface DeleteCarRequest {
-  /** The resource name of the Car to be deleted. */
-  name?: string | undefined;
+  id?: number | undefined;
 }
 
 export interface DeleteCarResponse {

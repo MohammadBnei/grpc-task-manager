@@ -7,8 +7,6 @@ services:
     volumes:
       - ../api/auth-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/auth
       - insecure=false
@@ -37,8 +35,6 @@ services:
     volumes:
       - ../api/user-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
     environment:
       - MYSQL_URL=mysql://root:passwd@mariadb:3306/user
       - insecure=false
@@ -64,8 +60,6 @@ services:
     volumes:
       - ../api/task-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
     environment:
       - MONGO_URL=mongodb://root:task@mongo
       - insecure=false
@@ -91,9 +85,7 @@ services:
     volumes:
       - ../api/car-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
-    environment:
+    environment:      
       - MONGO_URL=mongodb://root:car@mongo-car
       - insecure=false
       - PORT=4000
@@ -118,10 +110,8 @@ services:
     volumes:
       - ../api/race-api:/app/
       - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
     environment:
-      - MONGO_URL=mongodb://root:race@mongo-race
+      - MONGO_URL=mongodb://root:race@mongo-race      
       - insecure=false
       - PORT=4000
       - RACE_CERT=/certs/race.pem

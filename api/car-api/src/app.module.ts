@@ -1,10 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CarModule } from './car/car.module';
-import { UserusageModule } from './userusage/userusage.module';
-import { ProfanityModule } from './profanity/profanity.module';
-import { StreamsModule } from './streams/streams.module';
 import Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import grpcOption from './config/grpc.option';
@@ -18,11 +14,11 @@ const envSchema = Joi.object({
   PORT: Joi.string().default(4002),
   HEALTH_PORT: Joi.number().default(3000),
   insecure: Joi.boolean().required(),
-  TASK_CERT: Joi.string().when('insecure', {
+  CAR_CERT: Joi.string().when('insecure', {
     is: false,
     then: Joi.required(),
   }),
-  TASK_KEY: Joi.string().when('insecure', {
+  CAR_KEY: Joi.string().when('insecure', {
     is: false,
     then: Joi.required(),
   }),
@@ -52,12 +48,8 @@ const envSchema = Joi.object({
       inject: [ConfigService],
       useFactory: (cs: ConfigService) => grpcOption(cs),
     }),
-    CarModule,
     AuthModule,
     HealthModule,
-    UserusageModule,
-    ProfanityModule,
-    StreamsModule,
   ],
 })
 export class AppModule {}
