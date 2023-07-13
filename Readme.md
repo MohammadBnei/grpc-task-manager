@@ -59,6 +59,8 @@ https://github.com/FiloSottile/mkcert
 mkcert user-api localhost
 mkcert auth-api localhost
 mkcert task-api localhost
+mkcert car-api localhost
+mkcert race-api localhost
 mkcert front localhost
 cp $(mkcert -CAROOT)/rootCA.pem .
 ```

@@ -9,26 +9,26 @@ import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_V1ALPHA_PACKAGE_NAME } from 'src/stubs/auth/v1alpha/service';
-import { TASK_V1BETA_PACKAGE_NAME } from 'src/stubs/car/v1beta/service';
+import { CAR_PACKAGE_NAME } from 'src/stubs/car/service';
 
 export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({
     transport: Transport.GRPC,
     options: {
-      package: TASK_V1BETA_PACKAGE_NAME,
+      package: CAR_PACKAGE_NAME,
       url: `0.0.0.0:${cs.get('PORT')}`,
       credentials: !cs.get<boolean>('insecure')
         ? ServerCredentials.createSsl(null, [
             {
-              private_key: readFileSync(cs.get('TASK_KEY')),
-              cert_chain: readFileSync(cs.get('TASK_CERT')),
+              private_key: readFileSync(cs.get('CAR_KEY')),
+              cert_chain: readFileSync(cs.get('CAR_CERT')),
             },
           ])
         : ServerCredentials.createInsecure(),
       loader: {
         includeDirs: [join(__dirname, '../proto')],
       },
-      protoPath: [join(__dirname, '../proto/car/v1beta/service.proto')],
+      protoPath: [join(__dirname, '../proto/car/service.proto')],
     },
   } as GrpcOptions);
 
@@ -54,8 +54,8 @@ export const authGrpcOptions = (cs: ConfigService): ClientProviderOptions => {
       credentials: !cs.get<boolean>('insecure')
         ? ChannelCredentials.createSsl(
             readFileSync(cs.get('ROOT_CA')),
-            readFileSync(cs.get('TASK_KEY')),
-            readFileSync(cs.get('TASK_CERT')),
+            readFileSync(cs.get('CAR_KEY')),
+            readFileSync(cs.get('CAR_CERT')),
           )
         : ChannelCredentials.createInsecure(),
     },
