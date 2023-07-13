@@ -103,7 +103,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4002:4000
+      - 3999:4000
     stdin_open: true
     command: start:dev
     healthcheck:
@@ -130,7 +130,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4003:4000
+      - 3998:4000
     stdin_open: true
     command: start:dev
     healthcheck:
