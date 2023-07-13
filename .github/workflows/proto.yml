@@ -32,9 +32,9 @@ jobs:
 
       - name: Update server stubs and proto
         run: |
-          buf export buf.build/bneiconseil/taskmanagerapi -o ./task-api/src/proto
-          buf export buf.build/bneiconseil/taskmanagerapi -o ./user-api/src/proto
-          buf export buf.build/bneiconseil/taskmanagerapi -o ./auth-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/task-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/user-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/auth-api/src/proto
 
       - name: Commit stubs
         run: |

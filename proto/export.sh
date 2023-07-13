@@ -1,6 +1,6 @@
 # !bin/sh
 
 buf generate
-buf export . --output ../task-api/src/proto
-buf export . --output ../user-api/src/proto
-buf export . --output ../auth-api/src/proto
+buf export . --output ../api/task-api/src/proto
+buf export . --output ../api/user-api/src/proto
+buf export . --output ../api/auth-api/src/proto

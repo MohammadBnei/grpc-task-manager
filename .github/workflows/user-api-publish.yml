@@ -9,13 +9,13 @@ on:
       - v*
 
     paths:
-      - "user-api/**"
+      - "api/user-api/**"
       - ".github/workflows/user-api-publish.yml"
 
   # Run tests for any PRs.
   pull_request:
     paths:
-      - "user-api/**"
+      - "api/user-api/**"
 
 env:
   IMAGE_NAME: tm-user-api

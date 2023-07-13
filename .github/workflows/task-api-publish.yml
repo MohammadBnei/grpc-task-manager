@@ -9,13 +9,13 @@ on:
       - v*
 
     paths:
-      - "task-api/**"
+      - "api/task-api/**"
       - ".github/workflows/task-api-publish.yml"
 
   # Run tests for any PRs.
   pull_request:
     paths:
-      - "task-api/**"
+      - "api/task-api/**"
 
 env:
   IMAGE_NAME: tm-task-api

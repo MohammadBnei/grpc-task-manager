@@ -5,19 +5,19 @@ plugins:
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../front/src/lib/stubs
   - plugin: buf.build/community/stephenh-ts-proto
-    out: ../task-api/src/stubs
+    out: ../api/task-api/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
       - useOptionals=all
   - plugin: buf.build/community/stephenh-ts-proto
-    out: ../user-api/src/stubs
+    out: ../api/user-api/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
       - useOptionals=all
   - plugin: buf.build/community/stephenh-ts-proto
-    out: ../auth-api/src/stubs
+    out: ../api/auth-api/src/stubs
     opt:
       - addGrpcMetadata=true
       - nestJs=true
