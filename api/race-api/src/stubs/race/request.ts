@@ -25,8 +25,8 @@ export interface ListRacesResponse {
 }
 
 export interface GetRaceRequest {
-  /** The field will contain name of the resource requested. */
   id?: string | undefined;
+  name?: string | undefined;
 }
 
 export interface GetRaceResponse {
@@ -35,6 +35,7 @@ export interface GetRaceResponse {
 
 export interface CreateRaceRequest {
   name?: string | undefined;
+  date?: string | undefined;
 }
 
 export interface CreateRaceResponse {
@@ -45,6 +46,7 @@ export interface UpdateRaceRequest {
   /** The Race resource which replaces the resource on the server. */
   id?: string | undefined;
   name?: string | undefined;
+  date?: string | undefined;
 }
 
 export interface UpdateRaceResponse {

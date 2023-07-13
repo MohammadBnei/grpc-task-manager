@@ -94,9 +94,9 @@ export interface CreateCarResponse {
  */
 export interface UpdateCarRequest {
     /**
-     * @generated from protobuf field: string carId = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    carId: string;
+    id: string;
     /**
      * @generated from protobuf field: string brand = 3;
      */
@@ -440,13 +440,13 @@ export const CreateCarResponse = new CreateCarResponse$Type();
 class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
     constructor() {
         super("car.UpdateCarRequest", [
-            { no: 1, name: "carId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "brand", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "model", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateCarRequest>): UpdateCarRequest {
-        const message = { carId: "", brand: "", model: "" };
+        const message = { id: "", brand: "", model: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UpdateCarRequest>(this, message, value);
@@ -457,8 +457,8 @@ class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string carId */ 1:
-                    message.carId = reader.string();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 case /* string brand */ 3:
                     message.brand = reader.string();
@@ -478,9 +478,9 @@ class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
         return message;
     }
     internalBinaryWrite(message: UpdateCarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string carId = 1; */
-        if (message.carId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.carId);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         /* string brand = 3; */
         if (message.brand !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.brand);

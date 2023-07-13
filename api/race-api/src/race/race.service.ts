@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FieldsArray, Race, RaceDocument } from './entity/race.schema';
+import { IRaceParticipation, Race, RaceDocument } from './entity/race.schema';
 import { CreateRaceDto, UpdateRaceDto } from './entity/race.dto';
 import { Race as RacePb } from '../stubs/race/message';
 @Injectable()
@@ -10,11 +10,9 @@ export class RaceService {
 
   toRacePb(race: Partial<RaceDocument>): RacePb {
     return {
-      name: race.name,
-      fields: race.fieldsArray,
-      dueDate: race.dueDate.toISOString(),
-      done: race.done,
       id: race._id.toString(),
+      name: race.name,
+      date: race.date.toISOString(),
     };
   }
 
@@ -43,20 +41,35 @@ export class RaceService {
     return race;
   }
 
-  async addField(raceName: string, ...fields: FieldsArray) {
-    const race = await this.find('', raceName);
+  async subscribeRaceParticipation(
+    id: string,
+    userId: string,
+    participation: IRaceParticipation,
+  ) {
+    const race = await this.find(id, '');
 
-    race.fieldsArray = fields;
+    // No Participate Twice
+    if (
+      race.participations.some(
+        (participation) => participation.driver_id === userId,
+      )
+    ) {
+      throw Error("You can't participate twice");
+    }
+
+    race.participations = [...race.participations, participation];
 
     await race.save();
 
     return race;
   }
 
-  async deleteField(raceName: string, fieldName: string) {
-    const race = await this.find('', raceName);
+  async unSubscribeRaceParticipation(id: string, userId: string) {
+    const race = await this.find(id, '');
 
-    race.fields.delete(fieldName);
+    race.participations = race.participations.filter(
+      (participation) => participation.driver_id === userId,
+    );
 
     await race.save();
 
@@ -64,7 +77,7 @@ export class RaceService {
   }
 
   async updateRace(
-    { id, name }: { name?: string; id?: string },
+    { id, name }: { id?: string; name?: string },
     uRace: UpdateRaceDto,
   ): Promise<Race> {
     let race: RaceDocument;
@@ -86,11 +99,11 @@ export class RaceService {
 
   async deleteRace(id: number | string) {
     const race = await this.raceModel.findOneAndDelete({
-      name: { $regex: `^${id}$`, $options: 'i' },
+      id,
     });
 
     if (!race) {
-      throw new Error(`race with name ${id} not found`);
+      throw new Error(`race with id ${id} not found`);
     }
 
     return race;

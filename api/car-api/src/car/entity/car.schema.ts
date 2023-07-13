@@ -6,7 +6,7 @@ export type CarDocument = HydratedDocument<Car>;
 @Schema()
 export class Car {
   @Prop()
-  driver_id: number;
+  driver_id: string;
 
   @Prop()
   brand: string;

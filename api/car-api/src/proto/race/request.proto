@@ -22,8 +22,8 @@ message ListRacesResponse {
 }
 
 message GetRaceRequest {
-  // The field will contain name of the resource requested.
   string id = 1;
+  string name = 2;
 }
 
 message GetRaceResponse {
@@ -32,6 +32,7 @@ message GetRaceResponse {
 
 message CreateRaceRequest {
   string name = 1;
+  string date = 2;
 }
 
 message CreateRaceResponse {
@@ -42,6 +43,7 @@ message UpdateRaceRequest {
   // The Race resource which replaces the resource on the server.
   string id = 1;
   string name = 2;
+  string date = 3;
 }
 
 message UpdateRaceResponse {

@@ -16,9 +16,9 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Car {
     /**
-     * @generated from protobuf field: string car_id = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    carId: string;
+    id: string;
     /**
      * @generated from protobuf field: string driver_id = 2;
      */
@@ -36,14 +36,14 @@ export interface Car {
 class Car$Type extends MessageType<Car> {
     constructor() {
         super("car.Car", [
-            { no: 1, name: "car_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "driver_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "brand", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "model", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Car>): Car {
-        const message = { carId: "", driverId: "", brand: "", model: "" };
+        const message = { id: "", driverId: "", brand: "", model: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Car>(this, message, value);
@@ -54,8 +54,8 @@ class Car$Type extends MessageType<Car> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string car_id */ 1:
-                    message.carId = reader.string();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 case /* string driver_id */ 2:
                     message.driverId = reader.string();
@@ -78,9 +78,9 @@ class Car$Type extends MessageType<Car> {
         return message;
     }
     internalBinaryWrite(message: Car, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string car_id = 1; */
-        if (message.carId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.carId);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         /* string driver_id = 2; */
         if (message.driverId !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.driverId);

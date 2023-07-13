@@ -40,7 +40,7 @@ message CreateCarResponse {
 }
 
 message UpdateCarRequest {
-  string carId = 1;
+  string id = 1;
   string brand = 3;
   string model = 4;
 }

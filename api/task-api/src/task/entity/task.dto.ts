@@ -4,7 +4,6 @@ import {
   MinDate,
   IsObject,
   IsNotEmpty,
-  IsDate,
   IsDateString,
 } from 'class-validator';
 

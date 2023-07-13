@@ -11,7 +11,7 @@ export class CarService {
 
   toCarPb(car: Partial<CarDocument>): CarPb {
     return {
-      carId: car.id,
+      id: car._id.toString(),
       driverId: car.driver_id,
       brand: car.brand,
       model: car.model,
@@ -42,7 +42,7 @@ export class CarService {
   }
 
   async updateCar(
-    id: number,
+    id: string,
     driver_id: number,
     car: UpdateCarDto,
   ): Promise<Car> {
@@ -58,7 +58,7 @@ export class CarService {
     return carUpdated;
   }
 
-  async deleteCar(id: number, driver_id: number) {
+  async deleteCar(id: string, driver_id: number) {
     const car = await this.carModel.findOneAndDelete({ id, driver_id });
 
     if (!car) {

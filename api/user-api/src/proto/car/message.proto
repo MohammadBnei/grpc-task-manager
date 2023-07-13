@@ -3,7 +3,7 @@ syntax = "proto3";
 package car;
 
 message Car {
-  string car_id = 1;
+  string id = 1;
   string driver_id = 2;
   string brand = 3;
   string model = 4;

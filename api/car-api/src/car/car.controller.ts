@@ -92,7 +92,7 @@ export class CarController {
         model: request.model,
       };
 
-      const car = await this.carService.updateCar(request.carId, user.id, nCar);
+      const car = await this.carService.updateCar(request.id, user.id, nCar);
       const pbCar = this.carService.toCarPb(car);
 
       return { car: pbCar };

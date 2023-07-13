@@ -1,10 +1,4 @@
-import {
-  Length,
-  IsDefined,
-  MinDate,
-  IsNotEmpty,
-  IsDateString,
-} from 'class-validator';
+import { Length, IsNotEmpty, IsDateString } from 'class-validator';
 
 export class CreateRaceDto {
   @Length(3, 50)
@@ -14,19 +8,23 @@ export class CreateRaceDto {
   date: Date;
 }
 
-export class CreateFieldsDto {
-  @IsDefined()
-  fields: any;
+export class SubscribeRaceParticipationDto {
+  @IsNotEmpty()
+  race_id: string;
+
+  @IsNotEmpty()
+  user_id: string;
+
+  @IsNotEmpty()
+  car_id: string;
 }
-export class RegisterParticipationDto {
+
+export class UnSubscribeRaceParticipationDto {
   @IsNotEmpty()
-  raceId: string;
+  race_id: string;
 
   @IsNotEmpty()
-  fieldName: string;
-
-  @IsNotEmpty()
-  fieldValue: string;
+  user_id: string;
 }
 
 export class UpdateRaceDto {

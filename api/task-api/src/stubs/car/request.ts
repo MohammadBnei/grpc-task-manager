@@ -43,7 +43,7 @@ export interface CreateCarResponse {
 }
 
 export interface UpdateCarRequest {
-  carId?: string | undefined;
+  id?: string | undefined;
   brand?: string | undefined;
   model?: string | undefined;
 }

@@ -3,7 +3,7 @@
 export const protobufPackage = "car";
 
 export interface Car {
-  carId?: string | undefined;
+  id?: string | undefined;
   driverId?: string | undefined;
   brand?: string | undefined;
   model?: string | undefined;

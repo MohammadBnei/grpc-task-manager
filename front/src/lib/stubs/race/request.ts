@@ -52,11 +52,13 @@ export interface ListRacesResponse {
  */
 export interface GetRaceRequest {
     /**
-     * The field will contain name of the resource requested.
-     *
      * @generated from protobuf field: string id = 1;
      */
     id: string;
+    /**
+     * @generated from protobuf field: string name = 2;
+     */
+    name: string;
 }
 /**
  * @generated from protobuf message race.GetRaceResponse
@@ -75,6 +77,10 @@ export interface CreateRaceRequest {
      * @generated from protobuf field: string name = 1;
      */
     name: string;
+    /**
+     * @generated from protobuf field: string date = 2;
+     */
+    date: string;
 }
 /**
  * @generated from protobuf message race.CreateRaceResponse
@@ -99,6 +105,10 @@ export interface UpdateRaceRequest {
      * @generated from protobuf field: string name = 2;
      */
     name: string;
+    /**
+     * @generated from protobuf field: string date = 3;
+     */
+    date: string;
 }
 /**
  * @generated from protobuf message race.UpdateRaceResponse
@@ -289,11 +299,12 @@ export const ListRacesResponse = new ListRacesResponse$Type();
 class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
     constructor() {
         super("race.GetRaceRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetRaceRequest>): GetRaceRequest {
-        const message = { id: "" };
+        const message = { id: "", name: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<GetRaceRequest>(this, message, value);
@@ -306,6 +317,9 @@ class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
             switch (fieldNo) {
                 case /* string id */ 1:
                     message.id = reader.string();
+                    break;
+                case /* string name */ 2:
+                    message.name = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -322,6 +336,9 @@ class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
         /* string id = 1; */
         if (message.id !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string name = 2; */
+        if (message.name !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -383,11 +400,12 @@ export const GetRaceResponse = new GetRaceResponse$Type();
 class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
     constructor() {
         super("race.CreateRaceRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CreateRaceRequest>): CreateRaceRequest {
-        const message = { name: "" };
+        const message = { name: "", date: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<CreateRaceRequest>(this, message, value);
@@ -400,6 +418,9 @@ class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
             switch (fieldNo) {
                 case /* string name */ 1:
                     message.name = reader.string();
+                    break;
+                case /* string date */ 2:
+                    message.date = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -416,6 +437,9 @@ class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
         /* string name = 1; */
         if (message.name !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string date = 2; */
+        if (message.date !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.date);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -478,11 +502,12 @@ class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
     constructor() {
         super("race.UpdateRaceRequest", [
             { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "date", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateRaceRequest>): UpdateRaceRequest {
-        const message = { id: "", name: "" };
+        const message = { id: "", name: "", date: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UpdateRaceRequest>(this, message, value);
@@ -498,6 +523,9 @@ class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
                     break;
                 case /* string name */ 2:
                     message.name = reader.string();
+                    break;
+                case /* string date */ 3:
+                    message.date = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -517,6 +545,9 @@ class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
         /* string name = 2; */
         if (message.name !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.name);
+        /* string date = 3; */
+        if (message.date !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.date);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

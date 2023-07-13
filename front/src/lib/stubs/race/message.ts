@@ -16,9 +16,9 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Race {
     /**
-     * @generated from protobuf field: string race_id = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    raceId: string;
+    id: string;
     /**
      * @generated from protobuf field: string name = 2;
      */
@@ -49,14 +49,14 @@ export interface Participant {
 class Race$Type extends MessageType<Race> {
     constructor() {
         super("race.Race", [
-            { no: 1, name: "race_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "date", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "participants", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Participant }
         ]);
     }
     create(value?: PartialMessage<Race>): Race {
-        const message = { raceId: "", name: "", date: "", participants: [] };
+        const message = { id: "", name: "", date: "", participants: [] };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Race>(this, message, value);
@@ -67,8 +67,8 @@ class Race$Type extends MessageType<Race> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string race_id */ 1:
-                    message.raceId = reader.string();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 case /* string name */ 2:
                     message.name = reader.string();
@@ -91,9 +91,9 @@ class Race$Type extends MessageType<Race> {
         return message;
     }
     internalBinaryWrite(message: Race, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string race_id = 1; */
-        if (message.raceId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.raceId);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         /* string name = 2; */
         if (message.name !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.name);

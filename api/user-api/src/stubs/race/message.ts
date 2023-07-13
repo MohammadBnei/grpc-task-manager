@@ -3,7 +3,7 @@
 export const protobufPackage = "race";
 
 export interface Race {
-  raceId?: string | undefined;
+  id?: string | undefined;
   name?: string | undefined;
   date?: string | undefined;
   participants?: Participant[] | undefined;

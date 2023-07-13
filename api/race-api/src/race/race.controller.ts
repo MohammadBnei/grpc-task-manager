@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Inject, UseGuards } from '@nestjs/common';
+import { Controller, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { RaceService } from './race.service';
@@ -10,8 +10,9 @@ import {
   GetRaceResponse,
   CreateRaceResponse,
   DeleteRaceResponse,
+  UpdateRaceRequest,
+  UpdateRaceResponse,
 } from '../stubs/race/request';
-import { Observable } from 'rxjs';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
@@ -28,10 +29,8 @@ export class RaceController {
 
   @GrpcMethod('RaceService')
   async GetRace(request: GetRaceRequest): Promise<GetRaceResponse> {
-    const name = request.name;
-
     try {
-      const race = await this.raceService.find('', name);
+      const race = await this.raceService.find(request.id, request.name);
 
       const pbRace = this.raceService.toRacePb(race);
 
@@ -58,17 +57,11 @@ export class RaceController {
   @GrpcMethod('RaceService')
   async CreateRace(request: CreateRaceRequest): Promise<CreateRaceResponse> {
     try {
-      await this.validateDto(request.race, CreateRaceDto);
+      await this.validateDto(request, CreateRaceDto);
       const nRace = {
-        name: request.race.name,
-        dueDate: new Date(request.race.dueDate),
+        name: request.name,
+        date: new Date(request.date),
       };
-      if (!nRace.name)
-        throw new RpcException({
-          message: 'No name provided',
-          code: HttpStatus.BAD_REQUEST,
-          status: status.INVALID_ARGUMENT,
-        });
 
       const race = await this.raceService.create(nRace);
       const pbRace = this.raceService.toRacePb(race);
@@ -80,49 +73,16 @@ export class RaceController {
     }
   }
 
-  // @GrpcMethod('RaceService')
-  // async UpdateRace(request: UpdateRaceRequest): Promise<RaceResponse> {
-  //   try {
-  //     const nRace = {
-  //       fields: request.race.fields,
-  //       dueDate: new Date(request.race.dueDate),
-  //     };
-
-  //     this.profanityService.checkRace(request.race);
-
-  //     const race = await this.raceService.updateRace(
-  //       { name: request.race.name },
-  //       nRace,
-  //     );
-  //     const pbRace = Race.create({
-  //       name: race.name,
-  //       fields: race.fieldsArray,
-  //       dueDate: race.dueDate.toISOString(),
-  //     });
-
-  //     this.streams.raceStream$.next({
-  //       eventType: 'update',
-  //       race: pbRace,
-  //     });
-
-  //     return { race: pbRace };
-  //   } catch (error) {
-  // this.logger.error(error);
-
-  //     throw new RpcException(error);
-  //   }
-  // }
-
   @GrpcMethod('RaceService')
-  async DeleteRace(request: DeleteRaceRequest): Promise<DeleteRaceResponse> {
+  async UpdateRace(request: UpdateRaceRequest): Promise<UpdateRaceResponse> {
     try {
-      const race = await this.raceService.deleteRace(request.name);
-      const pbRace = this.raceService.toRacePb(race);
+      const nRace = {
+        name: request.name,
+        date: new Date(request.date),
+      };
 
-      this.streams.raceStream$.next({
-        eventType: 'delete',
-        race: pbRace,
-      });
+      const race = await this.raceService.updateRace({ id: request.id }, nRace);
+      const pbRace = this.raceService.toRacePb(race);
 
       return { race: pbRace };
     } catch (error) {
@@ -133,9 +93,12 @@ export class RaceController {
   }
 
   @GrpcMethod('RaceService')
-  StreamRaces(request: StreamRacesRequest): Observable<StreamRacesResponse> {
+  async DeleteRace(request: DeleteRaceRequest): Promise<DeleteRaceResponse> {
     try {
-      return this.streams.raceStream$.asObservable();
+      const race = await this.raceService.deleteRace(request.id);
+      const pbRace = this.raceService.toRacePb(race);
+
+      return { race: pbRace };
     } catch (error) {
       this.logger.error(error);
 
