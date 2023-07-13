@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: task
   
-  mongo:
+  mongo-car:
     image: mongo
     ports:
       - 27018:27017
@@ -17,7 +17,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: car
 
-  mongo:
+  mongo-race:
     image: mongo
     ports:
       - 27019:27017

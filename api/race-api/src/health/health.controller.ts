@@ -15,6 +15,6 @@ export class HealthController {
   @Get()
   @HealthCheck()
   check() {
-    return this.health.check([() => this.db.pingCheck('task-api')]);
+    return this.health.check([() => this.db.pingCheck('race-api')]);
   }
 }

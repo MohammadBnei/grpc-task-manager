@@ -1,21 +1,21 @@
 import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { TaskService } from './task.service';
+import { RaceService } from './race.service';
 import {
   AddFieldRequest,
   AddFieldResponse,
   RemoveFieldRequest,
   RemoveFieldResponse,
-} from '../stubs/task/v1beta/request';
+} from '../stubs/race/v1beta/request';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
-@Controller('task')
+@Controller('race')
 export class FieldController {
   constructor(
-    private taskService: TaskService,
+    private raceService: RaceService,
     private profanityService: ProfanityService,
     private streams: StreamsService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
@@ -27,20 +27,20 @@ export class FieldController {
       const { fieldName, fieldValue } = request;
       this.profanityService.checkStr(fieldName, fieldValue);
 
-      const uTask = await this.taskService.addField(request.taskName, {
+      const uRace = await this.raceService.addField(request.raceName, {
         name: request.fieldName,
         value: request.fieldValue,
         type: request.fieldType,
       });
 
-      const pbTask = this.taskService.toTaskPb(uTask);
+      const pbRace = this.raceService.toRacePb(uRace);
 
-      this.streams.taskStream$.next({
+      this.streams.raceStream$.next({
         eventType: 'update',
-        task: pbTask,
+        race: pbRace,
       });
 
-      return { task: pbTask };
+      return { race: pbRace };
     } catch (error) {
       console.error(error);
       throw new RpcException(error);
@@ -50,18 +50,18 @@ export class FieldController {
   @GrpcMethod('FieldService')
   async RemoveField(request: RemoveFieldRequest): Promise<RemoveFieldResponse> {
     try {
-      const { fieldName, taskName } = request;
+      const { fieldName, raceName } = request;
 
-      const uTask = await this.taskService.deleteField(taskName, fieldName);
+      const uRace = await this.raceService.deleteField(raceName, fieldName);
 
-      const pbTask = this.taskService.toTaskPb(uTask);
+      const pbRace = this.raceService.toRacePb(uRace);
 
-      this.streams.taskStream$.next({
+      this.streams.raceStream$.next({
         eventType: 'update',
-        task: pbTask,
+        race: pbRace,
       });
 
-      return { task: pbTask };
+      return { race: pbRace };
     } catch (error) {
       console.error(error);
       throw new RpcException(error);

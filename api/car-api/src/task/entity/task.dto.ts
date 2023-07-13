@@ -8,7 +8,7 @@ import {
   IsDateString,
 } from 'class-validator';
 
-export class CreateTaskDto {
+export class CreateCarDto {
   @Length(3, 50)
   name: string;
 
@@ -22,7 +22,7 @@ export class CreateFieldsDto {
 }
 export class AddFieldDto {
   @IsNotEmpty()
-  taskName: string;
+  carName: string;
 
   @IsNotEmpty()
   fieldName: string;
@@ -31,7 +31,7 @@ export class AddFieldDto {
   fieldValue: string;
 }
 
-export class UpdateTaskDto {
+export class UpdateCarDto {
   @IsObject()
   fields!: any;
 

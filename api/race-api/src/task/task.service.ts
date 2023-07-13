@@ -1,98 +1,98 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FieldsArray, Task, TaskDocument } from './entity/task.schema';
-import { CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
-import { Task as TaskPb } from '../stubs/task/v1beta/message';
+import { FieldsArray, Race, RaceDocument } from './entity/race.schema';
+import { CreateRaceDto, UpdateRaceDto } from './entity/race.dto';
+import { Race as RacePb } from '../stubs/race/v1beta/message';
 @Injectable()
-export class TaskService {
-  constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
+export class RaceService {
+  constructor(@InjectModel(Race.name) private raceModel: Model<RaceDocument>) {}
 
-  toTaskPb(task: Partial<TaskDocument>): TaskPb {
+  toRacePb(race: Partial<RaceDocument>): RacePb {
     return {
-      name: task.name,
-      fields: task.fieldsArray,
-      dueDate: task.dueDate.toISOString(),
-      done: task.done,
-      id: task._id.toString(),
+      name: race.name,
+      fields: race.fieldsArray,
+      dueDate: race.dueDate.toISOString(),
+      done: race.done,
+      id: race._id.toString(),
     };
   }
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(createRaceDto: CreateRaceDto): Promise<Race> {
     try {
-      const createdTask = new this.taskModel(createTaskDto);
-      return await createdTask.save();
+      const createdRace = new this.raceModel(createRaceDto);
+      return await createdRace.save();
     } catch (error) {
       if ((error?.message as string)?.includes('E11000')) {
-        throw new Error(`${createTaskDto.name} name is taken`);
+        throw new Error(`${createRaceDto.name} name is taken`);
       }
     }
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.taskModel.find().exec();
+  async findAll(): Promise<Race[]> {
+    return this.raceModel.find().exec();
   }
 
   async find(id: string | number, name: string) {
-    const task = await this.taskModel.findOne({ id, name });
+    const race = await this.raceModel.findOne({ id, name });
 
-    if (!task) {
-      throw new Error(`task with id ${id} or name ${name} not found`);
+    if (!race) {
+      throw new Error(`race with id ${id} or name ${name} not found`);
     }
 
-    return task;
+    return race;
   }
 
-  async addField(taskName: string, ...fields: FieldsArray) {
-    const task = await this.find('', taskName);
+  async addField(raceName: string, ...fields: FieldsArray) {
+    const race = await this.find('', raceName);
 
-    task.fieldsArray = fields;
+    race.fieldsArray = fields;
 
-    await task.save();
+    await race.save();
 
-    return task;
+    return race;
   }
 
-  async deleteField(taskName: string, fieldName: string) {
-    const task = await this.find('', taskName);
+  async deleteField(raceName: string, fieldName: string) {
+    const race = await this.find('', raceName);
 
-    task.fields.delete(fieldName);
+    race.fields.delete(fieldName);
 
-    await task.save();
+    await race.save();
 
-    return task;
+    return race;
   }
 
-  async updateTask(
+  async updateRace(
     { id, name }: { name?: string; id?: string },
-    uTask: UpdateTaskDto,
-  ): Promise<Task> {
-    let task: TaskDocument;
+    uRace: UpdateRaceDto,
+  ): Promise<Race> {
+    let race: RaceDocument;
     if (id) {
-      task = await this.taskModel.findById(id);
+      race = await this.raceModel.findById(id);
     } else {
-      task = await this.taskModel.findOne({ name });
+      race = await this.raceModel.findOne({ name });
     }
 
-    if (!task) {
-      throw new Error(`task with id ${id} or name ${name} not found`);
+    if (!race) {
+      throw new Error(`race with id ${id} or name ${name} not found`);
     }
 
-    Object.assign(task, uTask);
+    Object.assign(race, uRace);
 
-    await task.save();
-    return task;
+    await race.save();
+    return race;
   }
 
-  async deleteTask(id: number | string) {
-    const task = await this.taskModel.findOneAndDelete({
+  async deleteRace(id: number | string) {
+    const race = await this.raceModel.findOneAndDelete({
       name: { $regex: `^${id}$`, $options: 'i' },
     });
 
-    if (!task) {
-      throw new Error(`task with name ${id} not found`);
+    if (!race) {
+      throw new Error(`race with name ${id} not found`);
     }
 
-    return task;
+    return race;
   }
 }

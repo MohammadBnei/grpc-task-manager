@@ -14,38 +14,42 @@ export enum EventType {
 }
 
 export interface Task {
-  name?: string;
-  fields?: string;
-  dueDate?: string;
+  name?: string | undefined;
+  fields?: string | undefined;
+  dueDate?: string | undefined;
 }
 
 export interface UsageRequest {
-  username?: string;
-  taskName?: string;
-  eventType?: EventType;
+  username?: string | undefined;
+  taskName?: string | undefined;
+  eventType?: EventType | undefined;
 }
 
 export interface UsageResponse {
-  username?: string;
-  taskName?: string;
-  eventType?: EventType;
+  username?: string | undefined;
+  taskName?: string | undefined;
+  eventType?: EventType | undefined;
 }
 
 export interface StreamTasksRequest {
 }
 
 export interface StreamTasksResponse {
-  task?: Task;
-  eventType?: string;
+  task?: Task | undefined;
+  eventType?: string | undefined;
 }
 
 export interface ListTasksRequest {
   /** The parent resource name, for example, "shelves/shelf1" */
-  parent?: string;
+  parent?:
+    | string
+    | undefined;
   /** The maximum number of items to return. */
-  pageSize?: number;
+  pageSize?:
+    | number
+    | undefined;
   /** The next_page_token value returned from a previous List request, if any. */
-  pageToken?: string;
+  pageToken?: string | undefined;
 }
 
 export interface ListTasksResponse {
@@ -53,36 +57,42 @@ export interface ListTasksResponse {
    * The field name should match the noun "Task" in the method name.
    * There will be a maximum number of items returned based on the page_size field in the request.
    */
-  tasks?: Task[];
+  tasks?:
+    | Task[]
+    | undefined;
   /** Token to retrieve the next page of results, or empty if there are no more results in the list. */
-  nextPageToken?: string;
+  nextPageToken?: string | undefined;
 }
 
 export interface GetTaskRequest {
   /** The field will contain name of the resource requested. */
-  name?: string;
+  name?: string | undefined;
 }
 
 export interface CreateTaskRequest {
   /** The parent resource name where the Task is to be created. */
-  parent?: string;
+  parent?:
+    | string
+    | undefined;
   /** The Task id to use for this Task. */
-  taskId?: string;
+  taskId?:
+    | string
+    | undefined;
   /**
    * The Task resource to create.
    * The field name should match the Noun in the method name.
    */
-  task?: Task;
+  task?: Task | undefined;
 }
 
 export interface UpdateTaskRequest {
   /** The Task resource which replaces the resource on the server. */
-  task?: Task;
+  task?: Task | undefined;
 }
 
 export interface DeleteTaskRequest {
   /** The resource name of the Task to be deleted. */
-  name?: string;
+  name?: string | undefined;
 }
 
 export const TASK_V1ALPHA_PACKAGE_NAME = "task.v1alpha";

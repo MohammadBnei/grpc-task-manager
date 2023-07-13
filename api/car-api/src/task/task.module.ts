@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Task, TaskSchema } from './entity/task.schema';
-import { TaskService } from './task.service';
-import { TaskController } from './task.controller';
+import { Car, CarSchema } from './entity/car.schema';
+import { CarService } from './car.service';
+import { CarController } from './car.controller';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { FieldController } from './field.controller';
 import { StreamsService } from 'src/streams/streams.service';
@@ -10,10 +10,10 @@ import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Task.name, schema: TaskSchema }]),
+    MongooseModule.forFeature([{ name: Car.name, schema: CarSchema }]),
     AuthModule,
   ],
-  providers: [TaskService, ProfanityService, StreamsService],
-  controllers: [TaskController, FieldController],
+  providers: [CarService, ProfanityService, StreamsService],
+  controllers: [CarController, FieldController],
 })
-export class TaskModule {}
+export class CarModule {}

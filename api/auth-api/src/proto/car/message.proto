@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package car;
+
+message Car {
+  int32 car_id = 1;
+  int32 driver_id = 2;
+  string brand = 3;
+  string model = 4;
+}

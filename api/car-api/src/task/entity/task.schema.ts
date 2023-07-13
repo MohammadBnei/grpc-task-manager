@@ -1,11 +1,11 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId, Schema as schema, Types } from 'mongoose';
-import { FieldType } from 'src/stubs/task/v1beta/message';
+import { FieldType } from 'src/stubs/car/v1beta/message';
 
-export type TaskDocument = HydratedDocument<Task>;
+export type CarDocument = HydratedDocument<Car>;
 
 @Schema()
-export class Task {
+export class Car {
   @Prop({ unique: true, index: true })
   name: string;
 
@@ -33,20 +33,20 @@ export class Task {
 export type FieldsArray = { type: FieldType; value: string; name: string }[];
 export type IFields = Map<string, { type: FieldType; value: string }>;
 
-const TaskSchema = SchemaFactory.createForClass(Task);
+const CarSchema = SchemaFactory.createForClass(Car);
 
-TaskSchema.virtual('fieldsArray')
-  .get(function (this: TaskDocument) {
+CarSchema.virtual('fieldsArray')
+  .get(function (this: CarDocument) {
     return [...this.fields.entries()].map(([name, { type, value }]) => ({
       name,
       value,
       type,
     }));
   })
-  .set(function (this: TaskDocument, fieldsArray: FieldsArray) {
+  .set(function (this: CarDocument, fieldsArray: FieldsArray) {
     for (const { name, type, value } of fieldsArray) {
       this.fields.set(name, { type, value });
     }
   });
 
-export { TaskSchema };
+export { CarSchema };

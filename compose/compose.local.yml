@@ -94,7 +94,7 @@ services:
       - /app/node_modules
       - /app/.pnpm-store
     environment:
-      - MONGO_URL=mongodb://root:car@mongo
+      - MONGO_URL=mongodb://root:car@mongo-car
       - insecure=false
       - PORT=4000
       - CAR_CERT=/certs/car.pem
@@ -103,7 +103,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4000:4000
+      - 4002:4000
     stdin_open: true
     command: start:dev
     healthcheck:
@@ -121,7 +121,7 @@ services:
       - /app/node_modules
       - /app/.pnpm-store
     environment:
-      - MONGO_URL=mongodb://root:race@mongo
+      - MONGO_URL=mongodb://root:race@mongo-race
       - insecure=false
       - PORT=4000
       - RACE_CERT=/certs/race.pem
@@ -130,7 +130,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4000:4000
+      - 4003:4000
     stdin_open: true
     command: start:dev
     healthcheck:

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package task.v1beta;
+package car.v1beta;
 
-message Task {
+message Car {
   string name = 1;
   repeated Field fields = 2;
   string due_date = 3;
@@ -15,21 +15,21 @@ message Field {
   FieldType type = 3;
 }
 
-service TaskService {
-  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
-  rpc GetTask(GetTaskRequest) returns (TaskResponse) {}
-  rpc CreateTask(CreateTaskRequest) returns (TaskResponse) {}
-  rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse) {}
-  rpc DeleteTask(DeleteTaskRequest) returns (TaskResponse) {}
+service CarService {
+  rpc ListCars(ListCarsRequest) returns (ListCarsResponse) {}
+  rpc GetCar(GetCarRequest) returns (CarResponse) {}
+  rpc CreateCar(CreateCarRequest) returns (CarResponse) {}
+  rpc UpdateCar(UpdateCarRequest) returns (CarResponse) {}
+  rpc DeleteCar(DeleteCarRequest) returns (CarResponse) {}
 
-  rpc UpdateDate(UpdateDateRequest) returns (TaskResponse) {}
+  rpc UpdateDate(UpdateDateRequest) returns (CarResponse) {}
 
-  rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
+  rpc StreamCars(StreamCarsRequest) returns (stream StreamCarsResponse) {}
 }
 
 service FieldService {
-  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
-  rpc RemoveField(RemoveFieldRequest) returns (TaskResponse) {}
+  rpc AddField(AddFieldRequest) returns (CarResponse) {}
+  rpc RemoveField(RemoveFieldRequest) returns (CarResponse) {}
 }
 
 service UsageService {
@@ -42,19 +42,19 @@ enum FieldType {
 }
 
 message AddFieldRequest {
-  string task_name = 1;
+  string car_name = 1;
   string field_name = 2;
   string field_value = 3;
   FieldType field_type = 4;
 }
 
 message UpdateDateRequest {
-  string task_name = 1;
+  string car_name = 1;
   string due_date = 2;
 }
 
 message RemoveFieldRequest {
-  string task_name = 1;
+  string car_name = 1;
   string field_name = 2;
 }
 
@@ -67,24 +67,24 @@ enum EventType {
 
 message UsageRequest {
   string username = 1;
-  string task_name = 2;
+  string car_name = 2;
   EventType event_type = 3;
 }
 
 message UsageResponse {
   string username = 1;
-  string task_name = 2;
+  string car_name = 2;
   EventType event_type = 3;
 }
 
-message StreamTasksRequest {}
+message StreamCarsRequest {}
 
-message StreamTasksResponse {
-  Task task = 1;
+message StreamCarsResponse {
+  Car car = 1;
   string event_type = 2;
 }
 
-message ListTasksRequest {
+message ListCarsRequest {
   // The parent resource name, for example, "shelves/shelf1"
   string parent = 1;
 
@@ -95,41 +95,41 @@ message ListTasksRequest {
   string page_token = 3;
 }
 
-message ListTasksResponse {
-  // The field name should match the noun "Task" in the method name.
+message ListCarsResponse {
+  // The field name should match the noun "Car" in the method name.
   // There will be a maximum number of items returned based on the page_size field in the request.
-  repeated Task tasks = 1;
+  repeated Car cars = 1;
 
   // Token to retrieve the next page of results, or empty if there are no more results in the list.
   string next_page_token = 2;
 }
 
-message GetTaskRequest {
+message GetCarRequest {
   // The field will contain name of the resource requested.
   string name = 1;
 }
-message TaskResponse {
-  Task task = 1;
+message CarResponse {
+  Car car = 1;
 }
 
-message CreateTaskRequest {
-  // The parent resource name where the Task is to be created.
+message CreateCarRequest {
+  // The parent resource name where the Car is to be created.
   string parent = 1;
 
-  // The Task id to use for this Task.
-  string task_id = 2;
+  // The Car id to use for this Car.
+  string car_id = 2;
 
-  // The Task resource to create.
+  // The Car resource to create.
   // The field name should match the Noun in the method name.
-  Task task = 3;
+  Car car = 3;
 }
 
-message UpdateTaskRequest {
-  // The Task resource which replaces the resource on the server.
-  Task task = 1;
+message UpdateCarRequest {
+  // The Car resource which replaces the resource on the server.
+  Car car = 1;
 }
 
-message DeleteTaskRequest {
-  // The resource name of the Task to be deleted.
+message DeleteCarRequest {
+  // The resource name of the Car to be deleted.
   string name = 1;
 }

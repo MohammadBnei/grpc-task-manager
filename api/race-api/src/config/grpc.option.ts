@@ -9,7 +9,7 @@ import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_V1ALPHA_PACKAGE_NAME } from 'src/stubs/auth/v1alpha/service';
-import { TASK_V1BETA_PACKAGE_NAME } from 'src/stubs/task/v1beta/service';
+import { TASK_V1BETA_PACKAGE_NAME } from 'src/stubs/race/v1beta/service';
 
 export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({
@@ -28,7 +28,7 @@ export default (cs: ConfigService) =>
       loader: {
         includeDirs: [join(__dirname, '../proto')],
       },
-      protoPath: [join(__dirname, '../proto/task/v1beta/service.proto')],
+      protoPath: [join(__dirname, '../proto/race/v1beta/service.proto')],
     },
   } as GrpcOptions);
 

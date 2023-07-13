@@ -1,60 +1,60 @@
 import { Controller, HttpStatus, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { TaskService } from './task.service';
+import { RaceService } from './race.service';
 import {
-  DeleteTaskRequest,
-  CreateTaskRequest,
-  GetTaskRequest,
-  ListTasksRequest,
-  ListTasksResponse,
-  StreamTasksRequest,
-  StreamTasksResponse,
-  GetTaskResponse,
-  CreateTaskResponse,
-  DeleteTaskResponse,
-} from '../stubs/task/v1beta/request';
+  DeleteRaceRequest,
+  CreateRaceRequest,
+  GetRaceRequest,
+  ListRacesRequest,
+  ListRacesResponse,
+  StreamRacesRequest,
+  StreamRacesResponse,
+  GetRaceResponse,
+  CreateRaceResponse,
+  DeleteRaceResponse,
+} from '../stubs/race/v1beta/request';
 import { Observable } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { CreateTaskDto } from './entity/task.dto';
+import { CreateRaceDto } from './entity/race.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
-@Controller('task')
-export class TaskController {
+@Controller('race')
+export class RaceController {
   constructor(
-    private taskService: TaskService,
+    private raceService: RaceService,
     private profanityService: ProfanityService,
     private streams: StreamsService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
-  @GrpcMethod('TaskService')
-  async GetTask(request: GetTaskRequest): Promise<GetTaskResponse> {
+  @GrpcMethod('RaceService')
+  async GetRace(request: GetRaceRequest): Promise<GetRaceResponse> {
     const name = request.name;
 
     try {
-      const task = await this.taskService.find('', name);
+      const race = await this.raceService.find('', name);
 
-      const pbTask = this.taskService.toTaskPb(task);
+      const pbRace = this.raceService.toRacePb(race);
 
-      return { task: pbTask };
+      return { race: pbRace };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  @GrpcMethod('TaskService')
-  async ListTasks(request: ListTasksRequest): Promise<ListTasksResponse> {
+  @GrpcMethod('RaceService')
+  async ListRaces(request: ListRacesRequest): Promise<ListRacesResponse> {
     try {
-      const tasks = await this.taskService.findAll();
+      const races = await this.raceService.findAll();
 
-      return { tasks: tasks.map(this.taskService.toTaskPb), nextPageToken: '' };
+      return { races: races.map(this.raceService.toRacePb), nextPageToken: '' };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
@@ -62,64 +62,64 @@ export class TaskController {
   }
 
   @UseGuards(GrpcAuthGuard)
-  @GrpcMethod('TaskService')
-  async CreateTask(request: CreateTaskRequest): Promise<CreateTaskResponse> {
+  @GrpcMethod('RaceService')
+  async CreateRace(request: CreateRaceRequest): Promise<CreateRaceResponse> {
     try {
-      await this.validateDto(request.task, CreateTaskDto);
-      const nTask = {
-        name: request.task.name,
-        dueDate: new Date(request.task.dueDate),
+      await this.validateDto(request.race, CreateRaceDto);
+      const nRace = {
+        name: request.race.name,
+        dueDate: new Date(request.race.dueDate),
       };
-      if (!nTask.name)
+      if (!nRace.name)
         throw new RpcException({
           message: 'No name provided',
           code: HttpStatus.BAD_REQUEST,
           status: status.INVALID_ARGUMENT,
         });
 
-      this.profanityService.checkTask(request.task);
+      this.profanityService.checkRace(request.race);
 
-      const task = await this.taskService.create(nTask);
-      const pbTask = this.taskService.toTaskPb(task);
+      const race = await this.raceService.create(nRace);
+      const pbRace = this.raceService.toRacePb(race);
 
-      this.streams.taskStream$.next({
+      this.streams.raceStream$.next({
         eventType: 'create',
-        task: pbTask,
+        race: pbRace,
       });
 
-      return { task: pbTask };
+      return { race: pbRace };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  // @GrpcMethod('TaskService')
-  // async UpdateTask(request: UpdateTaskRequest): Promise<TaskResponse> {
+  // @GrpcMethod('RaceService')
+  // async UpdateRace(request: UpdateRaceRequest): Promise<RaceResponse> {
   //   try {
-  //     const nTask = {
-  //       fields: request.task.fields,
-  //       dueDate: new Date(request.task.dueDate),
+  //     const nRace = {
+  //       fields: request.race.fields,
+  //       dueDate: new Date(request.race.dueDate),
   //     };
 
-  //     this.profanityService.checkTask(request.task);
+  //     this.profanityService.checkRace(request.race);
 
-  //     const task = await this.taskService.updateTask(
-  //       { name: request.task.name },
-  //       nTask,
+  //     const race = await this.raceService.updateRace(
+  //       { name: request.race.name },
+  //       nRace,
   //     );
-  //     const pbTask = Task.create({
-  //       name: task.name,
-  //       fields: task.fieldsArray,
-  //       dueDate: task.dueDate.toISOString(),
+  //     const pbRace = Race.create({
+  //       name: race.name,
+  //       fields: race.fieldsArray,
+  //       dueDate: race.dueDate.toISOString(),
   //     });
 
-  //     this.streams.taskStream$.next({
+  //     this.streams.raceStream$.next({
   //       eventType: 'update',
-  //       task: pbTask,
+  //       race: pbRace,
   //     });
 
-  //     return { task: pbTask };
+  //     return { race: pbRace };
   //   } catch (error) {
   // this.logger.error(error);
 
@@ -127,18 +127,18 @@ export class TaskController {
   //   }
   // }
 
-  @GrpcMethod('TaskService')
-  async DeleteTask(request: DeleteTaskRequest): Promise<DeleteTaskResponse> {
+  @GrpcMethod('RaceService')
+  async DeleteRace(request: DeleteRaceRequest): Promise<DeleteRaceResponse> {
     try {
-      const task = await this.taskService.deleteTask(request.name);
-      const pbTask = this.taskService.toTaskPb(task);
+      const race = await this.raceService.deleteRace(request.name);
+      const pbRace = this.raceService.toRacePb(race);
 
-      this.streams.taskStream$.next({
+      this.streams.raceStream$.next({
         eventType: 'delete',
-        task: pbTask,
+        race: pbRace,
       });
 
-      return { task: pbTask };
+      return { race: pbRace };
     } catch (error) {
       this.logger.error(error);
 
@@ -146,10 +146,10 @@ export class TaskController {
     }
   }
 
-  @GrpcMethod('TaskService')
-  StreamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
+  @GrpcMethod('RaceService')
+  StreamRaces(request: StreamRacesRequest): Observable<StreamRacesResponse> {
     try {
-      return this.streams.taskStream$.asObservable();
+      return this.streams.raceStream$.asObservable();
     } catch (error) {
       this.logger.error(error);
 

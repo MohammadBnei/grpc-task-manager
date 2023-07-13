@@ -10,72 +10,72 @@ export enum UserRole {
 }
 
 export interface User {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
-  role?: UserRole;
+  id?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  email?: string | undefined;
+  createdAt?: Timestamp | undefined;
+  updatedAt?: Timestamp | undefined;
+  role?: UserRole | undefined;
 }
 
 export interface RegisterRequest {
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+  password?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  email?: string | undefined;
 }
 
 export interface RegisterResponse {
-  user?: User;
+  user?: User | undefined;
 }
 
 export interface UpdateRequest {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
+  id?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
 }
 
 export interface UpdateResponse {
-  user?: User;
+  user?: User | undefined;
 }
 
 export interface DeleteRequest {
-  id?: string;
+  id?: string | undefined;
 }
 
 export interface DeleteResponse {
-  user?: User;
+  user?: User | undefined;
 }
 
 export interface UpdatePasswordRequest {
-  id?: string;
-  password?: string;
+  id?: string | undefined;
+  password?: string | undefined;
 }
 
 export interface UpdatePasswordResponse {
-  user?: User;
+  user?: User | undefined;
 }
 
 export interface FindRequest {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+  id?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  email?: string | undefined;
 }
 
 export interface FindResponse {
-  user?: User[];
+  user?: User[] | undefined;
 }
 
 export interface CheckPasswordRequest {
-  email?: string;
-  password?: string;
+  email?: string | undefined;
+  password?: string | undefined;
 }
 
 export interface CheckPasswordResponse {
-  status?: CheckPasswordResponse_STATUS;
-  user?: User;
+  status?: CheckPasswordResponse_STATUS | undefined;
+  user?: User | undefined;
 }
 
 export enum CheckPasswordResponse_STATUS {
@@ -87,12 +87,12 @@ export enum CheckPasswordResponse_STATUS {
 }
 
 export interface MakeAdminRequest {
-  id?: string;
-  email?: string;
+  id?: string | undefined;
+  email?: string | undefined;
 }
 
 export interface MakeAdminResponse {
-  user?: User;
+  user?: User | undefined;
 }
 
 export const USER_V1ALPHA_PACKAGE_NAME = "user.v1alpha";

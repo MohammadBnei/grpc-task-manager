@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package race;
+
+import "race/message.proto";
+
+message ListRacesRequest {
+  // The parent resource name, for example, "shelves/shelf1"
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message ListRacesResponse {
+  // The field name should match the noun "Race" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Race races = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetRaceRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message GetRaceResponse {
+  Race race = 1;
+}
+
+message CreateRaceRequest {
+  // The parent resource name where the Race is to be created.
+  string parent = 1;
+
+  // The Race id to use for this Race.
+  string race_id = 2;
+
+  // The Race resource to create.
+  // The field name should match the Noun in the method name.
+  Race race = 3;
+}
+
+message CreateRaceResponse {
+  Race race  = 1;
+}
+
+message UpdateRaceRequest {
+  // The Race resource which replaces the resource on the server.
+  Race race = 1;
+}
+
+message UpdateRaceResponse {
+  Race race  = 1;
+}
+
+message DeleteRaceRequest {
+  // The resource name of the Race to be deleted.
+  string name = 1;
+}
+
+message DeleteRaceResponse {
+  Race race  = 1;
+}

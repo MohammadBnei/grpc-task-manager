@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package car;
+
+import "car/message.proto";
+
+message ListCarsRequest {
+  // The parent resource name, for example, "shelves/shelf1"
+  string parent = 1;
+
+  // The maximum number of items to return.
+  int32 page_size = 2;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 3;
+}
+
+message ListCarsResponse {
+  // The field name should match the noun "Car" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Car cars = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetCarRequest {
+  // The field will contain name of the resource requested.
+  string name = 1;
+}
+
+message GetCarResponse {
+  Car car = 1;
+}
+
+message CreateCarRequest {
+  // The parent resource name where the Car is to be created.
+  string parent = 1;
+
+  // The Car id to use for this Car.
+  string car_id = 2;
+
+  // The Car resource to create.
+  // The field name should match the Noun in the method name.
+  Car car = 3;
+}
+
+message CreateCarResponse {
+  Car car  = 1;
+}
+
+message UpdateCarRequest {
+  // The Car resource which replaces the resource on the server.
+  Car car = 1;
+}
+
+message UpdateCarResponse {
+  Car car  = 1;
+}
+
+message DeleteCarRequest {
+  // The resource name of the Car to be deleted.
+  string name = 1;
+}
+
+message DeleteCarResponse {
+  Car car  = 1;
+}

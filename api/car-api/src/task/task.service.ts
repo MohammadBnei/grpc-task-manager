@@ -1,98 +1,98 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FieldsArray, Task, TaskDocument } from './entity/task.schema';
-import { CreateTaskDto, UpdateTaskDto } from './entity/task.dto';
-import { Task as TaskPb } from '../stubs/task/v1beta/message';
+import { FieldsArray, Car, CarDocument } from './entity/car.schema';
+import { CreateCarDto, UpdateCarDto } from './entity/car.dto';
+import { Car as CarPb } from '../stubs/car/v1beta/message';
 @Injectable()
-export class TaskService {
-  constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
+export class CarService {
+  constructor(@InjectModel(Car.name) private carModel: Model<CarDocument>) {}
 
-  toTaskPb(task: Partial<TaskDocument>): TaskPb {
+  toCarPb(car: Partial<CarDocument>): CarPb {
     return {
-      name: task.name,
-      fields: task.fieldsArray,
-      dueDate: task.dueDate.toISOString(),
-      done: task.done,
-      id: task._id.toString(),
+      name: car.name,
+      fields: car.fieldsArray,
+      dueDate: car.dueDate.toISOString(),
+      done: car.done,
+      id: car._id.toString(),
     };
   }
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(createCarDto: CreateCarDto): Promise<Car> {
     try {
-      const createdTask = new this.taskModel(createTaskDto);
-      return await createdTask.save();
+      const createdCar = new this.carModel(createCarDto);
+      return await createdCar.save();
     } catch (error) {
       if ((error?.message as string)?.includes('E11000')) {
-        throw new Error(`${createTaskDto.name} name is taken`);
+        throw new Error(`${createCarDto.name} name is taken`);
       }
     }
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.taskModel.find().exec();
+  async findAll(): Promise<Car[]> {
+    return this.carModel.find().exec();
   }
 
   async find(id: string | number, name: string) {
-    const task = await this.taskModel.findOne({ id, name });
+    const car = await this.carModel.findOne({ id, name });
 
-    if (!task) {
-      throw new Error(`task with id ${id} or name ${name} not found`);
+    if (!car) {
+      throw new Error(`car with id ${id} or name ${name} not found`);
     }
 
-    return task;
+    return car;
   }
 
-  async addField(taskName: string, ...fields: FieldsArray) {
-    const task = await this.find('', taskName);
+  async addField(carName: string, ...fields: FieldsArray) {
+    const car = await this.find('', carName);
 
-    task.fieldsArray = fields;
+    car.fieldsArray = fields;
 
-    await task.save();
+    await car.save();
 
-    return task;
+    return car;
   }
 
-  async deleteField(taskName: string, fieldName: string) {
-    const task = await this.find('', taskName);
+  async deleteField(carName: string, fieldName: string) {
+    const car = await this.find('', carName);
 
-    task.fields.delete(fieldName);
+    car.fields.delete(fieldName);
 
-    await task.save();
+    await car.save();
 
-    return task;
+    return car;
   }
 
-  async updateTask(
+  async updateCar(
     { id, name }: { name?: string; id?: string },
-    uTask: UpdateTaskDto,
-  ): Promise<Task> {
-    let task: TaskDocument;
+    uCar: UpdateCarDto,
+  ): Promise<Car> {
+    let car: CarDocument;
     if (id) {
-      task = await this.taskModel.findById(id);
+      car = await this.carModel.findById(id);
     } else {
-      task = await this.taskModel.findOne({ name });
+      car = await this.carModel.findOne({ name });
     }
 
-    if (!task) {
-      throw new Error(`task with id ${id} or name ${name} not found`);
+    if (!car) {
+      throw new Error(`car with id ${id} or name ${name} not found`);
     }
 
-    Object.assign(task, uTask);
+    Object.assign(car, uCar);
 
-    await task.save();
-    return task;
+    await car.save();
+    return car;
   }
 
-  async deleteTask(id: number | string) {
-    const task = await this.taskModel.findOneAndDelete({
+  async deleteCar(id: number | string) {
+    const car = await this.carModel.findOneAndDelete({
       name: { $regex: `^${id}$`, $options: 'i' },
     });
 
-    if (!task) {
-      throw new Error(`task with name ${id} not found`);
+    if (!car) {
+      throw new Error(`car with name ${id} not found`);
     }
 
-    return task;
+    return car;
   }
 }

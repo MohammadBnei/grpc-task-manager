@@ -1,60 +1,60 @@
 import { Controller, HttpStatus, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { TaskService } from './task.service';
+import { CarService } from './car.service';
 import {
-  DeleteTaskRequest,
-  CreateTaskRequest,
-  GetTaskRequest,
-  ListTasksRequest,
-  ListTasksResponse,
-  StreamTasksRequest,
-  StreamTasksResponse,
-  GetTaskResponse,
-  CreateTaskResponse,
-  DeleteTaskResponse,
-} from '../stubs/task/v1beta/request';
+  DeleteCarRequest,
+  CreateCarRequest,
+  GetCarRequest,
+  ListCarsRequest,
+  ListCarsResponse,
+  StreamCarsRequest,
+  StreamCarsResponse,
+  GetCarResponse,
+  CreateCarResponse,
+  DeleteCarResponse,
+} from '../stubs/car/v1beta/request';
 import { Observable } from 'rxjs';
 import { ProfanityService } from 'src/profanity/profanity.service';
 import { StreamsService } from 'src/streams/streams.service';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { CreateTaskDto } from './entity/task.dto';
+import { CreateCarDto } from './entity/car.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
-@Controller('task')
-export class TaskController {
+@Controller('car')
+export class CarController {
   constructor(
-    private taskService: TaskService,
+    private carService: CarService,
     private profanityService: ProfanityService,
     private streams: StreamsService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
-  @GrpcMethod('TaskService')
-  async GetTask(request: GetTaskRequest): Promise<GetTaskResponse> {
+  @GrpcMethod('CarService')
+  async GetCar(request: GetCarRequest): Promise<GetCarResponse> {
     const name = request.name;
 
     try {
-      const task = await this.taskService.find('', name);
+      const car = await this.carService.find('', name);
 
-      const pbTask = this.taskService.toTaskPb(task);
+      const pbCar = this.carService.toCarPb(car);
 
-      return { task: pbTask };
+      return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  @GrpcMethod('TaskService')
-  async ListTasks(request: ListTasksRequest): Promise<ListTasksResponse> {
+  @GrpcMethod('CarService')
+  async ListCars(request: ListCarsRequest): Promise<ListCarsResponse> {
     try {
-      const tasks = await this.taskService.findAll();
+      const cars = await this.carService.findAll();
 
-      return { tasks: tasks.map(this.taskService.toTaskPb), nextPageToken: '' };
+      return { cars: cars.map(this.carService.toCarPb), nextPageToken: '' };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
@@ -62,64 +62,64 @@ export class TaskController {
   }
 
   @UseGuards(GrpcAuthGuard)
-  @GrpcMethod('TaskService')
-  async CreateTask(request: CreateTaskRequest): Promise<CreateTaskResponse> {
+  @GrpcMethod('CarService')
+  async CreateCar(request: CreateCarRequest): Promise<CreateCarResponse> {
     try {
-      await this.validateDto(request.task, CreateTaskDto);
-      const nTask = {
-        name: request.task.name,
-        dueDate: new Date(request.task.dueDate),
+      await this.validateDto(request.car, CreateCarDto);
+      const nCar = {
+        name: request.car.name,
+        dueDate: new Date(request.car.dueDate),
       };
-      if (!nTask.name)
+      if (!nCar.name)
         throw new RpcException({
           message: 'No name provided',
           code: HttpStatus.BAD_REQUEST,
           status: status.INVALID_ARGUMENT,
         });
 
-      this.profanityService.checkTask(request.task);
+      this.profanityService.checkCar(request.car);
 
-      const task = await this.taskService.create(nTask);
-      const pbTask = this.taskService.toTaskPb(task);
+      const car = await this.carService.create(nCar);
+      const pbCar = this.carService.toCarPb(car);
 
-      this.streams.taskStream$.next({
+      this.streams.carStream$.next({
         eventType: 'create',
-        task: pbTask,
+        car: pbCar,
       });
 
-      return { task: pbTask };
+      return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
       throw new RpcException(error);
     }
   }
 
-  // @GrpcMethod('TaskService')
-  // async UpdateTask(request: UpdateTaskRequest): Promise<TaskResponse> {
+  // @GrpcMethod('CarService')
+  // async UpdateCar(request: UpdateCarRequest): Promise<CarResponse> {
   //   try {
-  //     const nTask = {
-  //       fields: request.task.fields,
-  //       dueDate: new Date(request.task.dueDate),
+  //     const nCar = {
+  //       fields: request.car.fields,
+  //       dueDate: new Date(request.car.dueDate),
   //     };
 
-  //     this.profanityService.checkTask(request.task);
+  //     this.profanityService.checkCar(request.car);
 
-  //     const task = await this.taskService.updateTask(
-  //       { name: request.task.name },
-  //       nTask,
+  //     const car = await this.carService.updateCar(
+  //       { name: request.car.name },
+  //       nCar,
   //     );
-  //     const pbTask = Task.create({
-  //       name: task.name,
-  //       fields: task.fieldsArray,
-  //       dueDate: task.dueDate.toISOString(),
+  //     const pbCar = Car.create({
+  //       name: car.name,
+  //       fields: car.fieldsArray,
+  //       dueDate: car.dueDate.toISOString(),
   //     });
 
-  //     this.streams.taskStream$.next({
+  //     this.streams.carStream$.next({
   //       eventType: 'update',
-  //       task: pbTask,
+  //       car: pbCar,
   //     });
 
-  //     return { task: pbTask };
+  //     return { car: pbCar };
   //   } catch (error) {
   // this.logger.error(error);
 
@@ -127,18 +127,18 @@ export class TaskController {
   //   }
   // }
 
-  @GrpcMethod('TaskService')
-  async DeleteTask(request: DeleteTaskRequest): Promise<DeleteTaskResponse> {
+  @GrpcMethod('CarService')
+  async DeleteCar(request: DeleteCarRequest): Promise<DeleteCarResponse> {
     try {
-      const task = await this.taskService.deleteTask(request.name);
-      const pbTask = this.taskService.toTaskPb(task);
+      const car = await this.carService.deleteCar(request.name);
+      const pbCar = this.carService.toCarPb(car);
 
-      this.streams.taskStream$.next({
+      this.streams.carStream$.next({
         eventType: 'delete',
-        task: pbTask,
+        car: pbCar,
       });
 
-      return { task: pbTask };
+      return { car: pbCar };
     } catch (error) {
       this.logger.error(error);
 
@@ -146,10 +146,10 @@ export class TaskController {
     }
   }
 
-  @GrpcMethod('TaskService')
-  StreamTasks(request: StreamTasksRequest): Observable<StreamTasksResponse> {
+  @GrpcMethod('CarService')
+  StreamCars(request: StreamCarsRequest): Observable<StreamCarsResponse> {
     try {
-      return this.streams.taskStream$.asObservable();
+      return this.streams.carStream$.asObservable();
     } catch (error) {
       this.logger.error(error);
 

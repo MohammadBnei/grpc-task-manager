@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package task.v1beta;
+package race.v1beta;
 
-message Task {
+message Race {
   string name = 1;
   repeated Field fields = 2;
   string due_date = 3;
@@ -15,21 +15,21 @@ message Field {
   FieldType type = 3;
 }
 
-service TaskService {
-  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
-  rpc GetTask(GetTaskRequest) returns (TaskResponse) {}
-  rpc CreateTask(CreateTaskRequest) returns (TaskResponse) {}
-  rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse) {}
-  rpc DeleteTask(DeleteTaskRequest) returns (TaskResponse) {}
+service RaceService {
+  rpc ListRaces(ListRacesRequest) returns (ListRacesResponse) {}
+  rpc GetRace(GetRaceRequest) returns (RaceResponse) {}
+  rpc CreateRace(CreateRaceRequest) returns (RaceResponse) {}
+  rpc UpdateRace(UpdateRaceRequest) returns (RaceResponse) {}
+  rpc DeleteRace(DeleteRaceRequest) returns (RaceResponse) {}
 
-  rpc UpdateDate(UpdateDateRequest) returns (TaskResponse) {}
+  rpc UpdateDate(UpdateDateRequest) returns (RaceResponse) {}
 
-  rpc StreamTasks(StreamTasksRequest) returns (stream StreamTasksResponse) {}
+  rpc StreamRaces(StreamRacesRequest) returns (stream StreamRacesResponse) {}
 }
 
 service FieldService {
-  rpc AddField(AddFieldRequest) returns (TaskResponse) {}
-  rpc RemoveField(RemoveFieldRequest) returns (TaskResponse) {}
+  rpc AddField(AddFieldRequest) returns (RaceResponse) {}
+  rpc RemoveField(RemoveFieldRequest) returns (RaceResponse) {}
 }
 
 service UsageService {
@@ -42,19 +42,19 @@ enum FieldType {
 }
 
 message AddFieldRequest {
-  string task_name = 1;
+  string race_name = 1;
   string field_name = 2;
   string field_value = 3;
   FieldType field_type = 4;
 }
 
 message UpdateDateRequest {
-  string task_name = 1;
+  string race_name = 1;
   string due_date = 2;
 }
 
 message RemoveFieldRequest {
-  string task_name = 1;
+  string race_name = 1;
   string field_name = 2;
 }
 
@@ -67,24 +67,24 @@ enum EventType {
 
 message UsageRequest {
   string username = 1;
-  string task_name = 2;
+  string race_name = 2;
   EventType event_type = 3;
 }
 
 message UsageResponse {
   string username = 1;
-  string task_name = 2;
+  string race_name = 2;
   EventType event_type = 3;
 }
 
-message StreamTasksRequest {}
+message StreamRacesRequest {}
 
-message StreamTasksResponse {
-  Task task = 1;
+message StreamRacesResponse {
+  Race race = 1;
   string event_type = 2;
 }
 
-message ListTasksRequest {
+message ListRacesRequest {
   // The parent resource name, for example, "shelves/shelf1"
   string parent = 1;
 
@@ -95,41 +95,41 @@ message ListTasksRequest {
   string page_token = 3;
 }
 
-message ListTasksResponse {
-  // The field name should match the noun "Task" in the method name.
+message ListRacesResponse {
+  // The field name should match the noun "Race" in the method name.
   // There will be a maximum number of items returned based on the page_size field in the request.
-  repeated Task tasks = 1;
+  repeated Race races = 1;
 
   // Token to retrieve the next page of results, or empty if there are no more results in the list.
   string next_page_token = 2;
 }
 
-message GetTaskRequest {
+message GetRaceRequest {
   // The field will contain name of the resource requested.
   string name = 1;
 }
-message TaskResponse {
-  Task task = 1;
+message RaceResponse {
+  Race race = 1;
 }
 
-message CreateTaskRequest {
-  // The parent resource name where the Task is to be created.
+message CreateRaceRequest {
+  // The parent resource name where the Race is to be created.
   string parent = 1;
 
-  // The Task id to use for this Task.
-  string task_id = 2;
+  // The Race id to use for this Race.
+  string race_id = 2;
 
-  // The Task resource to create.
+  // The Race resource to create.
   // The field name should match the Noun in the method name.
-  Task task = 3;
+  Race race = 3;
 }
 
-message UpdateTaskRequest {
-  // The Task resource which replaces the resource on the server.
-  Task task = 1;
+message UpdateRaceRequest {
+  // The Race resource which replaces the resource on the server.
+  Race race = 1;
 }
 
-message DeleteTaskRequest {
-  // The resource name of the Task to be deleted.
+message DeleteRaceRequest {
+  // The resource name of the Race to be deleted.
   string name = 1;
 }

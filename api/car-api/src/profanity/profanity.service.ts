@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from 'src/stubs/task/v1beta/message';
+import { Car } from 'src/stubs/car/v1beta/message';
 import { profanity, changeMainLanguage } from 'super-profanity';
 
 interface ProfanityResult {
@@ -16,13 +16,13 @@ export class ProfanityService {
     this.profanity = profanity;
   }
 
-  checkTask(task: Partial<Task>): void {
-    let result: ProfanityResult = this.profanity(task.name || '');
+  checkCar(car: Partial<Car>): void {
+    let result: ProfanityResult = this.profanity(car.name || '');
     if (result.isBadWord) throw this.createError(result);
 
-    if (!task.fields) return;
+    if (!car.fields) return;
 
-    for (const { name, value } of task.fields) {
+    for (const { name, value } of car.fields) {
       result = this.profanity(name);
       if (result.isBadWord) throw this.createError(result);
 

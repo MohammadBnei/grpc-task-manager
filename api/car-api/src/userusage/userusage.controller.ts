@@ -4,7 +4,7 @@ import {
   UsingResponse,
   UsingStreamRequest,
   UsingStreamResponse,
-} from '../stubs/task/v1beta/request';
+} from '../stubs/car/v1beta/request';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { StreamsService } from 'src/streams/streams.service';
@@ -15,17 +15,17 @@ export class UserusageController {
 
   @GrpcMethod('UsageService')
   async Using(request: UsingRequest): Promise<UsingResponse> {
-    const { username, taskName, eventType } = request;
+    const { username, carName, eventType } = request;
 
     this.streams.usageStream$.next({
       username,
-      taskName,
+      carName,
       eventType,
     });
 
     return {
       username,
-      taskName,
+      carName,
       eventType,
     };
   }
