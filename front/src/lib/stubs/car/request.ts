@@ -19,13 +19,13 @@ export interface ListCarsRequest {
     /**
      * The maximum number of items to return.
      *
-     * @generated from protobuf field: int32 page_size = 2;
+     * @generated from protobuf field: int32 page_size = 1;
      */
     pageSize: number;
     /**
      * The next_page_token value returned from a previous List request, if any.
      *
-     * @generated from protobuf field: string page_token = 3;
+     * @generated from protobuf field: string page_token = 2;
      */
     pageToken: string;
 }
@@ -54,9 +54,9 @@ export interface GetCarRequest {
     /**
      * The field will contain name of the resource requested.
      *
-     * @generated from protobuf field: int32 id = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    id: number;
+    id: string;
 }
 /**
  * @generated from protobuf message car.GetCarResponse
@@ -72,11 +72,13 @@ export interface GetCarResponse {
  */
 export interface CreateCarRequest {
     /**
-     * The Car resource to create.
-     *
-     * @generated from protobuf field: car.Car car = 1;
+     * @generated from protobuf field: string brand = 3;
      */
-    car?: Car;
+    brand: string;
+    /**
+     * @generated from protobuf field: string model = 4;
+     */
+    model: string;
 }
 /**
  * @generated from protobuf message car.CreateCarResponse
@@ -92,15 +94,17 @@ export interface CreateCarResponse {
  */
 export interface UpdateCarRequest {
     /**
-     * @generated from protobuf field: int32 carId = 1;
+     * @generated from protobuf field: string carId = 1;
      */
-    carId: number;
+    carId: string;
     /**
-     * The Car resource which replaces the resource on the server.
-     *
-     * @generated from protobuf field: car.Car car = 2;
+     * @generated from protobuf field: string brand = 3;
      */
-    car?: Car;
+    brand: string;
+    /**
+     * @generated from protobuf field: string model = 4;
+     */
+    model: string;
 }
 /**
  * @generated from protobuf message car.UpdateCarResponse
@@ -116,9 +120,9 @@ export interface UpdateCarResponse {
  */
 export interface DeleteCarRequest {
     /**
-     * @generated from protobuf field: int32 id = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    id: number;
+    id: string;
 }
 /**
  * @generated from protobuf message car.DeleteCarResponse
@@ -133,8 +137,8 @@ export interface DeleteCarResponse {
 class ListCarsRequest$Type extends MessageType<ListCarsRequest> {
     constructor() {
         super("car.ListCarsRequest", [
-            { no: 2, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "page_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "page_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListCarsRequest>): ListCarsRequest {
@@ -149,10 +153,10 @@ class ListCarsRequest$Type extends MessageType<ListCarsRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 page_size */ 2:
+                case /* int32 page_size */ 1:
                     message.pageSize = reader.int32();
                     break;
-                case /* string page_token */ 3:
+                case /* string page_token */ 2:
                     message.pageToken = reader.string();
                     break;
                 default:
@@ -167,12 +171,12 @@ class ListCarsRequest$Type extends MessageType<ListCarsRequest> {
         return message;
     }
     internalBinaryWrite(message: ListCarsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 page_size = 2; */
+        /* int32 page_size = 1; */
         if (message.pageSize !== 0)
-            writer.tag(2, WireType.Varint).int32(message.pageSize);
-        /* string page_token = 3; */
+            writer.tag(1, WireType.Varint).int32(message.pageSize);
+        /* string page_token = 2; */
         if (message.pageToken !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.pageToken);
+            writer.tag(2, WireType.LengthDelimited).string(message.pageToken);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -241,11 +245,11 @@ export const ListCarsResponse = new ListCarsResponse$Type();
 class GetCarRequest$Type extends MessageType<GetCarRequest> {
     constructor() {
         super("car.GetCarRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetCarRequest>): GetCarRequest {
-        const message = { id: 0 };
+        const message = { id: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<GetCarRequest>(this, message, value);
@@ -256,8 +260,8 @@ class GetCarRequest$Type extends MessageType<GetCarRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 id */ 1:
-                    message.id = reader.int32();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -271,9 +275,9 @@ class GetCarRequest$Type extends MessageType<GetCarRequest> {
         return message;
     }
     internalBinaryWrite(message: GetCarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 id = 1; */
-        if (message.id !== 0)
-            writer.tag(1, WireType.Varint).int32(message.id);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -335,11 +339,12 @@ export const GetCarResponse = new GetCarResponse$Type();
 class CreateCarRequest$Type extends MessageType<CreateCarRequest> {
     constructor() {
         super("car.CreateCarRequest", [
-            { no: 1, name: "car", kind: "message", T: () => Car }
+            { no: 3, name: "brand", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "model", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CreateCarRequest>): CreateCarRequest {
-        const message = {};
+        const message = { brand: "", model: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<CreateCarRequest>(this, message, value);
@@ -350,8 +355,11 @@ class CreateCarRequest$Type extends MessageType<CreateCarRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* car.Car car */ 1:
-                    message.car = Car.internalBinaryRead(reader, reader.uint32(), options, message.car);
+                case /* string brand */ 3:
+                    message.brand = reader.string();
+                    break;
+                case /* string model */ 4:
+                    message.model = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -365,9 +373,12 @@ class CreateCarRequest$Type extends MessageType<CreateCarRequest> {
         return message;
     }
     internalBinaryWrite(message: CreateCarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* car.Car car = 1; */
-        if (message.car)
-            Car.internalBinaryWrite(message.car, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string brand = 3; */
+        if (message.brand !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.brand);
+        /* string model = 4; */
+        if (message.model !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.model);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -429,12 +440,13 @@ export const CreateCarResponse = new CreateCarResponse$Type();
 class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
     constructor() {
         super("car.UpdateCarRequest", [
-            { no: 1, name: "carId", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 2, name: "car", kind: "message", T: () => Car }
+            { no: 1, name: "carId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "brand", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "model", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateCarRequest>): UpdateCarRequest {
-        const message = { carId: 0 };
+        const message = { carId: "", brand: "", model: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UpdateCarRequest>(this, message, value);
@@ -445,11 +457,14 @@ class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 carId */ 1:
-                    message.carId = reader.int32();
+                case /* string carId */ 1:
+                    message.carId = reader.string();
                     break;
-                case /* car.Car car */ 2:
-                    message.car = Car.internalBinaryRead(reader, reader.uint32(), options, message.car);
+                case /* string brand */ 3:
+                    message.brand = reader.string();
+                    break;
+                case /* string model */ 4:
+                    message.model = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -463,12 +478,15 @@ class UpdateCarRequest$Type extends MessageType<UpdateCarRequest> {
         return message;
     }
     internalBinaryWrite(message: UpdateCarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 carId = 1; */
-        if (message.carId !== 0)
-            writer.tag(1, WireType.Varint).int32(message.carId);
-        /* car.Car car = 2; */
-        if (message.car)
-            Car.internalBinaryWrite(message.car, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* string carId = 1; */
+        if (message.carId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.carId);
+        /* string brand = 3; */
+        if (message.brand !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.brand);
+        /* string model = 4; */
+        if (message.model !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.model);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -530,11 +548,11 @@ export const UpdateCarResponse = new UpdateCarResponse$Type();
 class DeleteCarRequest$Type extends MessageType<DeleteCarRequest> {
     constructor() {
         super("car.DeleteCarRequest", [
-            { no: 1, name: "id", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DeleteCarRequest>): DeleteCarRequest {
-        const message = { id: 0 };
+        const message = { id: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<DeleteCarRequest>(this, message, value);
@@ -545,8 +563,8 @@ class DeleteCarRequest$Type extends MessageType<DeleteCarRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 id */ 1:
-                    message.id = reader.int32();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -560,9 +578,9 @@ class DeleteCarRequest$Type extends MessageType<DeleteCarRequest> {
         return message;
     }
     internalBinaryWrite(message: DeleteCarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 id = 1; */
-        if (message.id !== 0)
-            writer.tag(1, WireType.Varint).int32(message.id);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

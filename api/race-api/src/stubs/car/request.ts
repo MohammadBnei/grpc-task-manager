@@ -26,7 +26,7 @@ export interface ListCarsResponse {
 
 export interface GetCarRequest {
   /** The field will contain name of the resource requested. */
-  id?: number | undefined;
+  id?: string | undefined;
 }
 
 export interface GetCarResponse {
@@ -34,8 +34,8 @@ export interface GetCarResponse {
 }
 
 export interface CreateCarRequest {
-  /** The Car resource to create. */
-  car?: Car | undefined;
+  brand?: string | undefined;
+  model?: string | undefined;
 }
 
 export interface CreateCarResponse {
@@ -43,11 +43,9 @@ export interface CreateCarResponse {
 }
 
 export interface UpdateCarRequest {
-  carId?:
-    | number
-    | undefined;
-  /** The Car resource which replaces the resource on the server. */
-  car?: Car | undefined;
+  carId?: string | undefined;
+  brand?: string | undefined;
+  model?: string | undefined;
 }
 
 export interface UpdateCarResponse {
@@ -55,7 +53,7 @@ export interface UpdateCarResponse {
 }
 
 export interface DeleteCarRequest {
-  id?: number | undefined;
+  id?: string | undefined;
 }
 
 export interface DeleteCarResponse {

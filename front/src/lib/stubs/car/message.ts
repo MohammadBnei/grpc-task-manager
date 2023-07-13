@@ -16,13 +16,13 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Car {
     /**
-     * @generated from protobuf field: int32 car_id = 1;
+     * @generated from protobuf field: string car_id = 1;
      */
-    carId: number;
+    carId: string;
     /**
-     * @generated from protobuf field: int32 driver_id = 2;
+     * @generated from protobuf field: string driver_id = 2;
      */
-    driverId: number;
+    driverId: string;
     /**
      * @generated from protobuf field: string brand = 3;
      */
@@ -36,14 +36,14 @@ export interface Car {
 class Car$Type extends MessageType<Car> {
     constructor() {
         super("car.Car", [
-            { no: 1, name: "car_id", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 2, name: "driver_id", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "car_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "driver_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "brand", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "model", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Car>): Car {
-        const message = { carId: 0, driverId: 0, brand: "", model: "" };
+        const message = { carId: "", driverId: "", brand: "", model: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Car>(this, message, value);
@@ -54,11 +54,11 @@ class Car$Type extends MessageType<Car> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 car_id */ 1:
-                    message.carId = reader.int32();
+                case /* string car_id */ 1:
+                    message.carId = reader.string();
                     break;
-                case /* int32 driver_id */ 2:
-                    message.driverId = reader.int32();
+                case /* string driver_id */ 2:
+                    message.driverId = reader.string();
                     break;
                 case /* string brand */ 3:
                     message.brand = reader.string();
@@ -78,12 +78,12 @@ class Car$Type extends MessageType<Car> {
         return message;
     }
     internalBinaryWrite(message: Car, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 car_id = 1; */
-        if (message.carId !== 0)
-            writer.tag(1, WireType.Varint).int32(message.carId);
-        /* int32 driver_id = 2; */
-        if (message.driverId !== 0)
-            writer.tag(2, WireType.Varint).int32(message.driverId);
+        /* string car_id = 1; */
+        if (message.carId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.carId);
+        /* string driver_id = 2; */
+        if (message.driverId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.driverId);
         /* string brand = 3; */
         if (message.brand !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.brand);

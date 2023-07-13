@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FieldsArray, Race, RaceDocument } from './entity/race.schema';
 import { CreateRaceDto, UpdateRaceDto } from './entity/race.dto';
-import { Race as RacePb } from '../stubs/race/v1beta/message';
+import { Race as RacePb } from '../stubs/race/message';
 @Injectable()
 export class RaceService {
   constructor(@InjectModel(Race.name) private raceModel: Model<RaceDocument>) {}

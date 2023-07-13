@@ -9,19 +9,19 @@ import { addReflectionToGrpcConfig } from 'nestjs-grpc-reflection';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_V1ALPHA_PACKAGE_NAME } from 'src/stubs/auth/v1alpha/service';
-import { TASK_V1BETA_PACKAGE_NAME } from 'src/stubs/race/v1beta/service';
+import { RACE_PACKAGE_NAME } from 'src/stubs/race/service';
 
 export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({
     transport: Transport.GRPC,
     options: {
-      package: TASK_V1BETA_PACKAGE_NAME,
+      package: RACE_PACKAGE_NAME,
       url: `0.0.0.0:${cs.get('PORT')}`,
       credentials: !cs.get<boolean>('insecure')
         ? ServerCredentials.createSsl(null, [
             {
-              private_key: readFileSync(cs.get('TASK_KEY')),
-              cert_chain: readFileSync(cs.get('TASK_CERT')),
+              private_key: readFileSync(cs.get('RACE_KEY')),
+              cert_chain: readFileSync(cs.get('RACE_CERT')),
             },
           ])
         : ServerCredentials.createInsecure(),
@@ -54,8 +54,8 @@ export const authGrpcOptions = (cs: ConfigService): ClientProviderOptions => {
       credentials: !cs.get<boolean>('insecure')
         ? ChannelCredentials.createSsl(
             readFileSync(cs.get('ROOT_CA')),
-            readFileSync(cs.get('TASK_KEY')),
-            readFileSync(cs.get('TASK_CERT')),
+            readFileSync(cs.get('RACE_KEY')),
+            readFileSync(cs.get('RACE_CERT')),
           )
         : ChannelCredentials.createInsecure(),
     },

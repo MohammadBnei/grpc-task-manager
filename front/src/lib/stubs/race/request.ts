@@ -17,21 +17,15 @@ import { Race } from "./message";
  */
 export interface ListRacesRequest {
     /**
-     * The parent resource name, for example, "shelves/shelf1"
-     *
-     * @generated from protobuf field: string parent = 1;
-     */
-    parent: string;
-    /**
      * The maximum number of items to return.
      *
-     * @generated from protobuf field: int32 page_size = 2;
+     * @generated from protobuf field: int32 page_size = 1;
      */
     pageSize: number;
     /**
      * The next_page_token value returned from a previous List request, if any.
      *
-     * @generated from protobuf field: string page_token = 3;
+     * @generated from protobuf field: string page_token = 2;
      */
     pageToken: string;
 }
@@ -60,9 +54,9 @@ export interface GetRaceRequest {
     /**
      * The field will contain name of the resource requested.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    name: string;
+    id: string;
 }
 /**
  * @generated from protobuf message race.GetRaceResponse
@@ -78,24 +72,9 @@ export interface GetRaceResponse {
  */
 export interface CreateRaceRequest {
     /**
-     * The parent resource name where the Race is to be created.
-     *
-     * @generated from protobuf field: string parent = 1;
+     * @generated from protobuf field: string name = 1;
      */
-    parent: string;
-    /**
-     * The Race id to use for this Race.
-     *
-     * @generated from protobuf field: string race_id = 2;
-     */
-    raceId: string;
-    /**
-     * The Race resource to create.
-     * The field name should match the Noun in the method name.
-     *
-     * @generated from protobuf field: race.Race race = 3;
-     */
-    race?: Race;
+    name: string;
 }
 /**
  * @generated from protobuf message race.CreateRaceResponse
@@ -113,9 +92,13 @@ export interface UpdateRaceRequest {
     /**
      * The Race resource which replaces the resource on the server.
      *
-     * @generated from protobuf field: race.Race race = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    race?: Race;
+    id: string;
+    /**
+     * @generated from protobuf field: string name = 2;
+     */
+    name: string;
 }
 /**
  * @generated from protobuf message race.UpdateRaceResponse
@@ -133,9 +116,9 @@ export interface DeleteRaceRequest {
     /**
      * The resource name of the Race to be deleted.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string id = 1;
      */
-    name: string;
+    id: string;
 }
 /**
  * @generated from protobuf message race.DeleteRaceResponse
@@ -150,13 +133,12 @@ export interface DeleteRaceResponse {
 class ListRacesRequest$Type extends MessageType<ListRacesRequest> {
     constructor() {
         super("race.ListRacesRequest", [
-            { no: 1, name: "parent", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "page_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "page_token", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListRacesRequest>): ListRacesRequest {
-        const message = { parent: "", pageSize: 0, pageToken: "" };
+        const message = { pageSize: 0, pageToken: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<ListRacesRequest>(this, message, value);
@@ -167,13 +149,10 @@ class ListRacesRequest$Type extends MessageType<ListRacesRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string parent */ 1:
-                    message.parent = reader.string();
-                    break;
-                case /* int32 page_size */ 2:
+                case /* int32 page_size */ 1:
                     message.pageSize = reader.int32();
                     break;
-                case /* string page_token */ 3:
+                case /* string page_token */ 2:
                     message.pageToken = reader.string();
                     break;
                 default:
@@ -188,15 +167,12 @@ class ListRacesRequest$Type extends MessageType<ListRacesRequest> {
         return message;
     }
     internalBinaryWrite(message: ListRacesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string parent = 1; */
-        if (message.parent !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.parent);
-        /* int32 page_size = 2; */
+        /* int32 page_size = 1; */
         if (message.pageSize !== 0)
-            writer.tag(2, WireType.Varint).int32(message.pageSize);
-        /* string page_token = 3; */
+            writer.tag(1, WireType.Varint).int32(message.pageSize);
+        /* string page_token = 2; */
         if (message.pageToken !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.pageToken);
+            writer.tag(2, WireType.LengthDelimited).string(message.pageToken);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -265,11 +241,11 @@ export const ListRacesResponse = new ListRacesResponse$Type();
 class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
     constructor() {
         super("race.GetRaceRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetRaceRequest>): GetRaceRequest {
-        const message = { name: "" };
+        const message = { id: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<GetRaceRequest>(this, message, value);
@@ -280,8 +256,8 @@ class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -295,9 +271,9 @@ class GetRaceRequest$Type extends MessageType<GetRaceRequest> {
         return message;
     }
     internalBinaryWrite(message: GetRaceRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -359,13 +335,11 @@ export const GetRaceResponse = new GetRaceResponse$Type();
 class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
     constructor() {
         super("race.CreateRaceRequest", [
-            { no: 1, name: "parent", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "race_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "race", kind: "message", T: () => Race }
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CreateRaceRequest>): CreateRaceRequest {
-        const message = { parent: "", raceId: "" };
+        const message = { name: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<CreateRaceRequest>(this, message, value);
@@ -376,14 +350,8 @@ class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string parent */ 1:
-                    message.parent = reader.string();
-                    break;
-                case /* string race_id */ 2:
-                    message.raceId = reader.string();
-                    break;
-                case /* race.Race race */ 3:
-                    message.race = Race.internalBinaryRead(reader, reader.uint32(), options, message.race);
+                case /* string name */ 1:
+                    message.name = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -397,15 +365,9 @@ class CreateRaceRequest$Type extends MessageType<CreateRaceRequest> {
         return message;
     }
     internalBinaryWrite(message: CreateRaceRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string parent = 1; */
-        if (message.parent !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.parent);
-        /* string race_id = 2; */
-        if (message.raceId !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.raceId);
-        /* race.Race race = 3; */
-        if (message.race)
-            Race.internalBinaryWrite(message.race, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -467,11 +429,12 @@ export const CreateRaceResponse = new CreateRaceResponse$Type();
 class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
     constructor() {
         super("race.UpdateRaceRequest", [
-            { no: 1, name: "race", kind: "message", T: () => Race }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateRaceRequest>): UpdateRaceRequest {
-        const message = {};
+        const message = { id: "", name: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<UpdateRaceRequest>(this, message, value);
@@ -482,8 +445,11 @@ class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* race.Race race */ 1:
-                    message.race = Race.internalBinaryRead(reader, reader.uint32(), options, message.race);
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string name */ 2:
+                    message.name = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -497,9 +463,12 @@ class UpdateRaceRequest$Type extends MessageType<UpdateRaceRequest> {
         return message;
     }
     internalBinaryWrite(message: UpdateRaceRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* race.Race race = 1; */
-        if (message.race)
-            Race.internalBinaryWrite(message.race, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string name = 2; */
+        if (message.name !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -561,11 +530,11 @@ export const UpdateRaceResponse = new UpdateRaceResponse$Type();
 class DeleteRaceRequest$Type extends MessageType<DeleteRaceRequest> {
     constructor() {
         super("race.DeleteRaceRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DeleteRaceRequest>): DeleteRaceRequest {
-        const message = { name: "" };
+        const message = { id: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<DeleteRaceRequest>(this, message, value);
@@ -576,8 +545,8 @@ class DeleteRaceRequest$Type extends MessageType<DeleteRaceRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
+                case /* string id */ 1:
+                    message.id = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -591,9 +560,9 @@ class DeleteRaceRequest$Type extends MessageType<DeleteRaceRequest> {
         return message;
     }
     internalBinaryWrite(message: DeleteRaceRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

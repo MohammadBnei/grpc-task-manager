@@ -3,10 +3,14 @@
 export const protobufPackage = "race";
 
 export interface Race {
-  raceId?: number | undefined;
-  driverId?: number | undefined;
-  carId?: number | undefined;
+  raceId?: string | undefined;
   name?: string | undefined;
+  participants?: Participant[] | undefined;
+}
+
+export interface Participant {
+  driverId?: string | undefined;
+  carId?: string | undefined;
 }
 
 export const RACE_PACKAGE_NAME = "race";

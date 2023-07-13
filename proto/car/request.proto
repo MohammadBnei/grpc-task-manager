@@ -6,10 +6,10 @@ import "car/message.proto";
 
 message ListCarsRequest {
   // The maximum number of items to return.
-  int32 page_size = 2;
+  int32 page_size = 1;
 
   // The next_page_token value returned from a previous List request, if any.
-  string page_token = 3;
+  string page_token = 2;
 }
 
 message ListCarsResponse {
@@ -23,7 +23,7 @@ message ListCarsResponse {
 
 message GetCarRequest {
   // The field will contain name of the resource requested.
-  int32 id = 1;
+  string id = 1;
 }
 
 message GetCarResponse {
@@ -31,8 +31,8 @@ message GetCarResponse {
 }
 
 message CreateCarRequest {
-  // The Car resource to create.
-  Car car = 1;
+  string brand = 3;
+  string model = 4;
 }
 
 message CreateCarResponse {
@@ -40,9 +40,9 @@ message CreateCarResponse {
 }
 
 message UpdateCarRequest {
-  int32 carId = 1;
-  // The Car resource which replaces the resource on the server.
-  Car car = 2;
+  string carId = 1;
+  string brand = 3;
+  string model = 4;
 }
 
 message UpdateCarResponse {
@@ -50,7 +50,7 @@ message UpdateCarResponse {
 }
 
 message DeleteCarRequest {
-  int32 id = 1;
+  string id = 1;
 }
 
 message DeleteCarResponse {

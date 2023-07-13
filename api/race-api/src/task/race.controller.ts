@@ -8,15 +8,11 @@ import {
   GetRaceRequest,
   ListRacesRequest,
   ListRacesResponse,
-  StreamRacesRequest,
-  StreamRacesResponse,
   GetRaceResponse,
   CreateRaceResponse,
   DeleteRaceResponse,
-} from '../stubs/race/v1beta/request';
+} from '../stubs/race/request';
 import { Observable } from 'rxjs';
-import { ProfanityService } from 'src/profanity/profanity.service';
-import { StreamsService } from 'src/streams/streams.service';
 import { GrpcAuthGuard } from 'src/auth/auth.guard';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
@@ -28,8 +24,6 @@ import { Logger } from 'winston';
 export class RaceController {
   constructor(
     private raceService: RaceService,
-    private profanityService: ProfanityService,
-    private streams: StreamsService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -50,7 +44,7 @@ export class RaceController {
   }
 
   @GrpcMethod('RaceService')
-  async ListRaces(request: ListRacesRequest): Promise<ListRacesResponse> {
+  async ListRaces(): Promise<ListRacesResponse> {
     try {
       const races = await this.raceService.findAll();
 
@@ -77,15 +71,8 @@ export class RaceController {
           status: status.INVALID_ARGUMENT,
         });
 
-      this.profanityService.checkRace(request.race);
-
       const race = await this.raceService.create(nRace);
       const pbRace = this.raceService.toRacePb(race);
-
-      this.streams.raceStream$.next({
-        eventType: 'create',
-        race: pbRace,
-      });
 
       return { race: pbRace };
     } catch (error) {

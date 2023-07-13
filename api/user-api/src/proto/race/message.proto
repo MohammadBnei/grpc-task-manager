@@ -3,8 +3,12 @@ syntax = "proto3";
 package race;
 
 message Race {
-  int32 race_id = 1;
-  int32 driver_id = 2;
-  int32 car_id = 3;
-  string name = 4;
+  string race_id = 1;
+  string name = 2;
+  repeated Participant participants = 3;
+}
+
+message Participant {
+  string driver_id = 1;
+  string car_id = 2;
 }

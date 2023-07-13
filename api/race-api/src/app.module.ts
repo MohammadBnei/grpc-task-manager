@@ -14,11 +14,11 @@ const envSchema = Joi.object({
   PORT: Joi.string().default(4002),
   HEALTH_PORT: Joi.number().default(3000),
   insecure: Joi.boolean().required(),
-  TASK_CERT: Joi.string().when('insecure', {
+  RACE_CERT: Joi.string().when('insecure', {
     is: false,
     then: Joi.required(),
   }),
-  TASK_KEY: Joi.string().when('insecure', {
+  RACE_KEY: Joi.string().when('insecure', {
     is: false,
     then: Joi.required(),
   }),

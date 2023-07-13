@@ -61,12 +61,12 @@ export class CarController {
     @GRPCUser() user,
   ): Promise<CreateCarResponse> {
     try {
-      await this.validateDto(request.car, CreateCarDto);
+      await this.validateDto(request, CreateCarDto);
 
       const nCar = {
         driverId: user.id,
-        brand: request.car.brand,
-        model: request.car.model,
+        brand: request.brand,
+        model: request.model,
       };
 
       const car = await this.carService.create(nCar);
@@ -85,11 +85,11 @@ export class CarController {
     @GRPCUser() user,
   ): Promise<UpdateCarResponse> {
     try {
-      await this.validateDto(request.car, UpdateCarDto);
+      await this.validateDto(request, UpdateCarDto);
 
       const nCar = {
-        brand: request.car.brand,
-        model: request.car.model,
+        brand: request.brand,
+        model: request.model,
       };
 
       const car = await this.carService.updateCar(request.carId, user.id, nCar);
