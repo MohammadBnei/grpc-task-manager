@@ -1,8 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 services:
   auth-api:
-    image: gplane/pnpm:node18
+    build:
+      context: ../api/auth-api
+      dockerfile: Dockerfile
+      target: development
     working_dir: /app
     volumes:
       - ../api/auth-api:/app/
@@ -24,15 +27,17 @@ services:
     ports:
       - 4002:4000
     stdin_open: true
-    command: start:dev
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
       timeout: 10s
       retries: 5
 
   user-api:
-    image: gplane/pnpm:node18
+    build:
+      context: ../api/user-api
+      dockerfile: Dockerfile
+      target: development
     working_dir: /app
     volumes:
       - ../api/user-api:/app/
@@ -51,15 +56,17 @@ services:
     ports:
       - 4001:4000
     stdin_open: true
-    command: start:dev
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
       timeout: 10s
       retries: 5
 
   task-api:
-    image: gplane/pnpm:node18
+    build:
+      context: ../api/task-api
+      dockerfile: Dockerfile
+      target: development
     working_dir: /app
     volumes:
       - ../api/task-api:/app/
@@ -78,22 +85,24 @@ services:
     ports:
       - 4000:4000
     stdin_open: true
-    command: start:dev
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
       timeout: 10s
       retries: 5
 
   car-api:
-    image: gplane/pnpm:node18
+    build:
+      context: ../api/car-api
+      dockerfile: Dockerfile
+      target: development
     working_dir: /app
     volumes:
       - ../api/car-api:/app/
       - ../local/certs:/certs
       - /app/node_modules
       - /app/.pnpm-store
-    environment:      
+    environment:
       - MONGO_URL=mongodb://root:car@mongo-car
       - insecure=false
       - PORT=4000
@@ -105,15 +114,17 @@ services:
     ports:
       - 3999:4000
     stdin_open: true
-    command: start:dev
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
       timeout: 10s
       retries: 5
 
   race-api:
-    image: gplane/pnpm:node18
+    build:
+      context: ../api/race-api
+      dockerfile: Dockerfile
+      target: development
     working_dir: /app
     volumes:
       - ../api/race-api:/app/
@@ -121,7 +132,7 @@ services:
       - /app/node_modules
       - /app/.pnpm-store
     environment:
-      - MONGO_URL=mongodb://root:race@mongo-race      
+      - MONGO_URL=mongodb://root:race@mongo-race
       - insecure=false
       - PORT=4000
       - RACE_CERT=/certs/race.pem
@@ -132,9 +143,8 @@ services:
     ports:
       - 3998:4000
     stdin_open: true
-    command: start:dev
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 5s
       timeout: 10s
       retries: 5
