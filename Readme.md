@@ -20,11 +20,12 @@ docker compose up -d mariadb mongo tracing
 Set the .env :
 ```bash
 MYSQL_URL="mysql://root:passwd@localhost:3306/user"
-insecure=true
+PORT=4002
+AUTH_API_URL="localhost:4003"
 NODE_ENV=development
+insecure=true
 JAEGER_URL="http://localhost:4318/v1/traces"
 HEALTH_PORT=3001
-AUTH_API_URL="localhost:4003"
 ```
 
 ```bash
@@ -37,6 +38,7 @@ Set the .env :
 MYSQL_URL="mysql://root:passwd@localhost:3306/auth"
 PORT=4003
 USER_API_URL="localhost:4002"
+NODE_ENV=development
 JWT_SECRET="super-secret"
 insecure=true
 JAEGER_URL="http://localhost:4318/v1/traces"

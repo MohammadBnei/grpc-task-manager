@@ -28,7 +28,7 @@ export default (cs: ConfigService) =>
       loader: {
         includeDirs: [join(__dirname, '../proto')],
       },
-      protoPath: [join(__dirname, '../proto/race/v1beta/service.proto')],
+      protoPath: [join(__dirname, '../proto/race/service.proto')],
     },
   } as GrpcOptions);
 
