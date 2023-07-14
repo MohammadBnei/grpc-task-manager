@@ -4,13 +4,13 @@ WORKDIR /app
 
 COPY ["package.json", "pnpm-lock.yaml",  "./"]
 
-RUN pnpm install
+RUN yarn install
 
 COPY . .
 
 ENV NODE_ENV=development
 
-CMD pnpm start:dev
+CMD yarn start:dev
 
 FROM mohammaddocker/nest-prisma as production
 
