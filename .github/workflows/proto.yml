@@ -32,7 +32,8 @@ jobs:
 
       - name: Update server stubs and proto
         run: |
-          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/task-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/car-api/src/proto
+          buf export buf.build/bneiconseil/taskmanagerapi -o ./api/race-api/src/proto
           buf export buf.build/bneiconseil/taskmanagerapi -o ./api/user-api/src/proto
           buf export buf.build/bneiconseil/taskmanagerapi -o ./api/auth-api/src/proto
 

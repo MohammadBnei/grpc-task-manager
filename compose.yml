@@ -30,11 +30,6 @@ services:
       file: ./compose/compose.published.yml
       service: user-api
 
-  task-api:
-    extends:
-      file: ./compose/compose.published.yml
-      service: task-api
-
 networks:
   default:
     external: true

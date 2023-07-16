@@ -1,3 +1,4 @@
 (cd user-api && docker build -t mohammaddocker/tm-user-api . && docker push mohammaddocker/tm-user-api)
 (cd auth-api && docker build -t mohammaddocker/tm-auth-api . && docker push mohammaddocker/tm-auth-api)
-(cd task-api && docker build -t mohammaddocker/tm-task-api . && docker push mohammaddocker/tm-task-api)
+(cd car-api && docker build -t mohammaddocker/tm-car-api . && docker push mohammaddocker/tm-car-api)
+(cd race-api && docker build -t mohammaddocker/tm-race-api . && docker push mohammaddocker/tm-race-api)

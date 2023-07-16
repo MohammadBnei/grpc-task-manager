@@ -39,11 +39,6 @@ services:
     extends:
       file: ./compose/compose.local.yml
       service: user-api
-
-  task-api:
-    extends:
-      file: ./compose/compose.local.yml
-      service: task-api
   
   car-api:
     extends:
