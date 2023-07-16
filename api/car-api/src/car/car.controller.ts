@@ -1,5 +1,5 @@
-import { Controller, Inject, UseGuards } from '@nestjs/common';
-import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { Controller, Inject, Request, UseGuards } from '@nestjs/common';
+import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CarService } from './car.service';
 import {
@@ -57,14 +57,13 @@ export class CarController {
   @UseGuards(GrpcAuthGuard)
   @GrpcMethod('CarService')
   async CreateCar(
-    request: CreateCarRequest,
+    @Payload() request: CreateCarRequest,
     @GRPCUser() user,
   ): Promise<CreateCarResponse> {
     try {
       await this.validateDto(request, CreateCarDto);
-
       const nCar = {
-        driverId: user.id,
+        driver_id: user.id,
         brand: request.brand,
         model: request.model,
       };

@@ -20,8 +20,8 @@ docker compose up -d mariadb mongo tracing
 Set the .env :
 ```bash
 MYSQL_URL="mysql://root:passwd@localhost:3306/user"
-PORT=4002
-AUTH_API_URL="localhost:4003"
+PORT=4001
+AUTH_API_URL="localhost:4002"
 NODE_ENV=development
 insecure=true
 JAEGER_URL="http://localhost:4318/v1/traces"
@@ -36,8 +36,8 @@ npx prisma migrate dev
 Set the .env :
 ```bash
 MYSQL_URL="mysql://root:passwd@localhost:3306/auth"
-PORT=4003
-USER_API_URL="localhost:4002"
+PORT=4002
+USER_API_URL="localhost:4001"
 NODE_ENV=development
 JWT_SECRET="super-secret"
 insecure=true

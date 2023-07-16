@@ -61,36 +61,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
-
-  task-api:
-    build:
-      context: ../api/task-api
-      dockerfile: Dockerfile
-      target: development
-    working_dir: /app
-    volumes:
-      - ../api/task-api:/app/
-      - ../local/certs:/certs
-      - /app/node_modules
-      - /app/.pnpm-store
-    environment:
-      - MONGO_URL=mongodb://root:task@mongo
-      - insecure=false
-      - PORT=4000
-      - TASK_CERT=/certs/task.pem
-      - TASK_KEY=/certs/task-key.pem
-      - AUTH_API_URL=auth-api:4000
-      - ROOT_CA=/certs/rootCA.pem
-      - JAEGER_URL=http://tracing:14268/api/traces
-    ports:
-      - 4000:4000
-    stdin_open: true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
+      
   car-api:
     build:
       context: ../api/car-api
