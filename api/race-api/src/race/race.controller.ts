@@ -19,6 +19,8 @@ import { plainToInstance } from 'class-transformer';
 import { CreateRaceDto } from './entity/race.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+import { Roles } from 'src/auth/role.decorator';
+import { UserRole } from 'src/stubs/user/v1alpha/message';
 
 @Controller('race')
 export class RaceController {
@@ -54,6 +56,7 @@ export class RaceController {
   }
 
   @UseGuards(GrpcAuthGuard)
+  @Roles(UserRole.USER_ROLE_ADMIN)
   @GrpcMethod('RaceService')
   async CreateRace(request: CreateRaceRequest): Promise<CreateRaceResponse> {
     try {
@@ -73,6 +76,8 @@ export class RaceController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
+  @Roles(UserRole.USER_ROLE_ADMIN)
   @GrpcMethod('RaceService')
   async UpdateRace(request: UpdateRaceRequest): Promise<UpdateRaceResponse> {
     try {
@@ -92,6 +97,8 @@ export class RaceController {
     }
   }
 
+  @UseGuards(GrpcAuthGuard)
+  @Roles(UserRole.USER_ROLE_ADMIN)
   @GrpcMethod('RaceService')
   async DeleteRace(request: DeleteRaceRequest): Promise<DeleteRaceResponse> {
     try {
