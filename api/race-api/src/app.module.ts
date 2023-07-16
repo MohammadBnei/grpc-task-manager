@@ -8,6 +8,7 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
 import winstonConfig from './config/winston.config';
+import { RaceModule } from './race/race.module';
 
 const envSchema = Joi.object({
   MONGO_URL: Joi.string().required(),
@@ -50,6 +51,7 @@ const envSchema = Joi.object({
     }),
     AuthModule,
     HealthModule,
+    RaceModule,
   ],
 })
 export class AppModule {}

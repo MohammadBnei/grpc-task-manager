@@ -6,11 +6,6 @@ services:
       file: ./compose/compose.db.yml
       service: mariadb
 
-  mongo:
-    extends:
-      file: ./compose/compose.db.yml
-      service: mongo
-
   mongo-car:
     extends:
       file: ./compose/compose.db.yml
