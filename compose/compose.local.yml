@@ -19,9 +19,9 @@ services:
       - AUTH_KEY=/certs/auth-key.pem
       - PORT=4000
       - USER_API_URL=user-api:4000
-      - JWT_SECRET=super-secret
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
+      - JWT_SECRET=super-secret
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
@@ -84,8 +84,10 @@ services:
       - AUTH_API_URL=auth-api:4000
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
+      - USER_API_URL=user-api:4000
       - USER_CERT=/certs/user.pem
       - USER_KEY=/certs/user-key.pem
+
     ports:
       - 3999:4000
     stdin_open: true

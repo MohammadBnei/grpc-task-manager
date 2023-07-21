@@ -3,21 +3,22 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption, {userGrpcOptions} from './config/grpc.option';
+import grpcOption, { userGrpcOptions } from './config/grpc.option';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
 import winstonConfig from './config/winston.config';
 import { CarModule } from './car/car.module';
 import { AppService } from './app.service';
-import {ClientsModule} from "@nestjs/microservices";
-import {USER_SERVICE_NAME} from "./stubs/user/v1alpha/service";
+import { ClientsModule } from '@nestjs/microservices';
+import { USER_SERVICE_NAME } from './stubs/user/v1alpha/service';
 
 const envSchema = Joi.object({
   MONGO_URL: Joi.string().required(),
   PORT: Joi.string().default(4002),
   HEALTH_PORT: Joi.number().default(3000),
   insecure: Joi.boolean().required(),
+  USER_API_URL: Joi.string().required(),
   CAR_CERT: Joi.string().when('insecure', {
     is: false,
     then: Joi.required(),
@@ -36,14 +37,6 @@ const envSchema = Joi.object({
 
 @Module({
   imports: [
-    ClientsModule.registerAsync([
-      {
-        name: USER_SERVICE_NAME,
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: (cs: ConfigService) => userGrpcOptions(cs),
-      },
-    ]),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: envSchema,
@@ -64,6 +57,5 @@ const envSchema = Joi.object({
     HealthModule,
     CarModule,
   ],
-  providers: [ AppService ]
 })
 export class AppModule {}

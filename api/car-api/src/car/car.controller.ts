@@ -1,4 +1,4 @@
-import { Controller, Inject, Request, UseGuards } from '@nestjs/common';
+import { Controller, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CarService } from './car.service';
@@ -20,11 +20,14 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { CreateCarDto, UpdateCarDto } from './entity/car.dto';
 import { GRPCUser } from 'src/auth/user.decorator';
-
+import { AppService } from '../app.service';
+import { JwtService } from '@nestjs/jwt';
 @Controller('car')
 export class CarController {
   constructor(
+    private readonly appService: AppService,
     private carService: CarService,
+    private jwtService: JwtService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -67,6 +70,23 @@ export class CarController {
         brand: request.brand,
         model: request.model,
       };
+
+      const u = await this.appService.findUser(
+        {
+          id: nCar.driver_id,
+          firstName: undefined,
+          lastName: undefined,
+          email: undefined,
+        },
+        { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
+      );
+
+      if (u === null) {
+        throw new RpcException({
+          message: 'User not found',
+          code: status.NOT_FOUND,
+        });
+      }
 
       const car = await this.carService.create(nCar);
       const pbCar = this.carService.toCarPb(car);

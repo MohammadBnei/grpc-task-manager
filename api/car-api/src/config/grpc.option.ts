@@ -10,7 +10,7 @@ import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_V1ALPHA_PACKAGE_NAME } from 'src/stubs/auth/v1alpha/service';
 import { CAR_PACKAGE_NAME } from 'src/stubs/car/service';
-import {USER_V1ALPHA_PACKAGE_NAME} from "../stubs/user/v1alpha/message";
+import { USER_V1ALPHA_PACKAGE_NAME } from '../stubs/user/v1alpha/message';
 
 export default (cs: ConfigService) =>
   addReflectionToGrpcConfig({
@@ -84,8 +84,8 @@ export const userGrpcOptions = (cs: ConfigService): ClientProviderOptions => ({
     credentials: !cs.get<boolean>('insecure')
         ? ChannelCredentials.createSsl(
             readFileSync(cs.get('ROOT_CA')),
-            readFileSync(cs.get('AUTH_KEY')),
-            readFileSync(cs.get('AUTH_CERT')),
+            readFileSync(cs.get('CAR_KEY')),
+            readFileSync(cs.get('CAR_CERT')),
         )
         : ChannelCredentials.createInsecure(),
   },
