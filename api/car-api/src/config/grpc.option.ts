@@ -82,11 +82,11 @@ export const userGrpcOptions = (cs: ConfigService): ClientProviderOptions => ({
       keepalivePermitWithoutCalls: 1,
     },
     credentials: !cs.get<boolean>('insecure')
-        ? ChannelCredentials.createSsl(
-            readFileSync(cs.get('ROOT_CA')),
-            readFileSync(cs.get('CAR_KEY')),
-            readFileSync(cs.get('CAR_CERT')),
+      ? ChannelCredentials.createSsl(
+          readFileSync(cs.get('ROOT_CA')),
+          readFileSync(cs.get('CAR_KEY')),
+          readFileSync(cs.get('CAR_CERT')),
         )
-        : ChannelCredentials.createInsecure(),
+      : ChannelCredentials.createInsecure(),
   },
 });

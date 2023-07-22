@@ -25,8 +25,9 @@ import { UserService } from 'src/user/user.service';
 @Controller('car')
 export class CarController {
   constructor(
-    private readonly userService: UserService,
     private carService: CarService,
+    @Inject(UserService)
+    private readonly userService: UserService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
