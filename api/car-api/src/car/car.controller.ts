@@ -20,14 +20,13 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { CreateCarDto, UpdateCarDto } from './entity/car.dto';
 import { GRPCUser } from 'src/auth/user.decorator';
-import { AppService } from '../app.service';
-import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
+
 @Controller('car')
 export class CarController {
   constructor(
-    private readonly appService: AppService,
+    private readonly userService: UserService,
     private carService: CarService,
-    private jwtService: JwtService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -71,17 +70,12 @@ export class CarController {
         model: request.model,
       };
 
-      const u = await this.appService.findUser(
-        {
-          id: nCar.driver_id,
-          firstName: undefined,
-          lastName: undefined,
-          email: undefined,
-        },
-        { Authorization: `Bearer ${this.jwtService.sign({ internal: true })}` },
-      );
+      // Verify if user exists
+      const fetchedUser = await this.userService.findUser({
+        id: user.id,
+      });
 
-      if (u === null) {
+      if (fetchedUser === null) {
         throw new RpcException({
           message: 'User not found',
           code: status.NOT_FOUND,
@@ -111,6 +105,18 @@ export class CarController {
         model: request.model,
       };
 
+      // Verify if user exists
+      const fetchedUser = await this.userService.findUser({
+        id: user.id,
+      });
+
+      if (fetchedUser === null) {
+        throw new RpcException({
+          message: 'User not found',
+          code: status.NOT_FOUND,
+        });
+      }
+
       const car = await this.carService.updateCar(request.id, user.id, nCar);
       const pbCar = this.carService.toCarPb(car);
 
@@ -128,6 +134,18 @@ export class CarController {
     @GRPCUser() user,
   ): Promise<DeleteCarResponse> {
     try {
+      // Verify if user exists
+      const fetchedUser = await this.userService.findUser({
+        id: user.id,
+      });
+
+      if (fetchedUser === null) {
+        throw new RpcException({
+          message: 'User not found',
+          code: status.NOT_FOUND,
+        });
+      }
+
       const car = await this.carService.deleteCar(request.id, user.id);
       const pbCar = this.carService.toCarPb(car);
 

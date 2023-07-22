@@ -1303,14 +1303,6 @@
     path-to-regexp "3.2.0"
     tslib "2.5.3"
 
-"@nestjs/jwt@^10.0.3":
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/jwt/-/jwt-10.1.0.tgz#7899b68d68b998cc140bc0af392c63fc00755236"
-  integrity sha512-iLwCGS25ybUxGS7i5j/Mwuyzvp/WxJftHlm8aLEBv5GV92apz6L1QVjxLdZrqXbzo++C8gdJauhzil8qitY+6w==
-  dependencies:
-    "@types/jsonwebtoken" "9.0.2"
-    jsonwebtoken "9.0.0"
-
 "@nestjs/jwt@nestjs/jwt":
   version "10.1.0"
   resolved "https://codeload.github.com/nestjs/jwt/tar.gz/3ddcdef1b1b1704d9670833bbe5cce7c8390e7e9"

@@ -3,15 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import Joi from 'joi';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
-import grpcOption, { userGrpcOptions } from './config/grpc.option';
+import grpcOption from './config/grpc.option';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
 import winstonConfig from './config/winston.config';
 import { CarModule } from './car/car.module';
-import { AppService } from './app.service';
-import { ClientsModule } from '@nestjs/microservices';
-import { USER_SERVICE_NAME } from './stubs/user/v1alpha/service';
+import { UserModule } from './user/user.module';
 
 const envSchema = Joi.object({
   MONGO_URL: Joi.string().required(),
@@ -54,6 +52,7 @@ const envSchema = Joi.object({
       useFactory: (cs: ConfigService) => grpcOption(cs),
     }),
     AuthModule,
+    UserModule,
     HealthModule,
     CarModule,
   ],

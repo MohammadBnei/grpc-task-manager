@@ -4,12 +4,11 @@ import { Car, CarSchema } from './entity/car.schema';
 import { CarService } from './car.service';
 import { CarController } from './car.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { AppService } from '../app.service';
 import { ClientsModule } from '@nestjs/microservices';
 import { USER_SERVICE_NAME } from '../stubs/user/v1alpha/service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { userGrpcOptions } from '../config/grpc.option';
-import { JwtService } from '@nestjs/jwt';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -23,8 +22,9 @@ import { JwtService } from '@nestjs/jwt';
     ]),
     MongooseModule.forFeature([{ name: Car.name, schema: CarSchema }]),
     AuthModule,
+    UserModule,
   ],
-  providers: [CarService, AppService, JwtService],
+  providers: [CarService],
   controllers: [CarController],
 })
 export class CarModule {}
