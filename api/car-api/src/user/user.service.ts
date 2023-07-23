@@ -1,3 +1,4 @@
+import { Metadata } from '@grpc/grpc-js';
 import { Inject, OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
@@ -23,8 +24,10 @@ export class UserService implements OnModuleInit {
       this.client.getService<UserServiceClient>(USER_SERVICE_NAME);
   }
 
-  async findUser(req: FindRequest): Promise<User> {
-    const res: FindResponse = await firstValueFrom(this.userService.find(req));
+  async findUser(req: FindRequest, md: Metadata): Promise<User> {
+    const res: FindResponse = await firstValueFrom(
+      this.userService.find(req, md),
+    );
 
     return res.user?.[0];
   }

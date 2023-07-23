@@ -1,4 +1,10 @@
-import { Controller, Inject, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Headers,
+  Inject,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CarService } from './car.service';
@@ -61,6 +67,7 @@ export class CarController {
   @GrpcMethod('CarService')
   async CreateCar(
     @Payload() request: CreateCarRequest,
+    @Headers() headers,
     @GRPCUser() user,
   ): Promise<CreateCarResponse> {
     try {
@@ -71,10 +78,14 @@ export class CarController {
         model: request.model,
       };
 
+      console.log(headers);
       // Verify if user exists
-      const fetchedUser = await this.userService.findUser({
-        id: user.id,
-      });
+      const fetchedUser = await this.userService.findUser(
+        {
+          id: user.id,
+        },
+        headers,
+      );
 
       if (fetchedUser === null) {
         throw new RpcException({
@@ -95,7 +106,8 @@ export class CarController {
 
   @GrpcMethod('CarService')
   async UpdateCar(
-    request: UpdateCarRequest,
+    @Payload() request: UpdateCarRequest,
+    @Headers() headers,
     @GRPCUser() user,
   ): Promise<UpdateCarResponse> {
     try {
@@ -107,9 +119,12 @@ export class CarController {
       };
 
       // Verify if user exists
-      const fetchedUser = await this.userService.findUser({
-        id: user.id,
-      });
+      const fetchedUser = await this.userService.findUser(
+        {
+          id: user.id,
+        },
+        headers,
+      );
 
       if (fetchedUser === null) {
         throw new RpcException({
@@ -131,14 +146,18 @@ export class CarController {
 
   @GrpcMethod('CarService')
   async DeleteCar(
-    request: DeleteCarRequest,
+    @Payload() request: DeleteCarRequest,
+    @Headers() headers,
     @GRPCUser() user,
   ): Promise<DeleteCarResponse> {
     try {
       // Verify if user exists
-      const fetchedUser = await this.userService.findUser({
-        id: user.id,
-      });
+      const fetchedUser = await this.userService.findUser(
+        {
+          id: user.id,
+        },
+        headers,
+      );
 
       if (fetchedUser === null) {
         throw new RpcException({
