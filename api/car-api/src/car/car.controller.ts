@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Headers,
-  Inject,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Headers, Inject, UseGuards } from '@nestjs/common';
 import { GrpcMethod, Payload, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { CarService } from './car.service';
