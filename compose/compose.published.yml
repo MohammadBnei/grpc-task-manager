@@ -12,8 +12,8 @@ services:
       - PORT=4000
       - AUTH_API_URL=auth-api:4000
       - JAEGER_URL=http://tracing:4318/v1/traces
-    # ports:
-    #   - 4000:4000
+    ports:
+      - 4000:4000
     volumes:
       - ../local/certs:/certs
     healthcheck:

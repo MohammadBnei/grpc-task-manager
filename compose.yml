@@ -1,16 +1,10 @@
 version: '3.8'
 
+include:
+  - path:
+    - compose/compose.db.yml
+
 services:
-  mariadb:
-    extends:
-      file: ./compose/compose.db.yml
-      service: mariadb
-
-  mongo:
-    extends:
-      file: ./compose/compose.db.yml
-      service: mongo
-
   tracing:
     image: jaegertracing/all-in-one:latest
     environment:
@@ -24,6 +18,7 @@ services:
     extends:
       file: ./compose/compose.published.yml
       service: auth-api
+      
 
   user-api:
     extends:

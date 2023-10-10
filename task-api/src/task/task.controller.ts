@@ -61,7 +61,7 @@ export class TaskController {
     }
   }
 
-  @UseGuards(GrpcAuthGuard)
+  // @UseGuards(GrpcAuthGuard)
   @GrpcMethod('TaskService')
   async CreateTask(request: CreateTaskRequest): Promise<CreateTaskResponse> {
     try {

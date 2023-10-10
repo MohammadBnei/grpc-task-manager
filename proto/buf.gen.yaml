@@ -1,6 +1,8 @@
 version: v1
 managed:
   enabled: true
+  go_package_prefix:
+    default: "stubs"
 plugins:
   - plugin: buf.build/community/timostamm-protobuf-ts
     out: ../front/src/lib/stubs
@@ -22,3 +24,7 @@ plugins:
       - addGrpcMetadata=true
       - nestJs=true
       - useOptionals=all
+  - plugin: go
+    out: ../task-api/test/stubs
+    opt:
+      - paths=source_relative

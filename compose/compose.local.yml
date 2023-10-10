@@ -22,7 +22,7 @@ services:
       - ROOT_CA=/certs/rootCA.pem
       - JAEGER_URL=http://tracing:14268/api/traces
     ports:
-      - 4002:4000
+      - 4000
     stdin_open: true
     command: start:dev
     healthcheck:
@@ -78,7 +78,8 @@ services:
     ports:
       - 4000:4000
     stdin_open: true
-    command: start:dev
+    command: pnpm i && pnpm start:dev
+    entrypoint: bash
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:3000/health" ]
       interval: 5s

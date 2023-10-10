@@ -16,17 +16,17 @@ export enum EventType {
 }
 
 export interface Task {
-  name?: string;
-  fields?: Field[];
-  dueDate?: string;
-  done?: boolean;
-  id?: string;
+  name?: string | undefined;
+  fields?: Field[] | undefined;
+  dueDate?: string | undefined;
+  done?: boolean | undefined;
+  id?: string | undefined;
 }
 
 export interface Field {
-  name?: string;
-  value?: string;
-  type?: FieldType;
+  name?: string | undefined;
+  value?: string | undefined;
+  type?: FieldType | undefined;
 }
 
 export const TASK_V1BETA_PACKAGE_NAME = "task.v1beta";
