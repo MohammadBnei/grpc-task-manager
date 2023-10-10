@@ -8,18 +8,16 @@ import (
 	"os"
 	"testing"
 	"time"
-
+	"task-test/taskv1beta/task/v1beta"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"buf.build/gen/go/bneiconseil/taskmanagerapi/grpc/go/task/v1beta/taskv1betagrpc"
-	stubs "buf.build/gen/go/bneiconseil/taskmanagerapi/protocolbuffers/go/task/v1beta"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	addr = flag.String("addr", "localhost:5004", "the address to connect to")
-	c    taskv1betagrpc.TaskServiceClient
+	c    taskv1beta.TaskServiceClient
 )
 
 func TestMain(m *testing.M) {
@@ -30,15 +28,15 @@ func TestMain(m *testing.M) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c = taskv1betagrpc.NewTaskServiceClient(conn)
+	c = taskv1beta.NewTaskServiceClient(conn)
 	code := m.Run()
 	os.Exit(code)
 }
 
 func TestCreateTask(t *testing.T) {
 	taskName := fmt.Sprintf("test-%v", time.Now().Second())
-	res, err := c.CreateTask(context.Background(), &stubs.CreateTaskRequest{
-		Task: &stubs.Task{
+	res, err := c.CreateTask(context.Background(), &taskv1beta.CreateTaskRequest{
+		Task: &taskv1beta.Task{
 			Name: taskName,
 			DueDate: "2023-01-01",
 		},
