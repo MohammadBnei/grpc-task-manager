@@ -1,0 +1,55 @@
+name: Task-Api E2E testing
+
+on:
+  push:
+    branches:
+      - ci
+
+jobs:
+  test-e2e:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports: 
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: task
+        options: >-
+          --health-cmd echo 'db.runCommand("ping").ok' | mongosh localhost:27017/ --quiet
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: task-api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          version: 8
+          run_install: false
+
+      - run: pnpm install
+      - run: pnpm start &
+        env:
+          MONGODB_URI: mongodb://root:task@mongo
+          insecure: true
+          JAEGER_URL: "http://localhost:4318/v1/traces"
+          HEALTH_PORT: 3003
+          AUTH_API_URL: "localhost:4002"
+          PORT: 5004
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.21.0
+
+      - run: |
+          cd test
+          go mod download
+          go test -v
