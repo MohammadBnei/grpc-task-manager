@@ -36,7 +36,7 @@ jobs:
 
       - name: install dependencies
         run: pnpm install
-        
+
       - name: run server
         run: pnpm start &
         env:
@@ -50,7 +50,7 @@ jobs:
       - name: setup golang
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20
+          go-version: '1.20'
 
       - name: run tests
         run: |
