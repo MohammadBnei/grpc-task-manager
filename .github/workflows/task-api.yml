@@ -1,0 +1,53 @@
+name: task-api
+
+on:
+  push:
+    branches:
+      - ci
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./task-api
+
+    # Service containers to run with `container-job`
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: task
+        options: --health-cmd mongo --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup pnpm
+        uses: pnpm/action-setup@v2.4.0
+        with:
+          version: 8
+
+      - name: run server
+        run: pnpm start &
+        env:
+          MONGO_URL: mongodb://root:task@localhost
+          insecure: true
+          JAEGER_URL: "http://localhost:4318/v1/traces"
+          HEALTH_PORT: 3003
+          AUTH_API_URL: "localhost:4002"
+          PORT: 5004
+
+      - name: setup golang
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20
+
+      - name: run tests
+        run: cd test && go test -v
+      
