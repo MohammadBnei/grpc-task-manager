@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package media.v1alpha;
+
+import "media/v1alpha/message.proto";
+
+service MediaService {
+  rpc ListMedias(ListMediasRequest) returns (ListMediasResponse) {}
+  rpc GetMedia(GetMediaRequest) returns (GetMediaResponse) {}
+  rpc CreateMedia(CreateMediaRequest) returns (CreateMediaResponse) {}
+  rpc UpdateMedia(UpdateMediaRequest) returns (UpdateMediaResponse) {}
+  rpc DeleteMedia(DeleteMediaRequest) returns (DeleteMediaResponse) {}
+}
