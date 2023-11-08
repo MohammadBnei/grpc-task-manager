@@ -3,28 +3,15 @@ managed:
   enabled: true
   go_package_prefix:
     default: "stubs"
+types:
+  include:
+    - task.v1beta
 plugins:
-  - plugin: buf.build/community/timostamm-protobuf-ts
-    out: ../front/src/lib/stubs
-  - plugin: buf.build/community/stephenh-ts-proto
-    out: ../task-api/src/stubs
-    opt:
-      - addGrpcMetadata=true
-      - nestJs=true
-      - useOptionals=all
-  - plugin: buf.build/community/stephenh-ts-proto
-    out: ../user-api/src/stubs
-    opt:
-      - addGrpcMetadata=true
-      - nestJs=true
-      - useOptionals=all
-  - plugin: buf.build/community/stephenh-ts-proto
-    out: ../auth-api/src/stubs
-    opt:
-      - addGrpcMetadata=true
-      - nestJs=true
-      - useOptionals=all
   - plugin: go
+    out: ../task-api/test/stubs
+    opt:
+      - paths=source_relative
+  - plugin: go-grpc
     out: ../task-api/test/stubs
     opt:
       - paths=source_relative
